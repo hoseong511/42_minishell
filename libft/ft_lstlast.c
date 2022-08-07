@@ -1,37 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.h                                             :+:      :+:    :+:   */
+/*   ft_lstlast.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hossong <hossong@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/08/06 16:43:27 by hossong           #+#    #+#             */
-/*   Updated: 2022/08/07 17:18:03 by hossong          ###   ########.fr       */
+/*   Created: 2021/11/24 16:33:16 by hossong           #+#    #+#             */
+/*   Updated: 2021/11/24 16:34:17 by hossong          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MAIN_H
-# define MAIN_H
+#include "libft.h"
 
-# include <stdio.h>
-# include <unistd.h>
-# include <readline/readline.h>
-# include <readline/history.h>
-# include <stdlib.h>
-# include <sys/wait.h>
-# include <string.h>
-# include <sys/errno.h>
-
-# include "libft/libft.h"
-
-# define BUF_SIZE 1024
-# define INHIBIT "'\"\\;'`"
-
-typedef struct s_data
+t_list	*ft_lstlast(t_list *lst)
 {
-
-} t_data;
-
-char	*ft_strstr(char *str, char *to_find);
-
-#endif
+	while (lst != NULL && lst->next != NULL)
+		lst = lst->next;
+	return (lst);
+}

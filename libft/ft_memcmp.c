@@ -1,37 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.h                                             :+:      :+:    :+:   */
+/*   ft_memcmp.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hossong <hossong@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/08/06 16:43:27 by hossong           #+#    #+#             */
-/*   Updated: 2022/08/07 17:18:03 by hossong          ###   ########.fr       */
+/*   Created: 2021/11/21 18:08:13 by hossong           #+#    #+#             */
+/*   Updated: 2021/11/21 23:32:56 by hossong          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MAIN_H
-# define MAIN_H
+#include "libft.h"
 
-# include <stdio.h>
-# include <unistd.h>
-# include <readline/readline.h>
-# include <readline/history.h>
-# include <stdlib.h>
-# include <sys/wait.h>
-# include <string.h>
-# include <sys/errno.h>
-
-# include "libft/libft.h"
-
-# define BUF_SIZE 1024
-# define INHIBIT "'\"\\;'`"
-
-typedef struct s_data
+int	ft_memcmp(const void *s1, const void *s2, size_t n)
 {
+	const char	*ps1;
+	const char	*ps2;
 
-} t_data;
-
-char	*ft_strstr(char *str, char *to_find);
-
-#endif
+	if (n == 0)
+		return (0);
+	ps1 = s1;
+	ps2 = s2;
+	while (--n && *ps1 == *ps2)
+	{
+		ps1++;
+		ps2++;
+	}
+	return ((unsigned char)*ps1 - (unsigned char)*ps2);
+}

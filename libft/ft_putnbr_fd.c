@@ -1,37 +1,37 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.h                                             :+:      :+:    :+:   */
+/*   ft_putnbr_fd.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hossong <hossong@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/08/06 16:43:27 by hossong           #+#    #+#             */
-/*   Updated: 2022/08/07 17:18:03 by hossong          ###   ########.fr       */
+/*   Created: 2021/11/24 13:11:13 by hossong           #+#    #+#             */
+/*   Updated: 2021/11/24 13:19:15 by hossong          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MAIN_H
-# define MAIN_H
+#include "libft.h"
 
-# include <stdio.h>
-# include <unistd.h>
-# include <readline/readline.h>
-# include <readline/history.h>
-# include <stdlib.h>
-# include <sys/wait.h>
-# include <string.h>
-# include <sys/errno.h>
-
-# include "libft/libft.h"
-
-# define BUF_SIZE 1024
-# define INHIBIT "'\"\\;'`"
-
-typedef struct s_data
+void	ft_putnbr_fd(int n, int fd)
 {
+	char			c;
 
-} t_data;
-
-char	*ft_strstr(char *str, char *to_find);
-
-#endif
+	if (n == -2147483648)
+		write(fd, "-2147483648", 11);
+	else if (n < 0)
+	{
+		write(fd, "-", 1);
+		n = -n;
+		ft_putnbr_fd(n, fd);
+	}
+	else if (n <= 9)
+	{
+		c = n + '0';
+		write(fd, &c, 1);
+	}
+	else
+	{
+		ft_putnbr_fd(n / 10, fd);
+		ft_putnbr_fd(n % 10, fd);
+	}
+}

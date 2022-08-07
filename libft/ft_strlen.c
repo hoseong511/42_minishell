@@ -1,37 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.h                                             :+:      :+:    :+:   */
+/*   ft_strlen.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hossong <hossong@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/08/06 16:43:27 by hossong           #+#    #+#             */
-/*   Updated: 2022/08/07 17:18:03 by hossong          ###   ########.fr       */
+/*   Created: 2021/11/16 19:45:32 by hossong           #+#    #+#             */
+/*   Updated: 2021/11/25 10:23:49 by hossong          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MAIN_H
-# define MAIN_H
+#include "libft.h"
 
-# include <stdio.h>
-# include <unistd.h>
-# include <readline/readline.h>
-# include <readline/history.h>
-# include <stdlib.h>
-# include <sys/wait.h>
-# include <string.h>
-# include <sys/errno.h>
-
-# include "libft/libft.h"
-
-# define BUF_SIZE 1024
-# define INHIBIT "'\"\\;'`"
-
-typedef struct s_data
+size_t	ft_strlen(const char *s)
 {
+	size_t	len;
 
-} t_data;
-
-char	*ft_strstr(char *str, char *to_find);
-
-#endif
+	len = 0;
+	while (s[len] != 0)
+		len++;
+	return (len);
+}

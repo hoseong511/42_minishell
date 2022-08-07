@@ -1,37 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.h                                             :+:      :+:    :+:   */
+/*   ft_strdup.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hossong <hossong@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/08/06 16:43:27 by hossong           #+#    #+#             */
-/*   Updated: 2022/08/07 17:18:03 by hossong          ###   ########.fr       */
+/*   Created: 2021/11/22 10:00:38 by hossong           #+#    #+#             */
+/*   Updated: 2021/11/28 14:07:54 by hossong          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MAIN_H
-# define MAIN_H
+#include "libft.h"
 
-# include <stdio.h>
-# include <unistd.h>
-# include <readline/readline.h>
-# include <readline/history.h>
-# include <stdlib.h>
-# include <sys/wait.h>
-# include <string.h>
-# include <sys/errno.h>
-
-# include "libft/libft.h"
-
-# define BUF_SIZE 1024
-# define INHIBIT "'\"\\;'`"
-
-typedef struct s_data
+char	*ft_strdup(const char *s1)
 {
+	char	*dst;
+	size_t	slen;
 
-} t_data;
-
-char	*ft_strstr(char *str, char *to_find);
-
-#endif
+	slen = ft_strlen(s1);
+	dst = (char *)malloc(sizeof(char) * (slen + 1));
+	if (dst == NULL)
+		return (NULL);
+	ft_strlcpy(dst, s1, slen + 1);
+	return (dst);
+}

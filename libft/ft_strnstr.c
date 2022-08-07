@@ -1,37 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.h                                             :+:      :+:    :+:   */
+/*   ft_strnstr.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hossong <hossong@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/08/06 16:43:27 by hossong           #+#    #+#             */
-/*   Updated: 2022/08/07 17:18:03 by hossong          ###   ########.fr       */
+/*   Created: 2021/11/21 18:41:24 by hossong           #+#    #+#             */
+/*   Updated: 2021/11/28 19:32:07 by hossong          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MAIN_H
-# define MAIN_H
+#include "libft.h"
 
-# include <stdio.h>
-# include <unistd.h>
-# include <readline/readline.h>
-# include <readline/history.h>
-# include <stdlib.h>
-# include <sys/wait.h>
-# include <string.h>
-# include <sys/errno.h>
-
-# include "libft/libft.h"
-
-# define BUF_SIZE 1024
-# define INHIBIT "'\"\\;'`"
-
-typedef struct s_data
+char	*ft_strnstr(const char *haystack, const char *needle, size_t len)
 {
+	size_t	i;
 
-} t_data;
-
-char	*ft_strstr(char *str, char *to_find);
-
-#endif
+	if (*needle == '\0')
+		return ((char *)haystack);
+	i = ft_strlen(needle);
+	while (*haystack && len-- >= i)
+	{
+		if (ft_strncmp(haystack, needle, i) == 0)
+			return ((char *)haystack);
+		haystack++;
+	}
+	return (NULL);
+}

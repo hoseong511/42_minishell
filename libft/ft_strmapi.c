@@ -1,37 +1,35 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.h                                             :+:      :+:    :+:   */
+/*   ft_strmapi.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hossong <hossong@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/08/06 16:43:27 by hossong           #+#    #+#             */
-/*   Updated: 2022/08/07 17:18:03 by hossong          ###   ########.fr       */
+/*   Created: 2021/11/24 11:30:21 by hossong           #+#    #+#             */
+/*   Updated: 2021/11/24 12:30:18 by hossong          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MAIN_H
-# define MAIN_H
+#include "libft.h"
 
-# include <stdio.h>
-# include <unistd.h>
-# include <readline/readline.h>
-# include <readline/history.h>
-# include <stdlib.h>
-# include <sys/wait.h>
-# include <string.h>
-# include <sys/errno.h>
-
-# include "libft/libft.h"
-
-# define BUF_SIZE 1024
-# define INHIBIT "'\"\\;'`"
-
-typedef struct s_data
+char	*ft_strmapi(char const *s, char (*f)(unsigned int, char))
 {
+	char			*dst;
+	unsigned int	i;
+	size_t			slen;
 
-} t_data;
-
-char	*ft_strstr(char *str, char *to_find);
-
-#endif
+	if (s == NULL || f == NULL)
+		return (NULL);
+	slen = ft_strlen(s);
+	i = 0;
+	dst = (char *)malloc(sizeof(char) * (slen + 1));
+	if (dst == NULL)
+		return (NULL);
+	while (i < slen)
+	{
+		dst[i] = f(i, s[i]);
+		i++;
+	}
+	dst[i] = '\0';
+	return (dst);
+}
