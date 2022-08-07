@@ -6,7 +6,7 @@
 /*   By: hossong <hossong@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/29 11:52:46 by hossong           #+#    #+#             */
-/*   Updated: 2022/01/20 19:52:43 by hossong          ###   ########.fr       */
+/*   Updated: 2022/08/07 19:37:03 by hossong          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 
 typedef struct s_list
 {
+	int				idx;
 	void			*content;
 	struct s_list	*next;
 }	t_list;

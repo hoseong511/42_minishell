@@ -6,7 +6,7 @@
 /*   By: hossong <hossong@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/06 16:43:27 by hossong           #+#    #+#             */
-/*   Updated: 2022/08/07 17:18:03 by hossong          ###   ########.fr       */
+/*   Updated: 2022/08/07 20:29:21 by hossong          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,10 +27,17 @@
 # define BUF_SIZE 1024
 # define INHIBIT "'\"\\;'`"
 
+typedef struct s_cmd
+{
+	char	**content;
+}	t_cmd;
+
 typedef struct s_data
 {
-
-} t_data;
+	char	**dir;
+	int		cmd_count;
+	t_cmd	*cmd;
+}	t_data;
 
 char	*ft_strstr(char *str, char *to_find);
 

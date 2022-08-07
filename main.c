@@ -6,11 +6,68 @@
 /*   By: hossong <hossong@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/06 16:42:28 by hossong           #+#    #+#             */
-/*   Updated: 2022/08/07 18:13:03 by hossong          ###   ########.fr       */
+/*   Updated: 2022/08/07 20:31:48 by hossong          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "main.h"
+
+t_list	*idx_cmd(t_list *cmd, int idx)
+{
+	t_list	*node;
+
+	node = cmd;
+	while (node && node->idx != idx)
+		node = node->next;
+	if (node && node->idx == idx)
+		return (node);
+	return (NULL);
+}
+
+void	parse_envp(t_data *data, char **envp)
+{
+	char	*tar;
+	int		i;
+
+	i = -1;
+	while (envp[++i])
+	{
+		if (!ft_strnstr(envp[i], "PATH", ft_strlen("PATH")))
+			continue ;
+		tar = ft_strtrim(envp[i], "PATH=");
+		data->dir = ft_split(tar, ':');
+		free(tar);
+		break ;
+	}
+}
+
+char	*search_cmd_path(t_data *data, int idx)
+{
+	char	*path;
+	int		i;
+	char	*tmp;
+	char	*cmd;
+
+	if (cmd && ft_strrchr(cmd, '/'))
+	{
+		if (access(cmd, R_OK) == -1)
+			err_error(cmd, 127);
+		cmd = ft_strrchr(cmd, '/');
+	}
+	i = -1;
+	while (data->dir[++i])
+	{
+		tmp = ft_strjoin(data->dir[i], "/");
+		path = ft_strjoin(tmp, cmd);
+		free(tmp);
+		if (access(path, X_OK) != -1)
+			break ;
+		free(path);
+	}
+	if (!data->dir[i])
+		return (NULL);
+	return (path);
+}
 
 int	main(int argc, char **argv, char **envp)
 {
@@ -110,9 +167,6 @@ int	main(int argc, char **argv, char **envp)
 			else
 				wait(NULL);
 		}
-		// else if (ft_strncmp(line[0], "|", 1) == 0)
-		// {
-		// }
 		free(str);
 	}
 	return (0);
