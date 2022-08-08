@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: namkim <namkim@student.42seoul.kr>         +#+  +:+       +#+        */
+/*   By: hossong <hossong@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/06 16:42:28 by hossong           #+#    #+#             */
-/*   Updated: 2022/08/08 17:46:00 by namkim           ###   ########.fr       */
+/*   Updated: 2022/08/08 18:53:52 by hossong          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,11 +20,22 @@ int	main(int argc, char **argv, char **envp)
 	// char	name[BUF_SIZE];
 	// char	**line;
 	t_error	is_error;
+	t_list	*data;
+	t_env	*env;
 
 	(void)argc;
 	(void)argv;
 //	(void)envp;
 	printf("==minishell==\n");
+	data = get_env(envp);
+	while (1)
+	{
+		if (!data)
+			break ;
+		env = (t_env *)data->content;
+		printf("key: %s value: %s\n", env->key, env->value);
+		data = data->next;
+	}
 	while (1)
 	{
 		str = readline("mini-0.1$ ");

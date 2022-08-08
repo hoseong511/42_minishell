@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: namkim <namkim@student.42seoul.kr>         +#+  +:+       +#+         #
+#    By: hossong <hossong@student.42seoul.kr>       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/08/07 14:34:58 by hossong           #+#    #+#              #
-#    Updated: 2022/08/08 16:14:42 by namkim           ###   ########.fr        #
+#    Updated: 2022/08/08 18:45:12 by hossong          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,7 +15,7 @@ CFLAGS 	=	-Wall -Wextra -Werror -g3
 LIB		=	-L$(HOME)/.brew/opt/readline/lib -lreadline -L libft -lft
 LIBFT	=	libft/libft.a
 INCLUDE =	-I$(HOME)/.brew/opt/readline/include
-SRCS	=	main.c utils.c preprocessor.c
+SRCS	=	main.c utils.c preprocessor.c env.c
 OBJS	=	$(SRCS:.c=.o)
 
 %.o : %.c

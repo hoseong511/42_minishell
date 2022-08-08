@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   preprocessor.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: namkim <namkim@student.42seoul.kr>         +#+  +:+       +#+        */
+/*   By: hossong <hossong@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/08 15:41:54 by namkim            #+#    #+#             */
-/*   Updated: 2022/08/08 18:10:57 by namkim           ###   ########.fr       */
+/*   Updated: 2022/08/08 18:56:05 by hossong          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ t_error	check_quote(char *str)
 		{
 			if (!quote)
 				quote = ft_lstnew(&str[i]);
-			else if (quote && (*(char *)(quote->content)) != str[i])
+			else if (quote && (*(char *)(quote->content)) != str[i]) // void* conversion
 				ft_lstadd_front(&quote, ft_lstnew(&str[i]));
 			else
 				pop_quote(&quote);
