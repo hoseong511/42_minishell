@@ -6,7 +6,7 @@
 /*   By: namkim <namkim@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/06 16:43:27 by hossong           #+#    #+#             */
-/*   Updated: 2022/08/08 16:11:04 by namkim           ###   ########.fr       */
+/*   Updated: 2022/08/08 18:23:04 by namkim           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@
 # include "libft/libft.h"
 
 # define BUF_SIZE 1024
-# define INHIBIT "'\"\\;'`"
+# define INHIBIT "\\;`"
 
 typedef enum e_error
 {
@@ -45,7 +45,14 @@ typedef struct s_data
 	t_cmd	*cmd;
 }	t_data;
 
+typedef struct s_env
+{
+	char	*key;
+	char	*value;
+}	t_env;
+
 char	*ft_strstr(char *str, char *to_find);
-t_error	preprocessor(char *str);
+t_error	check_quote(char *str);
+void	replace_env(char **str, char **envp);
 
 #endif

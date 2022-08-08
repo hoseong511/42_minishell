@@ -6,7 +6,7 @@
 /*   By: namkim <namkim@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/06 16:42:28 by hossong           #+#    #+#             */
-/*   Updated: 2022/08/08 16:11:14 by namkim           ###   ########.fr       */
+/*   Updated: 2022/08/08 17:46:00 by namkim           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ int	main(int argc, char **argv, char **envp)
 
 	(void)argc;
 	(void)argv;
-	(void)envp;
+//	(void)envp;
 	printf("==minishell==\n");
 	while (1)
 	{
@@ -31,10 +31,9 @@ int	main(int argc, char **argv, char **envp)
 		/*	1. 해석하지 말아할 문자 (닫히지 않은 quote / '\') 가 포함되어 있는지
 			2. quote 처리? -> ' ", "" ''
 			3. 환경변수 치환
-
 		*/
-		is_error = preprocessor(str);
-		printf("is_error : %d\n", is_error);
+		is_error = check_quote(str);
+		replace_env(&str, envp);
 		// if (ft_strchr(str, '|'))
 		// {
 		// 	line = ft_split(str, '|');

@@ -1,22 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strchr.c                                        :+:      :+:    :+:   */
+/*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: namkim <namkim@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/11/19 13:11:16 by hossong           #+#    #+#             */
-/*   Updated: 2022/08/08 17:39:33 by namkim           ###   ########.fr       */
+/*   Created: 2022/08/08 18:20:24 by namkim            #+#    #+#             */
+/*   Updated: 2022/08/08 18:24:52 by namkim           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "main.h"
 
-char	*ft_strchr(const char *s, int c)
+t_list	*get_env(char **envp)
 {
-	while (*s != '\0' && *s != (char)c)
-		s++;
-	if (*s == (char)c)
-		return ((char *)s);
-	return (0);
+
 }
