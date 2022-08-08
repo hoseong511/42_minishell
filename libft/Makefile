@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: hossong <hossong@student.42seoul.kr>       +#+  +:+       +#+         #
+#    By: namkim <namkim@student.42seoul.kr>         +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/09/29 11:58:47 by hossong           #+#    #+#              #
-#    Updated: 2022/08/07 16:37:39 by hossong          ###   ########.fr        #
+#    Updated: 2022/08/08 16:25:33 by namkim           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -46,23 +46,25 @@ else
 endif
 
 %.o	:	%.c
-			@$(CC) $(CFLAGS) -c $< -o $(<:.c=.o) -I$(HDRS) 
-			
+			$(CC) $(CFLAGS) -c $< -o $(<:.c=.o) -I$(HDRS)
+
+all 	:
+		@make WITH_BONUS=1 $(NAME)
+
+
 $(NAME)	:	$(OBJ_FILES)
-			@$(AR) $(ARFLAGS) $(NAME) $^
+			$(AR) $(ARFLAGS) $(NAME) $^
 
-all 	: 	$(NAME)
+#bonus	:
+#			@make WITH_BONUS=1
 
-bonus	:	
-			@make WITH_BONUS=1 all
-
-clean	:	
+clean	:
 			$(RM) $(RMFLAGS) $(OBJS) $(BONUSOBJS)
 
 fclean	:	clean
 			$(RM) $(RMFLAGS) $(NAME)
 
-re		:	
+re		:
 			@make fclean
 			@make all
 

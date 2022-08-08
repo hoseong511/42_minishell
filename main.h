@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.h                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hossong <hossong@student.42seoul.kr>       +#+  +:+       +#+        */
+/*   By: namkim <namkim@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/06 16:43:27 by hossong           #+#    #+#             */
-/*   Updated: 2022/08/07 20:29:21 by hossong          ###   ########.fr       */
+/*   Updated: 2022/08/08 16:11:04 by namkim           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,12 @@
 # define BUF_SIZE 1024
 # define INHIBIT "'\"\\;'`"
 
+typedef enum e_error
+{
+	ERROR = -1,
+	SUCCESS
+}	t_error;
+
 typedef struct s_cmd
 {
 	char	**content;
@@ -40,5 +46,6 @@ typedef struct s_data
 }	t_data;
 
 char	*ft_strstr(char *str, char *to_find);
+t_error	preprocessor(char *str);
 
 #endif
