@@ -6,7 +6,7 @@
 /*   By: hossong <hossong@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/09 17:19:24 by hossong           #+#    #+#             */
-/*   Updated: 2022/08/09 17:29:10 by hossong          ###   ########.fr       */
+/*   Updated: 2022/08/10 00:59:55 by hossong          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,8 +56,10 @@ int	check_quote(char *str, int i)
 
 	q = str[i];
 	j = 1;
-	while (str[i + j] != q)
+	while (str[i + j] && str[i + j] != q)
 		j++;
+	if (!str[i + j])
+		ft_error("unclosed quotes\n");
 	return (j);
 }
 

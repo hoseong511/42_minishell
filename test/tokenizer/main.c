@@ -95,7 +95,6 @@ int	main(int argc, char **argv, char **envp)
 	(void)envp;
 	data = get_env(envp);
 	token = tokenizer(argv[1]);
-
 	while (token)
 	{
 		str = (char *)token->content;
@@ -105,4 +104,3 @@ int	main(int argc, char **argv, char **envp)
 		token = token->next;
 	}
 }
-
