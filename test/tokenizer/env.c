@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hossong <hossong@student.42seoul.kr>       +#+  +:+       +#+        */
+/*   By: namkim <namkim@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/08 18:20:24 by namkim            #+#    #+#             */
-/*   Updated: 2022/08/10 18:07:52 by hossong          ###   ########.fr       */
+/*   Updated: 2022/08/10 18:36:28 by namkim           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,18 +28,16 @@ int	is_valid_env_name(char c, int idx)
 	return (FALSE);
 }
 
-void	is_env_exist(t_list *target, t_list *data)
+void	is_env_exist(void **target, t_list *data)
 {
 	char	*str;
 	char	*keystr;
-	char	*value;
 	int		i;
 	int		j;
 
-	str = (char *)target->content;
-	i = 0;
-	value = NULL;
-	while (str[i])
+	str = *((char **)target);
+	i = -1;
+	while (str[++i])
 	{
 		if (str[i] == '$')
 		{
@@ -52,16 +50,14 @@ void	is_env_exist(t_list *target, t_list *data)
 				keystr = ft_strndup(str + i, j);
 				if (!keystr)
 					ft_error("Malloc error\n");
-				target->content = replace_env(str, keystr, data);
+				*target = replace_env(str, keystr, data);
 				free(keystr);
 				free(str);
 			}
-			str = target->content;
+			str = *target;
 			i = -1;
 		}
-		i++;
 	}
-
 }
 
 t_list	*get_env(char **envp)

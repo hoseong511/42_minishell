@@ -4,25 +4,25 @@
 //환경변수 expansion
 //single quote / doublequote 처리
 //re_tokenize
-void	replace_double_quote(t_list *target)
-{
-	char	*str;
-	int		i;
-	
-	i = 0;
-	str = (char *)target->content;
-	while (str[i])
-	{
-		if (str[i] == '\'')
-		{
-			while (str[++i] != '\'')
-				;
-			i++;
-		}
-		is_env_exist()
-		i++;
-	}
-}
+// void	replace_double_quote(t_list *target)
+// {
+// 	char	*str;
+// 	int		i;
+
+// 	i = 0;
+// 	str = (char *)target->content;
+// 	while (str[i])
+// 	{
+// 		if (str[i] == '\'')
+// 		{
+// 			while (str[++i] != '\'')
+// 				;
+// 			i++;
+// 		}
+// 		is_env_exist()
+// 		i++;
+// 	}
+// }
 
 void	replacement(char **str, t_list *data)  //한 token의 string
 {
@@ -59,7 +59,7 @@ void	replacement(char **str, t_list *data)  //한 token의 string
 				add_token(&lst, (*str), i, len);
 				target = ft_lstlast(lst); //lstlast를 찾아서 q의 값에 따라 처리
 				//lstlast를 찾아서 env만 처리
-				is_env_exist(target, data);
+				is_env_exist(&target->content, data);
 				i += len;
 				len = 0;
 			}
@@ -71,7 +71,7 @@ void	replacement(char **str, t_list *data)  //한 token의 string
 	{
 		add_token(&lst, (*str), i, len);
 		target = ft_lstlast(lst);
-		is_env_exist(target, data);
+		is_env_exist(&target->content, data);
 	}
 	char	*temp;
 	temp = NULL;

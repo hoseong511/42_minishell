@@ -31,7 +31,6 @@ t_list	*tokenizer(char *str);
 
 char	*replace_env(char *str, char *keystr, t_list *data);
 char	*match_env(char *keystr, t_list *data);
-void	is_env_exist(t_list *target, t_list *data);
-
+void	is_env_exist(void **target, t_list *data);
 
 #endif
