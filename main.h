@@ -6,7 +6,7 @@
 /*   By: hossong <hossong@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/06 16:43:27 by hossong           #+#    #+#             */
-/*   Updated: 2022/08/08 18:45:01 by hossong          ###   ########.fr       */
+/*   Updated: 2022/08/08 20:43:42 by hossong          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ typedef struct s_env
 
 char	*ft_strstr(char *str, char *to_find);
 t_error	check_quote(char *str);
-void	replace_env(char **str, char **envp);
+void	replace_env(char **str, t_list *data);
 t_list	*get_env(char **envp);
 
 #endif

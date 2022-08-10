@@ -1,41 +1,71 @@
 #include "main.h"
 #include <stdio.h>
 
-// char	*match_env(char *keystr, t_list *data)
-// {
-// 	while (data)
-// 	{
-// 		if (keystr == ((t_env *)data->content)->key)
-// 			return (((t_env *)data->content)->value);
-// 		data = data->next;
-// 	}
-// 	return (NULL);
-// }
-// char	*replace_env(char *str, char *keystr)
-// {
-// 	char	*var;
-// 	char	*prev;
-// 	char	*next;
-// 	char	*res;
-// 	res = NULL;
-// 	var = ft_strnstr(str, keystr, ft_strlen(str));
-// 	if (var)
-// 	{
-// 		prev = ft_strndup(str, str - var);
-// 		next = ft_strdup(var + ft_strlen(var));
-// 		var = match_env(keystr, data);
-// 		if (var)
-// 		{
-// 			res = ft_strjoin(prev, var);
-// 			free (prev);
-// 			prev = res;
-// 			res = ft_strjoin(prev, next);
-// 		}
-// 		free(prev);
-// 		free(next);
-// 	}
-// 	return (res);
-// }
+//환경변수 expansion
+//single quote / doublequote 처리
+//re_tokenize
+void	replacement(char **str, t_list *data)  //한 token의 string
+{
+	int	 i;
+	int	 len;
+	char	q;
+	t_list  *lst;
+	t_list	*target;
+
+	i = 0;
+	len = 0;
+	lst = NULL;
+	while ((*str)[i + len])
+	{
+		if ((*str)[i + len] == '\"' || (*str)[i + len] == '\'')
+		{
+			if (len == 0)
+			{
+				q = (*str)[i];
+				len = ++i;
+				while((*str)[len] != q)
+					len++;
+				add_token(&lst, (*str), i, len);
+				target = ft_lstlast(lst); //lstlast를 찾아서 q의 값에 따라 처리
+				// if (q == '\'')
+				// 	replace_single_quote(target);
+				// else
+				// 	replace_double_quote(target);
+				i += len;
+				len = 0;
+			}
+			else
+			{
+				add_token(&lst, (*str), i, len);
+				target = ft_lstlast(lst); //lstlast를 찾아서 q의 값에 따라 처리
+				//lstlast를 찾아서 env만 처리
+				is_env_exist(target, data);
+				i += len;
+				len = 0;
+			}
+		}
+		else
+			len++;
+	}
+	if ((*str)[i + len] == '\0' && str[i + len - 1])
+	{
+		add_token(&lst, (*str), i, len);
+		target = ft_lstlast(lst);
+		is_env_exist(target, data);
+	}
+	char	*temp;
+	temp = NULL;
+	free(*str);
+	*str = NULL;
+	while (lst)
+	{
+		temp = *str;
+		*str = ft_strjoin(temp, (char *)lst->content);
+		if (temp)
+			free(temp);
+		lst = lst->next;
+	}
+}
 
 static void	remove_char(char **dst, char *str, char c)
 {
@@ -95,14 +125,13 @@ int	main(int argc, char **argv, char **envp)
 	(void)envp;
 	data = get_env(envp);
 	token = tokenizer(argv[1]);
-
 	while (token)
 	{
 		str = (char *)token->content;
 		// if (ft_strchr(str, '\'') || ft_strchr(str, '\"'))
+		replacement(&str, data);
 		// 	replace_s_quote(&token, str);
-		printf("%s\n", str);
+		printf("str: %s\n", str);
 		token = token->next;
 	}
 }
-

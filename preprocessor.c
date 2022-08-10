@@ -6,7 +6,7 @@
 /*   By: hossong <hossong@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/08 15:41:54 by namkim            #+#    #+#             */
-/*   Updated: 2022/08/08 18:56:05 by hossong          ###   ########.fr       */
+/*   Updated: 2022/08/09 14:32:39 by hossong          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,16 +52,37 @@ t_error	check_quote(char *str)
 	return (SUCCESS);
 }
 
-void	replace_env(char **str, char **envp)
+static void	search_env_var(t_list *data, char *var)
+{
+	while (data)
+	{
+		if (!ft_strncmp(var, ((t_env *)data->content)->key, ft_strlen(var)))
+		{
+			if (ft_strlen(var) == ft_strlen(((t_env *)data->content)->key))
+			{
+				free(var);
+				var = ((t_env *)data->content)->value;
+				break ;
+			}
+			else
+			{
+				free(var);
+				var = NULL;
+			}
+		}
+		data = data->next;
+	}
+}
+
+void	replace_env(char **str, t_list *data)
 {
 	int		i;
 	char	*var;
 	char	*prev;
 	char	*next;
-	int 	d;
+	int		d;
 
 	i = -1;
-	(void) envp;
 	while ((*str)[++i])
 	{
 		if ((*str)[i] == '$')
@@ -79,9 +100,7 @@ void	replace_env(char **str, char **envp)
 				prev = ft_strndup(*str, i - 1);
 				var = ft_strndup(*str + i, d);
 				next = ft_strdup(*str + i + d + 1);
-				printf("prev: %s\n", prev);
-				printf("var: %s\n", var);
-				printf("next: %s\n", next);
+				search_env_var(data, var);
 			}
 		}
 	}

@@ -6,7 +6,7 @@
 /*   By: hossong <hossong@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/08 18:20:24 by namkim            #+#    #+#             */
-/*   Updated: 2022/08/08 18:48:45 by hossong          ###   ########.fr       */
+/*   Updated: 2022/08/09 17:25:54 by hossong          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,10 +34,7 @@ t_list	*get_env(char **envp)
 		line = ft_split(envp[i], '=');
 		content = (t_env *)malloc(sizeof(t_env));
 		if (!content)
-		{
-			clear_lst(line, 2);
-			return (NULL);
-		}
+			exit(1);
 		content->key = line[0];
 		content->value = line[1];
 		new = ft_lstnew(content);

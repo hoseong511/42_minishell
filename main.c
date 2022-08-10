@@ -6,7 +6,7 @@
 /*   By: hossong <hossong@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/06 16:42:28 by hossong           #+#    #+#             */
-/*   Updated: 2022/08/08 18:53:52 by hossong          ###   ########.fr       */
+/*   Updated: 2022/08/09 14:30:47 by hossong          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,6 @@ int	main(int argc, char **argv, char **envp)
 
 	(void)argc;
 	(void)argv;
-//	(void)envp;
 	printf("==minishell==\n");
 	data = get_env(envp);
 	while (1)
@@ -44,7 +43,7 @@ int	main(int argc, char **argv, char **envp)
 			3. 환경변수 치환
 		*/
 		is_error = check_quote(str);
-		replace_env(&str, envp);
+		// replace_env(&str, data);
 		// if (ft_strchr(str, '|'))
 		// {
 		// 	line = ft_split(str, '|');

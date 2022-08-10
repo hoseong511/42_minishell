@@ -6,16 +6,11 @@
 /*   By: hossong <hossong@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/09 17:19:24 by hossong           #+#    #+#             */
-/*   Updated: 2022/08/10 00:59:55 by hossong          ###   ########.fr       */
+/*   Updated: 2022/08/09 17:24:40 by hossong          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "main.h"
-
-static int	is_end(int c)
-{
-	return ((c >= 9 && c <= 13) || c == 32 || c == '|' || c == '<' || c == '>');
-}
 
 void	add_token(t_list **lst, char *str, int start, size_t len)
 {
@@ -25,10 +20,10 @@ void	add_token(t_list **lst, char *str, int start, size_t len)
 
 	sub = ft_substr(str, start, len);
 	if (!sub)
-		ft_error("ERROR: malloc error\n");
+		exit(1);
 	new = ft_lstnew(sub);
 	if (!new)
-		ft_error("ERROR: malloc error\n");
+		exit(1);
 	ft_lstadd_back(lst, new);
 }
 
@@ -56,10 +51,8 @@ int	check_quote(char *str, int i)
 
 	q = str[i];
 	j = 1;
-	while (str[i + j] && str[i + j] != q)
+	while (str[i + j] != q)
 		j++;
-	if (!str[i + j])
-		ft_error("unclosed quotes\n");
 	return (j);
 }
 
@@ -74,7 +67,7 @@ t_list	*tokenizer(char *str)
 	i = -1;
 	while (str[++i])
 	{
-		if (is_end(str[i]))
+		if (ft_isspace(str[i]))
 		{
 			if (start != i)
 				add_token(&lst, str, start, i - start);
