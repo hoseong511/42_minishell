@@ -6,18 +6,63 @@
 /*   By: hossong <hossong@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/08 18:20:24 by namkim            #+#    #+#             */
-/*   Updated: 2022/08/10 16:56:13 by hossong          ###   ########.fr       */
+/*   Updated: 2022/08/10 18:07:52 by hossong          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "main.h"
 
-// static void	clear_lst(char **lst, int i)
-// {
-// 	while (i--)
-// 		free(lst[i]);
-// 	free(lst);
-// }
+int	is_valid_env_name(char c, int idx)
+{
+	if (ft_isdigit(c))
+	{
+		if (idx == 0)
+			return (FALSE);
+		else
+			return (TRUE);
+	}
+	if (ft_isalpha(c))
+		return (TRUE);
+	if (c == '_')
+		return (TRUE);
+	return (FALSE);
+}
+
+void	is_env_exist(t_list *target, t_list *data)
+{
+	char	*str;
+	char	*keystr;
+	char	*value;
+	int		i;
+	int		j;
+
+	str = (char *)target->content;
+	i = 0;
+	value = NULL;
+	while (str[i])
+	{
+		if (str[i] == '$')
+		{
+			i++;
+			j = 0;
+			while (is_valid_env_name(str[i + j], j) == TRUE)
+				j++;
+			if (j != 0)
+			{
+				keystr = ft_strndup(str + i, j);
+				if (!keystr)
+					ft_error("Malloc error\n");
+				target->content = replace_env(str, keystr, data);
+				free(keystr);
+				free(str);
+			}
+			str = target->content;
+			i = -1;
+		}
+		i++;
+	}
+
+}
 
 t_list	*get_env(char **envp)
 {
@@ -99,57 +144,3 @@ char	*replace_env(char *str, char *keystr, t_list *data)
 	return (res);
 }
 
-int	is_valid_env_name(char c, int idx)
-{
-	if (ft_isdigit(c))
-	{
-		if (idx == 0)
-			return (FALSE);
-		else
-			return (TRUE);
-	}
-	if (ft_isalpha(c))
-		return (TRUE);
-	if (c == '_')
-		return (TRUE);
-	return (FALSE);
-}
-
-void	is_env_exist(t_list *target, t_list *data)
-{
-	char	*str;
-	char	*keystr;
-	char	*value;
-	int		i;
-	int		j;
-
-	str = (char *)target->content;
-	i = 0;
-	value = NULL;
-	while (str[i])
-	{
-		if (str[i] == '$')
-		{
-			i++;
-			j = 0;
-			while (is_valid_env_name(str[i + j], j) == TRUE)
-				j++;
-			if (j != 0)
-			{
-				keystr = ft_strndup(str + i, j);
-				if (!keystr)
-					ft_error("Malloc error\n");
-				target->content = replace_env(str, keystr, data);
-				free(keystr);
-				free(str);
-			}
-			i += j;
-		}
-		i++;
-	}
-}
-
-// void	replace_s_quote(t_lst *target)
-// {
-
-// }

@@ -4,6 +4,26 @@
 //환경변수 expansion
 //single quote / doublequote 처리
 //re_tokenize
+void	replace_double_quote(t_list *target)
+{
+	char	*str;
+	int		i;
+	
+	i = 0;
+	str = (char *)target->content;
+	while (str[i])
+	{
+		if (str[i] == '\'')
+		{
+			while (str[++i] != '\'')
+				;
+			i++;
+		}
+		is_env_exist()
+		i++;
+	}
+}
+
 void	replacement(char **str, t_list *data)  //한 token의 string
 {
 	int	 i;
@@ -128,9 +148,7 @@ int	main(int argc, char **argv, char **envp)
 	while (token)
 	{
 		str = (char *)token->content;
-		// if (ft_strchr(str, '\'') || ft_strchr(str, '\"'))
 		replacement(&str, data);
-		// 	replace_s_quote(&token, str);
 		printf("str: %s\n", str);
 		token = token->next;
 	}
