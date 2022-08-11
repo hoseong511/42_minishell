@@ -6,7 +6,7 @@
 /*   By: namkim <namkim@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/08 18:20:24 by namkim            #+#    #+#             */
-/*   Updated: 2022/08/10 18:36:28 by namkim           ###   ########.fr       */
+/*   Updated: 2022/08/11 11:33:12 by namkim           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,8 +36,8 @@ void	is_env_exist(void **target, t_list *data)
 	int		j;
 
 	str = *((char **)target);
-	i = -1;
-	while (str[++i])
+	i = 0;
+	while (str[i])
 	{
 		if (str[i] == '$')
 		{
@@ -53,10 +53,17 @@ void	is_env_exist(void **target, t_list *data)
 				*target = replace_env(str, keystr, data);
 				free(keystr);
 				free(str);
+				str = *target;
+				i = 0;
 			}
-			str = *target;
-			i = -1;
 		}
+		if (str[i] && str[i] == '\'')
+		{
+			i++;
+			while (str[i] != '\'')
+				i++;
+		}
+		i++;
 	}
 }
 
@@ -78,6 +85,7 @@ t_list	*get_env(char **envp)
 			exit(1);
 		content->key = line[0];
 		content->value = line[1];
+		free(line);
 		new = ft_lstnew(content);
 		if (new)
 			ft_lstadd_back(&result, new);
@@ -111,6 +119,34 @@ char	*match_env(char *keystr, t_list *data)
 	return (NULL);
 }
 
+static char	*find_env(const char *str, const char *keystr, size_t len)
+{
+	size_t	i;
+
+	if (*keystr == '\0')
+		return ((char *)str);
+	i = ft_strlen(keystr);
+	while (*str && len-- >= i)
+	{
+		if (*str == '\'')
+		{
+			len--;
+			str++;
+			while (*(str) != '\'')
+			{
+				str++;
+				len--;
+			}
+			str++;
+			len--;
+		}
+		if (ft_strncmp(str, keystr, i) == 0)
+			return ((char *)str);
+		str++;
+	}
+	return (NULL);
+}
+
 char	*replace_env(char *str, char *keystr, t_list *data)
 {
 	char	*var;
@@ -119,7 +155,7 @@ char	*replace_env(char *str, char *keystr, t_list *data)
 	char	*res;
 
 	res = NULL;
-	var = ft_strnstr(str, keystr, ft_strlen(str));
+	var = find_env(str, keystr, ft_strlen(str));
 	if (var)
 	{
 		prev = ft_strndup(str, var - str - 1);
@@ -139,4 +175,3 @@ char	*replace_env(char *str, char *keystr, t_list *data)
 	}
 	return (res);
 }
-

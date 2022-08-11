@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokenizer.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hossong <hossong@student.42seoul.kr>       +#+  +:+       +#+        */
+/*   By: namkim <namkim@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/09 17:19:24 by hossong           #+#    #+#             */
-/*   Updated: 2022/08/10 18:07:53 by hossong          ###   ########.fr       */
+/*   Updated: 2022/08/11 09:36:35 by namkim           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,9 +88,6 @@ t_list	*tokenizer(char *str)
 			i += check_quote(str, i);
 	}
 	if (str[i] == '\0' && str[i - 1])
-	{
-
 		add_token(&lst, str, start, i);
-	}
 	return (lst);
 }
