@@ -6,7 +6,7 @@
 /*   By: hossong <hossong@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/12 15:52:26 by hossong           #+#    #+#             */
-/*   Updated: 2022/08/13 01:19:27 by hossong          ###   ########.fr       */
+/*   Updated: 2022/08/13 01:33:43 by hossong          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,17 +24,17 @@ static t_data	*init_data(void)
 	return (new);
 }
 
-void	move_redir(t_list **tmp, t_list *tmp1, t_list *tmp2)
+void	move_redir(t_list **tmp, t_list *a, t_list *b)
 {
 	if (((t_cmd *)(*tmp)->content)->type == PIPE)
 	{
-		insert(*tmp, tmp2);
-		insert(*tmp, tmp1);
+		insert(*tmp, b);
+		insert(*tmp, a);
 	}
 	else
 	{
-		push(tmp, tmp2);
-		push(tmp, tmp1);
+		push(tmp, b);
+		push(tmp, a);
 	}
 }
 

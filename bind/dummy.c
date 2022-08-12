@@ -32,4 +32,14 @@ void	dummy_data(t_data *data)
 	insert_dummy(&data->cmdlist, "a", ARGS);
 	insert_dummy(&data->cmdlist, ">", R_HEREDOC);
 	insert_dummy(&data->cmdlist, "a", R_HEREDOC);
+	insert_dummy(&data->cmdlist, "cat", ARGS);
+	insert_dummy(&data->cmdlist, "<", R_IN);
+	insert_dummy(&data->cmdlist, "txt.c", R_IN);
+	insert_dummy(&data->cmdlist, "<<", R_HEREDOC);
+	insert_dummy(&data->cmdlist, "txt.c", R_HEREDOC);
+	insert_dummy(&data->cmdlist, "|", PIPE);
+	insert_dummy(&data->cmdlist, "grep", ARGS);
+	insert_dummy(&data->cmdlist, "a", ARGS);
+	insert_dummy(&data->cmdlist, ">", R_HEREDOC);
+	insert_dummy(&data->cmdlist, "a", R_HEREDOC);
 }
