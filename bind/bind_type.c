@@ -6,11 +6,12 @@
 /*   By: hossong <hossong@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/12 15:52:26 by hossong           #+#    #+#             */
-/*   Updated: 2022/08/12 21:44:03 by hossong          ###   ########.fr       */
+/*   Updated: 2022/08/12 23:07:10 by hossong          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "bind_type.h"
+#include <string.h>
 
 static t_data	*init_data(void)
 {
@@ -19,7 +20,7 @@ static t_data	*init_data(void)
 	new = (t_data *)malloc(sizeof(new));
 	if (!new)
 		ft_error("Malloc error\n");
-	ft_memset(new, 0, sizeof(t_data));
+	memset(new, 0, sizeof(t_data));
 	return (new);
 }
 
@@ -79,31 +80,25 @@ t_list	*pop(t_list **list)
 
 void	relocation_type(t_list *cmdlist)
 {
-	t_list	*head;
-	t_list	*tmp;
-	t_list	*tmp_pipe;
+	// t_list	*tmp;
+	// t_list	*tmp_pipe;
 	t_type	type;
+	t_list	*reloc;
 
-	head = cmdlist;
-	tmp_pipe = NULL;
+	// tmp_pipe = NULL;
+	reloc = NULL;
 	while (cmdlist)
 	{
 		type = ((t_cmd *)cmdlist->content)->type;
-		if (cmdlist != head && type >= R_IN && type <= R_HEREDOC)
-		{
-			if (tmp_pipe)
-				inset_list(tmp_pipe, cmdlist, 2);
-			else
-			{
-				tmp = cut_list(&head, cmdlist, 2);
-				tmp->next->next = head;
-			}
-			cmdlist = cmdlist->next->next;
-			continue ;
-		}
-		if (type == PIPE)
-			tmp_pipe = cmdlist;
-		cmdlist = cmdlist->next;
+		if (type >= R_IN && type <= R_HEREDOC)
+			push(&reloc, pop(&cmdlist));
+		else
+			ft_lstadd_back(&reloc, pop(&cmdlist));
+	}
+	while (reloc)
+	{
+		printf("%s\n", ((t_cmd *)reloc->content)->str);
+		reloc = reloc->next;
 	}
 }
 
@@ -113,5 +108,10 @@ int	main(void)
 
 	data = init_data();
 	dummy_data(data);
-	relocation_type(data->cmdlist);
+	while (data->cmdlist)
+	{
+		printf("%s\n", ((t_cmd *)data->cmdlist->content)->str);
+		data->cmdlist = data->cmdlist->next;
+	}
+	// relocation_type(data->cmdlist);
 }
