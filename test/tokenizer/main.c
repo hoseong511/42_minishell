@@ -58,7 +58,7 @@ void	replacement(char **str, t_list *data)  //한 token의 string
 		else
 			len++;
 	}
-	if ((*str)[i + len] == '\0' && str[i + len - 1])
+	if ((*str)[i + len] == '\0' && (*str)[i + len - 1])
 	{
 		add_token(&lst, (*str), i, len);
 		target = ft_lstlast(lst);
@@ -78,69 +78,31 @@ void	replacement(char **str, t_list *data)  //한 token의 string
 	}
 }
 
-static void	remove_char(char **dst, char *str, char c)
-{
-	int	i;
-	int	j;
-
-	i = 0;
-	j = i;
-	while (str[j])
-	{
-		if (str[j] == c)
-		{
-			j++;
-			continue ;
-		}
-		*dst[i++] = str[j];
-		j++;
-	}
-}
-
-void	replace_s_quote(t_list **token, char *str)
-{
-	char	*a = ft_strchr(str, '\'');
-	char	*tar;
-
-	tar = (char *)(*token)->content;
-	if (a)
-	{
-		tar += a - str;
-		remove_char(&tar, a, '\'');
-	}
-	printf("%s\n", (char *)(*token)->content);
-}
-
-void	replace_d_quote(t_list **token, char *str)
-{
-	char	*a = ft_strchr(str, '\'');
-	// char	*b = ft_strchr(str, '\"');
-	char	*tar;
-
-	tar = (char *)(*token)->content;
-	if (a)
-	{
-		tar += a - str;
-		remove_char(&tar, a, '\'');
-	}
-	printf("%s\n", (char *)(*token)->content);
-}
-
 int	main(int argc, char **argv, char **envp)
 {
-	t_list	*data;
+	t_data	*data;
 	t_list	*token;
+	t_list	*node;
 	char	*str;
 
 	(void)argc;
 	(void)envp;
-	data = get_env(envp);
-	token = tokenizer(argv[1]);
+	data = init_shell(envp);
+	data->tokenlist = tokenizer(argv[1]);
+	token = data->tokenlist;
 	while (token)
 	{
 		str = (char *)token->content;
-		replacement(&str, data);
+		replacement(&str, data->envlist);
 		printf("str: %s\n", str);
 		token = token->next;
+	}
+	data->cmdlist = parser(data);
+	node = data->cmdlist;
+	while (node)
+	{
+		printf("[%d] %s\n",\
+			((t_cmd *)(node->content))->type, (char *)((t_cmd *)(node->content))->str);
+		node = node->next;
 	}
 }

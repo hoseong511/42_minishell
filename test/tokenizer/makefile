@@ -1,13 +1,13 @@
 NAME = exe
 CFLAGS = -Wall -Werror -Wextra -g3
 HDRS = -I libft
-SRCS = main.c tokenizer.c error.c env.c
+SRCS = main.c tokenizer.c error.c env.c parser.c init.c
 OBJS = $(SRCS:.c=.o)
 LIB = -L libft -lft
 
 %.o : %.c
 	$(CC) $(CFLAGS) -c $^ -o $@ $(HDRS)
-	
+
 all :
 	@make -C libft
 	@make $(NAME)
@@ -21,4 +21,4 @@ clean :
 re :
 	@make clean
 	@make
-	
+
