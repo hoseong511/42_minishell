@@ -6,7 +6,7 @@
 /*   By: hossong <hossong@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/12 15:54:56 by hossong           #+#    #+#             */
-/*   Updated: 2022/08/12 23:19:02 by hossong          ###   ########.fr       */
+/*   Updated: 2022/08/13 01:18:55 by hossong          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,11 @@ typedef struct s_data
 
 void	ft_error(char *err_msg);
 void	dummy_data(t_data *data);
-void	relocation_type(t_list *cmdlist);
+t_list	*relocate_type(t_list *cmdlist);
+void	insert(t_list *a, t_list *b);
+void	push(t_list **list, t_list *node);
+t_list	*pop(t_list **list);
+
+
 
 #endif

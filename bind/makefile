@@ -1,6 +1,6 @@
 name = bind
 CFLAGS = -Wall -Werror -Wextra -g3
-srcs = bind_type.c error.c dummy.c
+srcs = bind_type.c error.c dummy.c ctrl_list.c
 OBJS := $(srcs:.c=.o)
 
 %.o : %.c
