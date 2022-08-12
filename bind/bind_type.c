@@ -6,7 +6,7 @@
 /*   By: hossong <hossong@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/12 15:52:26 by hossong           #+#    #+#             */
-/*   Updated: 2022/08/12 23:21:09 by hossong          ###   ########.fr       */
+/*   Updated: 2022/08/13 01:19:27 by hossong          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,86 +17,51 @@ static t_data	*init_data(void)
 {
 	t_data	*new;
 
-	new = (t_data *)malloc(sizeof(new));
+	new = (t_data *)malloc(sizeof(t_data));
 	if (!new)
 		ft_error("Malloc error\n");
 	ft_memset(new, 0, sizeof(t_data));
 	return (new);
 }
 
-t_list	*cut_list(t_list **list, t_list *a, int len)
+void	move_redir(t_list **tmp, t_list *tmp1, t_list *tmp2)
 {
-	t_list	*prev;
-	t_list	*current;
-
-	while (*list != a)
+	if (((t_cmd *)(*tmp)->content)->type == PIPE)
 	{
-		prev = *list;
-		*list = (*list)->next;
-	}
-	current = a;
-	while (current && --len)
-		current = current->next;
-	if (current)
-	{
-		prev->next = current->next;
-		current->next = NULL;
+		insert(*tmp, tmp2);
+		insert(*tmp, tmp1);
 	}
 	else
-		prev->next = NULL;
-	return (a);
-}
-
-void	inset_list(t_list *a, t_list *b, int len)
-{
-	t_list	*tmp;
-
-	tmp = cut_list(&a, b, len);
-	while (b && --len)
-		b = b->next;
-	b->next = a->next;
-	a->next = tmp;
-}
-
-void	push(t_list **list, t_list *node)
-{
-	ft_lstadd_front(list, node);
-}
-
-t_list	*pop(t_list **list)
-{
-	t_list	*tmp;
-
-	tmp = *list;
-	if (tmp->next != NULL)
 	{
-		(*list) = tmp->next;
-		tmp->next = NULL;
+		push(tmp, tmp2);
+		push(tmp, tmp1);
 	}
-	else
-		(*list) = NULL;
-	return (tmp);
 }
 
-void	relocation_type(t_list *cmdlist)
+t_list	*relocate_type(t_list *cmdlist)
 {
 	t_type	type;
 	t_list	*reloc;
+	t_list	*tmp;
 
 	reloc = NULL;
+	tmp = NULL;
 	while (cmdlist)
 	{
 		type = ((t_cmd *)cmdlist->content)->type;
+		if (type == PIPE)
+				tmp = cmdlist;
 		if (type >= R_IN && type <= R_HEREDOC)
-			push(&reloc, pop(&cmdlist));
+		{
+			if (tmp && ((t_cmd *)tmp->content)->type == PIPE)
+				move_redir(&tmp, pop(&cmdlist), pop(&cmdlist));
+			else
+				move_redir(&reloc, pop(&cmdlist), pop(&cmdlist));
+		}
 		else
 			ft_lstadd_back(&reloc, pop(&cmdlist));
 	}
-	while (reloc)
-	{
-		printf("%s\n", ((t_cmd *)reloc->content)->str);
-		reloc = reloc->next;
-	}
+	return (reloc);
 }
 
 int	main(void)
@@ -105,10 +70,11 @@ int	main(void)
 
 	data = init_data();
 	dummy_data(data);
-	while (data->cmdlist)
+	data->cmdlist = relocate_type(data->cmdlist);
+	t_list	*reloc = data->cmdlist;
+	while (reloc)
 	{
-		printf("%s\n", ((t_cmd *)data->cmdlist->content)->str);
-		data->cmdlist = data->cmdlist->next;
+		printf("%s\n", ((t_cmd *)(reloc->content))->str);
+		reloc = reloc->next;
 	}
-	// relocation_type(data->cmdlist);
 }
