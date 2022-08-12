@@ -25,6 +25,12 @@ void	dummy_data(t_data *data)
 	new = init_cmdnode("txt.c", R_IN);
 	ft_lstadd_back(&data->cmdlist, ft_lstnew(new));
 
+	new = init_cmdnode("<<", R_HEREDOC);
+	ft_lstadd_back(&data->cmdlist, ft_lstnew(new));
+
+	new = init_cmdnode("txt.c", R_IN);
+	ft_lstadd_back(&data->cmdlist, ft_lstnew(new));
+
 	new = init_cmdnode("|", PIPE);
 	ft_lstadd_back(&data->cmdlist, ft_lstnew(new));
 

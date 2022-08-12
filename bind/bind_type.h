@@ -6,7 +6,7 @@
 /*   By: hossong <hossong@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/12 15:54:56 by hossong           #+#    #+#             */
-/*   Updated: 2022/08/12 18:14:47 by hossong          ###   ########.fr       */
+/*   Updated: 2022/08/12 19:46:08 by hossong          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,6 @@ typedef struct s_data
 
 void	ft_error(char *err_msg);
 void	dummy_data(t_data *data);
-t_list	*relocation_type(t_list *cmdlist);
+void	relocation_type(t_list *cmdlist);
 
 #endif
