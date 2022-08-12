@@ -21,8 +21,14 @@ void	insert_dummy(t_list **cmdlist, char *str, t_type type)
 
 void	dummy_data(t_data *data)
 {
-	data->cmdlist = NULL;
-	insert_dummy(&data->cmdlist, ft_strdup("cat"), ARGS);
+	t_cmd	*new;
+	t_list	*tmp;
+
+	tmp = NULL;
+	new = init_cmdnode("cat", ARGS);
+	ft_lstadd_back(&tmp, ft_lstnew(new));
+	data->cmdlist = tmp;
+	//insert_dummy(&data->cmdlist, ft_strdup("cat"), ARGS);
 
 
 	// new = init_cmdnode("cat", ARGS);

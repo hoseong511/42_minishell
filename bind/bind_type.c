@@ -6,7 +6,7 @@
 /*   By: hossong <hossong@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/12 15:52:26 by hossong           #+#    #+#             */
-/*   Updated: 2022/08/12 23:07:10 by hossong          ###   ########.fr       */
+/*   Updated: 2022/08/12 23:21:09 by hossong          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ static t_data	*init_data(void)
 	new = (t_data *)malloc(sizeof(new));
 	if (!new)
 		ft_error("Malloc error\n");
-	memset(new, 0, sizeof(t_data));
+	ft_memset(new, 0, sizeof(t_data));
 	return (new);
 }
 
@@ -80,12 +80,9 @@ t_list	*pop(t_list **list)
 
 void	relocation_type(t_list *cmdlist)
 {
-	// t_list	*tmp;
-	// t_list	*tmp_pipe;
 	t_type	type;
 	t_list	*reloc;
 
-	// tmp_pipe = NULL;
 	reloc = NULL;
 	while (cmdlist)
 	{

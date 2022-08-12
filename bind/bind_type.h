@@ -6,7 +6,7 @@
 /*   By: hossong <hossong@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/12 15:54:56 by hossong           #+#    #+#             */
-/*   Updated: 2022/08/12 19:46:08 by hossong          ###   ########.fr       */
+/*   Updated: 2022/08/12 23:19:02 by hossong          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,6 @@ typedef struct s_data
 	t_list		*tokenlist;
 	t_list		*cmdlist;
 	int			pip_cnt;	//or 실행해야하는 process의 수
-							//이후 exit status등 필요한 데이터 추가
 }	t_data;
 
 void	ft_error(char *err_msg);
