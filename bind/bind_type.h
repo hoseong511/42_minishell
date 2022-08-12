@@ -6,7 +6,7 @@
 /*   By: hossong <hossong@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/12 15:54:56 by hossong           #+#    #+#             */
-/*   Updated: 2022/08/12 17:25:35 by hossong          ###   ########.fr       */
+/*   Updated: 2022/08/12 18:14:47 by hossong          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,11 +27,11 @@ typedef enum e_type
 	R_ARG
 }	t_type;
 
-typedef struct s_cmdnode
+typedef struct s_cmd
 {
 	char		*str;
 	t_type		type;
-}	t_cmdnode;
+}	t_cmd;
 
 typedef struct s_data
 {
@@ -44,5 +44,6 @@ typedef struct s_data
 
 void	ft_error(char *err_msg);
 void	dummy_data(t_data *data);
+t_list	*relocation_type(t_list *cmdlist);
 
 #endif
