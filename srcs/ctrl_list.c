@@ -1,35 +1,46 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   ctrl_list.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hossong <hossong@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/08/06 16:42:28 by hossong           #+#    #+#             */
-/*   Updated: 2022/08/13 17:07:48 by hossong          ###   ########.fr       */
+/*   Created: 2022/08/13 01:17:11 by hossong           #+#    #+#             */
+/*   Updated: 2022/08/13 16:24:06 by hossong          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/main.h"
 
-int	main(int argc, char **argv, char **envp)
+void	insert(t_list *a, t_list *b)
 {
-	char	*str;
-	t_data	*data;
+	b->next = a->next;
+	a->next = b;
+}
 
-	(void) argv;
-	if (argc != 1)
-		ft_error("Too much argument!\n");
-	printf("==minishell==\n");
-	data = init_data(envp);
-	while (1)
+void	push(t_list **list, t_list *node)
+{
+	ft_lstadd_front(list, node);
+}
+
+t_list	*pop(t_list **list)
+{
+	t_list	*tmp;
+
+	tmp = *list;
+	if (tmp->next != NULL)
 	{
-		str = readline("mini-0.1$ ");
-		load_data(data, str);
-		if (data->status == FALSE)
-			continue ;
-		//load -> preprocess (token, syntax, parser)
-		free(str);
+		(*list) = tmp->next;
+		tmp->next = NULL;
 	}
-	return (0);
+	else
+		(*list) = NULL;
+	return (tmp);
+}
+
+void	clear(char **lst, int i)
+{
+	while (i--)
+		free(lst[i]);
+	free(lst);
 }

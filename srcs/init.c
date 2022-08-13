@@ -6,7 +6,7 @@
 /*   By: hossong <hossong@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/12 15:46:57 by namkim            #+#    #+#             */
-/*   Updated: 2022/08/13 16:18:50 by hossong          ###   ########.fr       */
+/*   Updated: 2022/08/13 16:54:39 by hossong          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,7 +117,7 @@ void	load_data(t_data *data, char *str)
 	while (token)
 	{
 		str = (char *)token->content;
-		replacement(&str, data->envlist);
+		// replacement(&str, data->envlist);
 		printf("str: %s\n", str);
 		token = token->next;
 	}
@@ -128,5 +128,12 @@ void	load_data(t_data *data, char *str)
 		printf("[%d] %s\n",\
 			((t_cmd *)(node->content))->type, (char *)((t_cmd *)(node->content))->str);
 		node = node->next;
+	}
+	data->cmdlist = relocate_type(data->cmdlist);
+	t_list	*reloc = data->cmdlist;
+	while (reloc)
+	{
+		printf("%s\n", ((t_cmd *)(reloc->content))->str);
+		reloc = reloc->next;
 	}
 }

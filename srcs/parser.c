@@ -6,7 +6,7 @@
 /*   By: hossong <hossong@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/12 15:53:51 by namkim            #+#    #+#             */
-/*   Updated: 2022/08/13 15:46:55 by hossong          ###   ########.fr       */
+/*   Updated: 2022/08/13 16:41:16 by hossong          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ void	add_cmd(t_list **lst, char *str, t_type type)
 
 	if (!lst)
 		return ;
-	cmd = malloc(sizeof(cmd));
+	cmd = (t_cmd *)malloc(sizeof(t_cmd));
 	if (!cmd)
 		ft_error("Malloc Error while Parsing\n");
 	cmd->str = str;
