@@ -6,7 +6,7 @@
 /*   By: hossong <hossong@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/13 01:17:11 by hossong           #+#    #+#             */
-/*   Updated: 2022/08/13 01:18:58 by hossong          ###   ########.fr       */
+/*   Updated: 2022/08/13 14:47:20 by hossong          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,4 +36,11 @@ t_list	*pop(t_list **list)
 	else
 		(*list) = NULL;
 	return (tmp);
+}
+
+void	clear(char **lst, int i)
+{
+	while (i--)
+		free(lst[i]);
+	free(lst);
 }
