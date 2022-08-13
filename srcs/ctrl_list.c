@@ -6,7 +6,7 @@
 /*   By: hossong <hossong@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/13 01:17:11 by hossong           #+#    #+#             */
-/*   Updated: 2022/08/13 16:24:06 by hossong          ###   ########.fr       */
+/*   Updated: 2022/08/14 02:31:51 by hossong          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ t_list	*pop(t_list **list)
 	t_list	*tmp;
 
 	tmp = *list;
-	if (tmp->next != NULL)
+	if (tmp && tmp->next != NULL)
 	{
 		(*list) = tmp->next;
 		tmp->next = NULL;
