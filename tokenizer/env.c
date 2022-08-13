@@ -6,7 +6,7 @@
 /*   By: hossong <hossong@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/08 18:20:24 by namkim            #+#    #+#             */
-/*   Updated: 2022/08/13 14:58:08 by hossong          ###   ########.fr       */
+/*   Updated: 2022/08/13 15:37:44 by hossong          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,11 +82,12 @@ t_list	*get_env(char **envp)
 			exit(1);
 		content->key = line[0];
 		content->value = line[1];
+		free(line);
 		new = ft_lstnew(content);
 		if (new)
 			ft_lstadd_back(&result, new);
 		else
-			exit(1);
+			ft_error("Malloc error while generate envlist\n");
 	}
 	return (result);
 }

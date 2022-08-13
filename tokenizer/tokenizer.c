@@ -6,7 +6,7 @@
 /*   By: hossong <hossong@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/09 17:19:24 by hossong           #+#    #+#             */
-/*   Updated: 2022/08/13 14:58:08 by hossong          ###   ########.fr       */
+/*   Updated: 2022/08/13 15:24:05 by hossong          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,8 +88,6 @@ t_list	*tokenizer(char *str)
 			i += check_quote(str, i);
 	}
 	if (str[i] == '\0' && str[i - 1])
-	{
 		add_token(&lst, str, start, i);
-	}
 	return (lst);
 }

@@ -6,7 +6,7 @@
 /*   By: hossong <hossong@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/13 14:52:14 by hossong           #+#    #+#             */
-/*   Updated: 2022/08/13 15:00:55 by hossong          ###   ########.fr       */
+/*   Updated: 2022/08/13 15:26:54 by hossong          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ static void	pop_quote(t_list **quote)
 	free(temp);
 }
 
-t_error	check_quote(char *str)
+int	check_quote(char *str)
 {
 	int		i;
 	t_list	*quote;
@@ -44,7 +44,7 @@ t_error	check_quote(char *str)
 	i = -1;
 	quote = NULL;
 	if (ft_strstr(str, INHIBIT))
-		return (ERROR);
+		return (FALSE);
 	while (str[++i])
 	{
 		if (str[i] == '\'' || str[i] == '\"')
@@ -60,7 +60,7 @@ t_error	check_quote(char *str)
 	if (quote)
 	{
 		free(quote);
-		return (ERROR);
+		return (FALSE);
 	}
-	return (SUCCESS);
+	return (TRUE);
 }

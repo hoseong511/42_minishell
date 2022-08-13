@@ -6,7 +6,7 @@
 /*   By: hossong <hossong@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/06 16:43:27 by hossong           #+#    #+#             */
-/*   Updated: 2022/08/13 14:44:59 by hossong          ###   ########.fr       */
+/*   Updated: 2022/08/13 16:18:51 by hossong          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,24 +26,26 @@
 
 # define BUF_SIZE 1024
 # define INHIBIT "\\;`"
+# define TRUE 1
+# define FALSE 0
 
-typedef enum e_error
+
+typedef enum e_type
 {
-	ERROR = -1,
-	SUCCESS
-}	t_error;
+	ARGS,
+	PIPE,
+	R_IN,
+	R_OUT,
+	R_APPD,
+	R_HEREDOC,
+	R_ARG
+}	t_type;
 
 typedef struct s_cmd
 {
-	char	**content;
+	char		*str;
+	t_type		type;
 }	t_cmd;
-
-typedef struct s_data
-{
-	char	**dir;
-	int		cmd_count;
-	t_cmd	*cmd;
-}	t_data;
 
 typedef struct s_env
 {
@@ -51,9 +53,43 @@ typedef struct s_env
 	char	*value;
 }	t_env;
 
-char	*ft_strstr(char *str, char *to_find);
-t_error	check_quote(char *str);
-void	replace_env(char **str, t_list *data);
+typedef struct s_data
+{
+	t_list		*envlist;
+	t_list		*tokenlist;
+	t_list		*cmdlist;
+	int			pip_cnt;	//or 실행해야하는 process의 수
+	int			status;
+							//이후 exit status등 필요한 데이터 추가
+}	t_data;
+
+void	ft_error(char *err_msg);
+
+int		check_quote(char *str);
+char	*replace_env(char *str, char *keystr, t_list *data);
+char	*match_env(char *keystr, t_list *data);
+void	is_env_exist(t_list *target, t_list *data);
+int		is_valid_env_name(char c, int idx);
 t_list	*get_env(char **envp);
+
+/* control data */
+t_data	*init_data(char **envp);
+void	load_data(t_data *data, char *str);
+
+/* replacement */
+void	replace_quote(t_list *target, char quote, t_list *data);
+void	replacement(char **str, t_list *data);
+
+/* tokenizer */
+void	add_token(t_list **lst, char *str, int start, size_t len);
+int		check_redir(t_list **lst, char *str, int start);
+int		get_quote_end_idx(char *str, int i);
+
+/* parser */
+void	add_cmd(t_list **lst, char *str, t_type type);
+t_type	get_cmd_type(char *str);
+t_list	*lexer(t_data *data);
+t_list	*tokenizer(char *str);
+
 
 #endif

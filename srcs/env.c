@@ -6,64 +6,62 @@
 /*   By: hossong <hossong@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/08 18:20:24 by namkim            #+#    #+#             */
-/*   Updated: 2022/08/13 14:59:09 by hossong          ###   ########.fr       */
+/*   Updated: 2022/08/13 15:38:20 by hossong          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/main.h"
 
-static void	search_env_var(t_list *data, char *var)
+int	is_valid_env_name(char c, int idx)
 {
-	while (data)
+	if (ft_isdigit(c))
 	{
-		if (!ft_strncmp(var, ((t_env *)data->content)->key, ft_strlen(var)))
-		{
-			if (ft_strlen(var) == ft_strlen(((t_env *)data->content)->key))
-			{
-				free(var);
-				var = ((t_env *)data->content)->value;
-				break ;
-			}
-			else
-			{
-				free(var);
-				var = NULL;
-			}
-		}
-		data = data->next;
+		if (idx == 0)
+			return (FALSE);
+		else
+			return (TRUE);
 	}
+	if (ft_isalpha(c))
+		return (TRUE);
+	if (c == '_')
+		return (TRUE);
+	return (FALSE);
 }
 
-void	replace_env(char **str, t_list *data)
+void	is_env_exist(t_list *target, t_list *data)
 {
+	char	*str;
+	char	*keystr;
+	char	*value;
 	int		i;
-	char	*var;
-	char	*prev;
-	char	*next;
-	int		d;
+	int		j;
 
-	i = -1;
-	while ((*str)[++i])
+	str = (char *)target->content;
+	i = 0;
+	value = NULL;
+	while (str[i])
 	{
-		if ((*str)[i] == '$')
+		if (str[i] == '$')
 		{
 			i++;
-			if ((*str)[i] == '\'')
+			j = 0;
+			while (is_valid_env_name(str[i + j], j) == TRUE)
+				j++;
+			if (j != 0)
 			{
-				d = ft_strchr(*str + i + 1, '\'') - (*str + i);
-				i += d;
-				printf("str[i]: %c", (*str)[i]);
+				keystr = ft_strndup(str + i, j);
+				if (!keystr)
+					ft_error("Malloc error\n");
+				target->content = replace_env(str, keystr, data);
+				free(keystr);
+				free(str);
 			}
-			else
-			{
-				d = ft_strchr(*str + i, ' ') - (*str + i);
-				prev = ft_strndup(*str, i - 1);
-				var = ft_strndup(*str + i, d);
-				next = ft_strdup(*str + i + d + 1);
-				search_env_var(data, var);
-			}
+			str = target->content;
+			i = -1;
 		}
+		i++;
 	}
+
 }
 
 t_list	*get_env(char **envp)
@@ -84,11 +82,65 @@ t_list	*get_env(char **envp)
 			exit(1);
 		content->key = line[0];
 		content->value = line[1];
+		free(line);
 		new = ft_lstnew(content);
 		if (new)
 			ft_lstadd_back(&result, new);
 		else
-			exit(1);
+			ft_error("Malloc error while generate envlist\n");
 	}
 	return (result);
+}
+
+char	*match_env(char *keystr, t_list *data)
+{
+	int		target_l;
+	int		key_l;
+	char	*res;
+
+	target_l = ft_strlen(keystr);
+	res = NULL;
+	while (data)
+	{
+		if (ft_strncmp(keystr, ((t_env *)data->content)->key, target_l) == 0)
+		{
+			key_l = ft_strlen(((t_env *)data->content)->key);
+			if (target_l == key_l)
+			{
+				res = ((t_env *)data->content)->value;
+				return (res);
+			}
+		}
+		data = data->next;
+	}
+	return (NULL);
+}
+
+char	*replace_env(char *str, char *keystr, t_list *data)
+{
+	char	*var;
+	char	*prev;
+	char	*next;
+	char	*res;
+
+	res = NULL;
+	var = ft_strnstr(str, keystr, ft_strlen(str));
+	if (var)
+	{
+		prev = ft_strndup(str, var - str - 1);
+		next = ft_strdup(var + ft_strlen(keystr));
+		var = match_env(keystr, data);
+		if (var)
+		{
+			res = ft_strjoin(prev, var);
+			free (prev);
+			prev = res;
+			res = ft_strjoin(prev, next);
+		}
+		else
+			res = ft_strjoin(prev, next);
+		free(prev);
+		free(next);
+	}
+	return (res);
 }

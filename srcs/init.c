@@ -1,5 +1,16 @@
-#include "main.h"
-#include <stdio.h>
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   init.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: hossong <hossong@student.42seoul.kr>       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/08/12 15:46:57 by namkim            #+#    #+#             */
+/*   Updated: 2022/08/13 16:18:50 by hossong          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "../includes/main.h"
 
 //환경변수 expansion
 //single quote / doublequote 처리
@@ -78,18 +89,30 @@ void	replacement(char **str, t_list *data)  //한 token의 string
 	}
 }
 
-int	main(int argc, char **argv, char **envp)
+t_data	*init_data(char **envp)
 {
-	t_data	*data;
+	t_data	*res;
+
+	res = malloc(sizeof(t_data));
+	if (!res)
+		ft_error("Malloc Error While Initialize\n");
+	res->envlist = get_env(envp);
+	res->tokenlist = NULL;
+	res->cmdlist = NULL;
+	res->pip_cnt = 0;
+	res->status = TRUE;
+	return (res);
+}
+
+void	load_data(t_data *data, char *str)
+{
 	t_list	*token;
 	t_list	*node;
-	char	*str;
 
-	(void)argc;
-	(void)envp;
-	
-	is_error = check_quote(str);
-	data->tokenlist = tokenizer(argv[1]);
+	data->status = check_quote(str);
+	if (data->status == FALSE)
+		return ;
+	data->tokenlist = tokenizer(str);
 	token = data->tokenlist;
 	while (token)
 	{
@@ -98,7 +121,7 @@ int	main(int argc, char **argv, char **envp)
 		printf("str: %s\n", str);
 		token = token->next;
 	}
-	data->cmdlist = parser(data);
+	data->cmdlist = lexer(data);
 	node = data->cmdlist;
 	while (node)
 	{
