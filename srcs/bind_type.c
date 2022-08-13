@@ -6,7 +6,7 @@
 /*   By: hossong <hossong@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/12 15:52:26 by hossong           #+#    #+#             */
-/*   Updated: 2022/08/13 16:26:36 by hossong          ###   ########.fr       */
+/*   Updated: 2022/08/13 20:45:22 by hossong          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void	move_redir(t_list **tmp, t_list *a, t_list *b)
 {
-	if (((t_cmd *)(*tmp)->content)->type == PIPE)
+	if (*tmp && ((t_cmd *)(*tmp)->content)->type == PIPE)
 	{
 		insert(*tmp, b);
 		insert(*tmp, a);
