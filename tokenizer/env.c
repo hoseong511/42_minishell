@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hossong <hossong@student.42seoul.kr>       +#+  +:+       +#+        */
+/*   By: namkim <namkim@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/08 18:20:24 by namkim            #+#    #+#             */
-/*   Updated: 2022/08/13 15:37:44 by hossong          ###   ########.fr       */
+/*   Updated: 2022/08/13 17:27:44 by namkim           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,17 +28,15 @@ int	is_valid_env_name(char c, int idx)
 	return (FALSE);
 }
 
-void	is_env_exist(t_list *target, t_list *data)
+void	is_env_exist(void **target, t_list *data)
 {
 	char	*str;
 	char	*keystr;
-	char	*value;
 	int		i;
 	int		j;
 
-	str = (char *)target->content;
+	str = *((char **)target);
 	i = 0;
-	value = NULL;
 	while (str[i])
 	{
 		if (str[i] == '$')
@@ -52,16 +50,21 @@ void	is_env_exist(t_list *target, t_list *data)
 				keystr = ft_strndup(str + i, j);
 				if (!keystr)
 					ft_error("Malloc error\n");
-				target->content = replace_env(str, keystr, data);
+				*target = replace_env(str, keystr, data);
 				free(keystr);
 				free(str);
+				str = *target;
+				i = 0;
 			}
-			str = target->content;
-			i = -1;
+		}
+		if (str[i] && str[i] == '\'')
+		{
+			i++;
+			while (str[i] != '\'')
+				i++;
 		}
 		i++;
 	}
-
 }
 
 t_list	*get_env(char **envp)
@@ -116,6 +119,34 @@ char	*match_env(char *keystr, t_list *data)
 	return (NULL);
 }
 
+static char	*find_env(const char *str, const char *keystr, size_t len)
+{
+	size_t	i;
+
+	if (*keystr == '\0')
+		return ((char *)str);
+	i = ft_strlen(keystr);
+	while (*str && len-- >= i)
+	{
+		if (*str == '\'')
+		{
+			len--;
+			str++;
+			while (*(str) != '\'')
+			{
+				str++;
+				len--;
+			}
+			str++;
+			len--;
+		}
+		if (ft_strncmp(str, keystr, i) == 0)
+			return ((char *)str);
+		str++;
+	}
+	return (NULL);
+}
+
 char	*replace_env(char *str, char *keystr, t_list *data)
 {
 	char	*var;
@@ -124,7 +155,7 @@ char	*replace_env(char *str, char *keystr, t_list *data)
 	char	*res;
 
 	res = NULL;
-	var = ft_strnstr(str, keystr, ft_strlen(str));
+	var = find_env(str, keystr, ft_strlen(str));
 	if (var)
 	{
 		prev = ft_strndup(str, var - str - 1);
@@ -144,4 +175,3 @@ char	*replace_env(char *str, char *keystr, t_list *data)
 	}
 	return (res);
 }
-
