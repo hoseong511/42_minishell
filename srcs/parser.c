@@ -3,38 +3,56 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hossong <hossong@student.42seoul.kr>       +#+  +:+       +#+        */
+/*   By: namkim <namkim@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/12 15:53:51 by namkim            #+#    #+#             */
-/*   Updated: 2022/08/13 16:41:16 by hossong          ###   ########.fr       */
+/*   Updated: 2022/08/13 21:10:40 by namkim           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/main.h"
 
-//lst 완전히 새로 생길때?
-//ft_strdup으로 만들어야하는거 아닌지? token들 free? or cmd 끝나고 다 같이 free?
-void	add_cmd(t_list **lst, char *str, t_type type)
+void	print_t_cmds(t_list *tokenlist)
 {
-	t_cmd	*cmd;
-	t_list	*new;
+	t_list	*node;
+	int		type;
+	char	*str;
+	int		idx;
+
+	node = tokenlist;
+	if (!node)
+		printf("No tokens\n");
+	idx = 0;
+	while (node)
+	{
+		type = ((t_cmd *)node->content)->type;
+		str = ((t_cmd *)node->content)->str;
+		printf("[%d] <%d> %s\n", idx, type, str);
+		node = node->next;
+		idx++;
+	}
+}
+
+
+void	add_type(t_list *lst, t_type type)
+{
+	t_list	*node;
 
 	if (!lst)
 		return ;
-	cmd = (t_cmd *)malloc(sizeof(t_cmd));
-	if (!cmd)
-		ft_error("Malloc Error while Parsing\n");
-	cmd->str = str;
-	cmd->type = type;
-	new = ft_lstnew(cmd);
-	if (!new)
-		ft_error("Malloc Error while Parsing\n");
-	ft_lstadd_back(lst, new);
+	node = lst;
+	while (node)
+	{
+		((t_cmd *)node->content)->type = type;
+		node = node->next;
+	}
 }
 
 t_type	get_cmd_type(char *str)
 {
-	if (ft_strncmp(str, "|", 2) == 0)
+	if (ft_strncmp(str, "", 1) == 0)	//통하는지 check & NONE 과 NULL 분리할지?
+		return (NONE);
+	else if (ft_strncmp(str, "|", 2) == 0)
 		return (PIPE);
 	else if (ft_strncmp(str, "<", 2) == 0)
 		return (R_IN);
@@ -49,6 +67,11 @@ t_type	get_cmd_type(char *str)
 }
 
 //or lexer
+//syntax_check
+/* 검사해야 하는 부분
+1. Redirection Args 있는지
+2. Pipe가 제일 첫 인자로 들어오는지(Error)
+3. Pipe가 연속되는지(pip 뒤에 하나 이상의 arg가 있는지 (redirection만으로 구성 가능?)) */
 t_list	*lexer(t_data *data)
 {
 	t_list	*res;
@@ -61,17 +84,26 @@ t_list	*lexer(t_data *data)
 	tnode = data->tokenlist;
 	while (tnode)
 	{
-		type = get_cmd_type((char *)tnode->content);
-		add_cmd(&res, (char *)tnode->content, type);
-		if (type > PIPE && type < R_ARG)
-		{
-			tnode = tnode->next;
-			type = R_ARG;
-			add_cmd(&res, (char *)tnode->content, type);
-		}
-		else if (type == PIPE)
+		type = get_cmd_type((char *)((t_cmd *)tnode->content)->str);
+		add_type(tnode, type);
+		if (type == PIPE)	//
 			data->pip_cnt++;
 		tnode = tnode->next;
 	}
+	print_t_cmds(data->tokenlist);
+	tnode = data->tokenlist;
+	while (tnode)	//여기서 문법 검사가 필요하다.
+	{
+		type = ((t_cmd *)tnode->content)->type;
+		if (type > PIPE && type < R_ARG)
+		{
+			if (((t_cmd *)tnode->next->content)->type == ARGS)
+				((t_cmd *)tnode->next->content)->type = R_ARG;
+			else
+				ft_error("Syntax Error : Redirection has no args\n");
+		}
+		tnode = tnode->next;
+	}
+	print_t_cmds(data->tokenlist);
 	return (res);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.h                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hossong <hossong@student.42seoul.kr>       +#+  +:+       +#+        */
+/*   By: namkim <namkim@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/06 16:43:27 by hossong           #+#    #+#             */
-/*   Updated: 2022/08/13 16:23:35 by hossong          ###   ########.fr       */
+/*   Updated: 2022/08/13 21:06:20 by namkim           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,7 @@
 
 typedef enum e_type
 {
+	NONE = -1,
 	ARGS,
 	PIPE,
 	R_IN,
@@ -84,6 +85,8 @@ void	replacement(char **str, t_list *data);
 void	add_token(t_list **lst, char *str, int start, size_t len);
 int		check_redir(t_list **lst, char *str, int start);
 int		get_quote_end_idx(char *str, int i);
+/* token utils */
+void	print_t_cmds(t_list *tokenlist);
 
 /* parser */
 void	add_cmd(t_list **lst, char *str, t_type type);
