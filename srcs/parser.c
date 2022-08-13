@@ -6,33 +6,11 @@
 /*   By: namkim <namkim@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/12 15:53:51 by namkim            #+#    #+#             */
-/*   Updated: 2022/08/13 21:10:40 by namkim           ###   ########.fr       */
+/*   Updated: 2022/08/13 21:56:30 by namkim           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/main.h"
-
-void	print_t_cmds(t_list *tokenlist)
-{
-	t_list	*node;
-	int		type;
-	char	*str;
-	int		idx;
-
-	node = tokenlist;
-	if (!node)
-		printf("No tokens\n");
-	idx = 0;
-	while (node)
-	{
-		type = ((t_cmd *)node->content)->type;
-		str = ((t_cmd *)node->content)->str;
-		printf("[%d] <%d> %s\n", idx, type, str);
-		node = node->next;
-		idx++;
-	}
-}
-
 
 void	add_type(t_list *lst, t_type type)
 {
@@ -66,6 +44,66 @@ t_type	get_cmd_type(char *str)
 		return (ARGS);
 }
 
+//pipe는 시작도 끝도 아니고, 연속하지 않는다.
+static void	check_pipe_syntax(t_data *data)
+{
+	t_list	*tnode;
+	t_type	tnext;
+
+	tnode = data->tokenlist;
+	if (((t_cmd *)tnode->content)->type == PIPE)
+		ft_error("Syntax Error : syntax error near unexpected token `|'\n");
+	data->pip_cnt++;
+	while (tnode)
+	{
+		if (((t_cmd *)tnode->content)->type == PIPE)
+		{
+			tnext = ((t_cmd *)tnode->next->content)->type;
+			if (tnext != PIPE && tnext != NONE)
+				data->pip_cnt++;
+			else
+				ft_error("Syntax Error : \
+syntax error near unexpected token `|'\n");
+		}
+		tnode = tnode->next;
+	}
+}
+
+static void	check_redirection_syntax(t_data *data)
+{
+	t_list	*tnode;
+	t_type	type;
+
+	tnode = data->tokenlist;
+	while (tnode)
+	{
+		type = ((t_cmd *)tnode->content)->type;
+		if (type > PIPE && type < R_ARG)
+		{
+			if (((t_cmd *)tnode->next->content)->type == ARGS)
+				((t_cmd *)tnode->next->content)->type = R_ARG;
+			else
+				ft_error("Syntax Error : Redirection has no args\n");
+			tnode = tnode->next;
+		}
+		tnode = tnode->next;
+	}
+}
+
+static void	put_type(t_data *data)
+{
+	t_type	type;
+	t_list	*tnode;
+
+	tnode = data->tokenlist;
+	while (tnode)
+	{
+		type = get_cmd_type((char *)((t_cmd *)tnode->content)->str);
+		add_type(tnode, type);
+		tnode = tnode->next;
+	}
+}
+
 //or lexer
 //syntax_check
 /* 검사해야 하는 부분
@@ -75,35 +113,15 @@ t_type	get_cmd_type(char *str)
 t_list	*lexer(t_data *data)
 {
 	t_list	*res;
-	t_list	*tnode;
-	t_type	type;
 
 	res = NULL;
 	if (!data || !data->tokenlist)
 		return (NULL);
-	tnode = data->tokenlist;
-	while (tnode)
-	{
-		type = get_cmd_type((char *)((t_cmd *)tnode->content)->str);
-		add_type(tnode, type);
-		if (type == PIPE)	//
-			data->pip_cnt++;
-		tnode = tnode->next;
-	}
+	put_type(data);
+	check_pipe_syntax(data);
+	check_redirection_syntax(data);
+	//syntax체크가 끝나고 나면 expasion & replacement
 	print_t_cmds(data->tokenlist);
-	tnode = data->tokenlist;
-	while (tnode)	//여기서 문법 검사가 필요하다.
-	{
-		type = ((t_cmd *)tnode->content)->type;
-		if (type > PIPE && type < R_ARG)
-		{
-			if (((t_cmd *)tnode->next->content)->type == ARGS)
-				((t_cmd *)tnode->next->content)->type = R_ARG;
-			else
-				ft_error("Syntax Error : Redirection has no args\n");
-		}
-		tnode = tnode->next;
-	}
-	print_t_cmds(data->tokenlist);
+	printf("how many commands: %d\n", data->pip_cnt);
 	return (res);
 }
