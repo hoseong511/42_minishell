@@ -6,7 +6,7 @@
 #    By: namkim <namkim@student.42seoul.kr>         +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/08/07 14:34:58 by hossong           #+#    #+#              #
-#    Updated: 2022/08/13 21:38:03 by namkim           ###   ########.fr        #
+#    Updated: 2022/08/14 15:45:50 by namkim           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,7 +19,7 @@ LIBFT	=	lib/libft/libft.a
 INCLUDE =	-I$(HOME)/.brew/opt/readline/include -I ./includes
 SRCS_DIR = srcs/
 SRCS_FILES = main.c pre_syntax.c env.c error.c init.c parser.c tokenizer.c utils.c\
-			ctrl_list.c bind_type.c
+			ctrl_list.c bind_type.c replacement.c
 SRCS	=	$(addprefix $(SRCS_DIR), $(SRCS_FILES))
 OBJS	=	$(SRCS:.c=.o)
 

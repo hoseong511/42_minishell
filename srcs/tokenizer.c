@@ -6,7 +6,7 @@
 /*   By: namkim <namkim@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/09 17:19:24 by hossong           #+#    #+#             */
-/*   Updated: 2022/08/13 20:52:53 by namkim           ###   ########.fr       */
+/*   Updated: 2022/08/14 16:11:35 by namkim           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,21 @@ int	check_redir(t_list **lst, char *str, int start)
 	}
 }
 
+/* original */
+// int	get_quote_end_idx(char *str, int i)
+// {
+// 	int		j;
+// 	char	q;
+
+// 	q = str[i];
+// 	j = 1;
+// 	while (str[i + j] && str[i + j] != q)
+// 		j++;
+// 	if (!str[i + j])
+// 		ft_error("unclosed quotes\n");
+// 	return (j);
+// }
+
 int	get_quote_end_idx(char *str, int i)
 {
 	int		j;
@@ -66,7 +81,7 @@ int	get_quote_end_idx(char *str, int i)
 		j++;
 	if (!str[i + j])
 		ft_error("unclosed quotes\n");
-	return (j);
+	return (i + j);
 }
 
 t_list	*tokenizer(char *str)
@@ -91,7 +106,7 @@ t_list	*tokenizer(char *str)
 			start = i + 1;
 		}
 		else if ((str[i] == '\'' || str[i] == '\"'))
-			i += get_quote_end_idx(str, i);
+			i = get_quote_end_idx(str, i);
 	}
 	if (str[i] == '\0')
 		add_token(&lst, str, start, i);

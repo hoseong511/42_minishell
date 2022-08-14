@@ -6,7 +6,7 @@
 /*   By: namkim <namkim@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/06 16:43:27 by hossong           #+#    #+#             */
-/*   Updated: 2022/08/13 21:06:20 by namkim           ###   ########.fr       */
+/*   Updated: 2022/08/14 21:57:36 by namkim           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ typedef struct s_data
 {
 	t_list		*envlist;
 	t_list		*tokenlist;
-	t_list		*cmdlist;
+	t_list		*cmdlist;	//reloc 후 bind 단계에서 쓰면 될 듯하다.
 	int			pip_cnt;	//or 실행해야하는 process의 수
 	int			status;
 							//이후 exit status등 필요한 데이터 추가
@@ -67,7 +67,7 @@ typedef struct s_data
 void	ft_error(char *err_msg);
 
 int		check_quote(char *str);
-char	*replace_env(char *str, char *keystr, t_list *data);
+//char	*replace_env(char *str, int range, char *keystr, t_list *data);
 char	*match_env(char *keystr, t_list *data);
 void	is_env_exist(t_list *target, t_list *data);
 int		is_valid_env_name(char c, int idx);
@@ -98,6 +98,14 @@ void	insert(t_list *a, t_list *b);
 void	push(t_list **list, t_list *node);
 t_list	*pop(t_list **list);
 
-
+/*replacement fix*/
+void	do_replace_in_token(t_cmd *node, t_list *envp);
+void	remove_quote(char **target, int startidx, int endidx);
+char	*replace_key_to_value(char *str, int start, char *keystr, t_list *data);
+void	do_expansion(char **target, t_list *envp, char sign);
+void	make_component(t_list **lst, char *src, int size);
+char	*join_components(t_list *component);
+void	process_quote(t_list *component, t_list *envp, char quote);
+void	process_non_quote(t_list *component, t_list *envp);
 
 #endif

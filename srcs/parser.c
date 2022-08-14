@@ -6,7 +6,7 @@
 /*   By: namkim <namkim@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/12 15:53:51 by namkim            #+#    #+#             */
-/*   Updated: 2022/08/13 21:56:30 by namkim           ###   ########.fr       */
+/*   Updated: 2022/08/14 22:17:31 by namkim           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,7 +121,15 @@ t_list	*lexer(t_data *data)
 	check_pipe_syntax(data);
 	check_redirection_syntax(data);
 	//syntax체크가 끝나고 나면 expasion & replacement
+	//replacement
 	print_t_cmds(data->tokenlist);
-	printf("how many commands: %d\n", data->pip_cnt);
+	res = data->tokenlist;
+	while (res)
+	{
+		do_replace_in_token(res->content, data->envlist);
+		res = res->next;
+	}
+	print_t_cmds(data->tokenlist);
+	// printf("how many commands: %d\n", data->pip_cnt);
 	return (res);
 }
