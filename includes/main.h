@@ -6,7 +6,7 @@
 /*   By: hossong <hossong@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/06 16:43:27 by hossong           #+#    #+#             */
-/*   Updated: 2022/08/13 16:23:35 by hossong          ###   ########.fr       */
+/*   Updated: 2022/08/14 10:30:12 by hossong          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,6 @@
 # include "../lib/libft/libft.h"
 
 # define BUF_SIZE 1024
-# define INHIBIT "\\;`"
 # define TRUE 1
 # define FALSE 0
 
@@ -81,9 +80,10 @@ void	replace_quote(t_list *target, char quote, t_list *data);
 void	replacement(char **str, t_list *data);
 
 /* tokenizer */
-void	add_token(t_list **lst, char *str, int start, size_t len);
-int		check_redir(t_list **lst, char *str, int start);
-int		get_quote_end_idx(char *str, int i);
+void	add_token(t_list **lst, char *str, size_t len);
+int		check_redir(t_list **lst, char *str);
+int		get_quote_end_idx(t_list **lst, char *str);
+int		add_end_token(t_list **lst, char *str);
 
 /* parser */
 void	add_cmd(t_list **lst, char *str, t_type type);

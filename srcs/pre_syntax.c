@@ -6,7 +6,7 @@
 /*   By: hossong <hossong@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/13 14:52:14 by hossong           #+#    #+#             */
-/*   Updated: 2022/08/13 15:26:54 by hossong          ###   ########.fr       */
+/*   Updated: 2022/08/14 02:59:37 by hossong          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,15 +43,14 @@ int	check_quote(char *str)
 
 	i = -1;
 	quote = NULL;
-	if (ft_strstr(str, INHIBIT))
-		return (FALSE);
+	(void)ft_strstr(str, "''");
 	while (str[++i])
 	{
 		if (str[i] == '\'' || str[i] == '\"')
 		{
 			if (!quote)
 				quote = ft_lstnew(&str[i]);
-			else if (quote && (*(char *)(quote->content)) != str[i]) // void* conversion
+			else if (quote && (*(char *)(quote->content)) != str[i])
 				ft_lstadd_front(&quote, ft_lstnew(&str[i]));
 			else
 				pop_quote(&quote);

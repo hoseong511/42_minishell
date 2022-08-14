@@ -6,7 +6,7 @@
 /*   By: hossong <hossong@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/12 15:46:57 by namkim            #+#    #+#             */
-/*   Updated: 2022/08/13 16:54:39 by hossong          ###   ########.fr       */
+/*   Updated: 2022/08/14 03:06:47 by hossong          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ void	replacement(char **str, t_list *data)  //한 token의 string
 				len = ++i;
 				while ((*str)[len] != q)
 					len++;
-				add_token(&lst, (*str), i, len);
+				add_token(&lst, (*str) + i, len);
 				target = ft_lstlast(lst); //lstlast를 찾아서 q의 값에 따라 처리
 				replace_quote(target, q, data);
 				i += len;
@@ -59,7 +59,7 @@ void	replacement(char **str, t_list *data)  //한 token의 string
 			}
 			else
 			{
-				add_token(&lst, (*str), i, len);
+				add_token(&lst, (*str) + i, len);
 				target = ft_lstlast(lst);
 				is_env_exist(target, data);
 				i += len;
@@ -71,7 +71,7 @@ void	replacement(char **str, t_list *data)  //한 token의 string
 	}
 	if ((*str)[i + len] == '\0' && (*str)[i + len - 1])
 	{
-		add_token(&lst, (*str), i, len);
+		add_token(&lst, (*str) + i, len);
 		target = ft_lstlast(lst);
 		is_env_exist(target, data);
 	}
