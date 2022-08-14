@@ -6,7 +6,7 @@
 /*   By: hossong <hossong@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/12 15:46:57 by namkim            #+#    #+#             */
-/*   Updated: 2022/08/14 15:32:11 by hossong          ###   ########.fr       */
+/*   Updated: 2022/08/14 16:59:54 by hossong          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,6 +112,8 @@ void	load_data(t_data *data, char *str)
 	if (data->status == FALSE)
 		return ;
 	data->tokenlist = tokenizer(str);
+	if (!data->tokenlist)
+		return ;
 	token = data->tokenlist;
 	while (token)
 	{

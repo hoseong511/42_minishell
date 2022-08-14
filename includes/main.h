@@ -6,7 +6,7 @@
 /*   By: hossong <hossong@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/06 16:43:27 by hossong           #+#    #+#             */
-/*   Updated: 2022/08/14 13:18:31 by hossong          ###   ########.fr       */
+/*   Updated: 2022/08/14 16:37:49 by hossong          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,6 @@
 # include <stdio.h>
 # include <unistd.h>
 # include <readline/readline.h>
-# include <readline/history.h>
 # include <stdlib.h>
 # include <sys/wait.h>
 # include <string.h>

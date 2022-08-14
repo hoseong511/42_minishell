@@ -6,7 +6,7 @@
 /*   By: hossong <hossong@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/12 15:52:26 by hossong           #+#    #+#             */
-/*   Updated: 2022/08/14 15:20:54 by hossong          ###   ########.fr       */
+/*   Updated: 2022/08/14 17:18:34 by hossong          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,7 +107,11 @@ t_list	*bind_type(t_data *data)
 		tmp = NULL;
 		type = ((t_cmd *)data->cmdlist->content)->type;
 		if (type == PIPE)
+		{
+			free(((t_cmd *)data->cmdlist->content)->str);
+			free(data->cmdlist->content);
 			free(pop(&data->cmdlist));
+		}
 		while (data->cmdlist && ((t_cmd *)data->cmdlist->content)->type == type)
 		{
 			ft_lstadd_back(&tmp, pop(&data->cmdlist));
