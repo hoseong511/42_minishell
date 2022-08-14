@@ -6,7 +6,7 @@
 /*   By: hossong <hossong@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/06 16:43:27 by hossong           #+#    #+#             */
-/*   Updated: 2022/08/14 11:19:53 by hossong          ###   ########.fr       */
+/*   Updated: 2022/08/14 13:18:31 by hossong          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,15 +42,22 @@ typedef enum e_type
 
 typedef struct s_cmd
 {
-	char		*str;
-	t_type		type;
+	char	*str;
+	t_type	type;
 }	t_cmd;
+
+typedef struct s_cmd2
+{
+	char	**str;
+	t_type	type;
+}	t_cmd2;
 
 typedef struct s_env
 {
 	char	*key;
 	char	*value;
 }	t_env;
+
 
 typedef struct s_data
 {
@@ -91,6 +98,7 @@ t_type	get_cmd_type(char *str);
 t_list	*lexer(t_data *data);
 t_list	*tokenizer(char *str);
 t_list	*relocate_type(t_data *data);
+t_list	*bind_type(t_data *data);
 void	insert(t_list *a, t_list *b);
 void	push(t_list **list, t_list *node);
 t_list	*pop(t_list **list);
