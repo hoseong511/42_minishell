@@ -6,7 +6,7 @@
 /*   By: hossong <hossong@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/12 15:52:26 by hossong           #+#    #+#             */
-/*   Updated: 2022/08/13 20:45:22 by hossong          ###   ########.fr       */
+/*   Updated: 2022/08/14 11:19:25 by hossong          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,14 +26,16 @@ void	move_redir(t_list **tmp, t_list *a, t_list *b)
 	}
 }
 
-t_list	*relocate_type(t_list *cmdlist)
+t_list	*relocate_type(t_data *data)
 {
 	t_type	type;
+	t_list	*cmdlist;
 	t_list	*reloc;
 	t_list	*tmp;
 
 	reloc = NULL;
 	tmp = NULL;
+	cmdlist = data->cmdlist;
 	while (cmdlist)
 	{
 		type = ((t_cmd *)cmdlist->content)->type;
