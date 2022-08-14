@@ -6,7 +6,7 @@
 /*   By: hossong <hossong@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/12 15:53:51 by namkim            #+#    #+#             */
-/*   Updated: 2022/08/13 16:41:16 by hossong          ###   ########.fr       */
+/*   Updated: 2022/08/14 10:21:16 by hossong          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,6 @@ t_type	get_cmd_type(char *str)
 		return (ARGS);
 }
 
-//or lexer
 t_list	*lexer(t_data *data)
 {
 	t_list	*res;
@@ -63,7 +62,7 @@ t_list	*lexer(t_data *data)
 	{
 		type = get_cmd_type((char *)tnode->content);
 		add_cmd(&res, (char *)tnode->content, type);
-		if (type > PIPE && type < R_ARG)
+		if (tnode->next && type > PIPE && type < R_ARG)
 		{
 			tnode = tnode->next;
 			type = R_ARG;
