@@ -6,7 +6,7 @@
 /*   By: hossong <hossong@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/08 18:20:24 by namkim            #+#    #+#             */
-/*   Updated: 2022/08/13 15:38:20 by hossong          ###   ########.fr       */
+/*   Updated: 2022/08/14 14:25:15 by hossong          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,13 +32,13 @@ void	is_env_exist(t_list *target, t_list *data)
 {
 	char	*str;
 	char	*keystr;
-	char	*value;
+	// char	*value;
 	int		i;
 	int		j;
 
 	str = (char *)target->content;
 	i = 0;
-	value = NULL;
+	// value = NULL;
 	while (str[i])
 	{
 		if (str[i] == '$')

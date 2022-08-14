@@ -6,17 +6,17 @@
 #    By: hossong <hossong@student.42seoul.kr>       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/08/07 14:34:58 by hossong           #+#    #+#              #
-#    Updated: 2022/08/13 16:49:54 by hossong          ###   ########.fr        #
+#    Updated: 2022/08/14 14:28:05 by hossong          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME	=	minishell
 CFLAGS 	=	-Wall -Wextra -Werror -g3
 
-LIB		=	-L$(HOME)/.brew/opt/readline/lib -lreadline -L ./lib/libft -lft
+LIB		=	 -lreadline -L ./lib/libft -lft
 LIBFT	=	lib/libft/libft.a
 
-INCLUDE =	-I$(HOME)/.brew/opt/readline/include -I ./includes
+INCLUDE =	 -I ./includes
 SRCS_DIR = srcs/
 SRCS_FILES = main.c pre_syntax.c env.c error.c init.c parser.c tokenizer.c \
 			ctrl_list.c bind_type.c

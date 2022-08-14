@@ -6,7 +6,7 @@
 /*   By: hossong <hossong@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/12 15:52:26 by hossong           #+#    #+#             */
-/*   Updated: 2022/08/14 14:06:44 by hossong          ###   ########.fr       */
+/*   Updated: 2022/08/14 15:20:54 by hossong          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,6 +84,7 @@ char	**bind_content(t_list *node, int i)
 	{
 		des[j] = ((t_cmd *)node->content)->str;
 		tmp = node->next;
+		free(node->content);
 		free(node);
 		node = tmp;
 	}

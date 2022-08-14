@@ -6,7 +6,7 @@
 /*   By: hossong <hossong@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/12 15:46:57 by namkim            #+#    #+#             */
-/*   Updated: 2022/08/14 13:35:49 by hossong          ###   ########.fr       */
+/*   Updated: 2022/08/14 15:32:11 by hossong          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,9 +19,9 @@ void	replace_quote(t_list *target, char quote, t_list *data)
 {
 	char	*str;
 	int		strlen;
-	int		i;
+	// int		i;
 
-	i = 0;
+	// i = 0;
 	str = (char *)target->content;
 	strlen = ft_strlen(str);
 	str = ft_memmove(str, str, strlen - 1);
@@ -107,7 +107,6 @@ t_data	*init_data(char **envp)
 void	load_data(t_data *data, char *str)
 {
 	t_list	*token;
-	t_list	*node;
 
 	data->status = check_quote(str);
 	if (data->status == FALSE)
@@ -122,25 +121,6 @@ void	load_data(t_data *data, char *str)
 		token = token->next;
 	}
 	data->cmdlist = lexer(data);
-	node = data->cmdlist;
-	while (node)
-	{
-		printf("[%d] %s\n",\
-			((t_cmd *)(node->content))->type, (char *)((t_cmd *)(node->content))->str);
-		node = node->next;
-	}
 	data->cmdlist = relocate_type(data);
 	data->cmdlist = bind_type(data);
-	t_list	*reloc = data->cmdlist;
-	while (reloc)
-	{
-		char **tmp = ((t_cmd2 *)(reloc->content))->str;
-		int i = 0;
-		while (tmp[i])
-		{
-			printf("%s\n", ((t_cmd2 *)(reloc->content))->str[i]);
-			i++;
-		}
-		reloc = reloc->next;
-	}
 }
