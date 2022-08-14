@@ -6,7 +6,7 @@
 /*   By: hossong <hossong@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/12 15:46:57 by namkim            #+#    #+#             */
-/*   Updated: 2022/08/14 11:20:47 by hossong          ###   ########.fr       */
+/*   Updated: 2022/08/14 13:35:49 by hossong          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -130,11 +130,17 @@ void	load_data(t_data *data, char *str)
 		node = node->next;
 	}
 	data->cmdlist = relocate_type(data);
-	//data->cmdlist = bind_type(data->cmdlist);
+	data->cmdlist = bind_type(data);
 	t_list	*reloc = data->cmdlist;
 	while (reloc)
 	{
-		printf("%s\n", ((t_cmd *)(reloc->content))->str);
+		char **tmp = ((t_cmd2 *)(reloc->content))->str;
+		int i = 0;
+		while (tmp[i])
+		{
+			printf("%s\n", ((t_cmd2 *)(reloc->content))->str[i]);
+			i++;
+		}
 		reloc = reloc->next;
 	}
 }
