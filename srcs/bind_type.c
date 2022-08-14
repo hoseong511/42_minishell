@@ -6,29 +6,13 @@
 /*   By: hossong <hossong@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/12 15:52:26 by hossong           #+#    #+#             */
-/*   Updated: 2022/08/14 17:18:34 by hossong          ###   ########.fr       */
+/*   Updated: 2022/08/14 22:10:19 by hossong          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/main.h"
 
-void	add_cmd2(t_list **lst, char **str, t_type type)
-{
-	t_cmd2	*cmd2;
-	t_list	*new;
-
-	cmd2 = (t_cmd2 *)malloc(sizeof(t_cmd2));
-	if (!cmd2)
-		ft_error("ERROR: malloc error\n");
-	cmd2->str = str;
-	cmd2->type = type;
-	new = ft_lstnew(cmd2);
-	if (!new)
-		ft_error("ERROR: malloc error\n");
-	ft_lstadd_back(lst, new);
-}
-
-void	move_redir(t_list **tmp, t_list *a, t_list *b)
+static void	move_redir(t_list **tmp, t_list *a, t_list *b)
 {
 	if (*tmp && ((t_cmd *)(*tmp)->content)->type == PIPE)
 	{
@@ -70,7 +54,7 @@ t_list	*relocate_type(t_data *data)
 	return (reloc);
 }
 
-char	**bind_content(t_list *node, int i)
+static char	**bind_content(t_list *node, int i)
 {
 	char	**des;
 	int		j;
@@ -92,33 +76,48 @@ char	**bind_content(t_list *node, int i)
 	return (des);
 }
 
+static void	binding(t_list **cmdlist, t_list **bind, t_type type)
+{
+	t_list	*tmp;
+	char	**des;
+	int		i;
+
+	tmp = NULL;
+	i = 0;
+	if (type >= R_IN && type <= R_HEREDOC)
+	{
+		ft_lstadd_back(&tmp, pop(cmdlist));
+		ft_lstadd_back(&tmp, pop(cmdlist));
+		i = 2;
+	}
+	else
+	{
+		while ((*cmdlist) && ((t_cmd *)(*cmdlist)->content)->type == type)
+		{
+			ft_lstadd_back(&tmp, pop(cmdlist));
+			i++;
+		}
+	}
+	des = bind_content(tmp, i);
+	add_cmd2(bind, des, type);
+}
+
 t_list	*bind_type(t_data *data)
 {
 	t_list	*bind;
-	t_list	*tmp;
 	t_type	type;
-	char	**des;
-	int		i;
 
 	bind = NULL;
 	while (data->cmdlist)
 	{
-		i = 0;
-		tmp = NULL;
 		type = ((t_cmd *)data->cmdlist->content)->type;
 		if (type == PIPE)
 		{
-			free(((t_cmd *)data->cmdlist->content)->str);
-			free(data->cmdlist->content);
+			free_cmd(data, "t_cmd");
 			free(pop(&data->cmdlist));
 		}
-		while (data->cmdlist && ((t_cmd *)data->cmdlist->content)->type == type)
-		{
-			ft_lstadd_back(&tmp, pop(&data->cmdlist));
-			i++;
-		}
-		des = bind_content(tmp, i);
-		add_cmd2(&bind, des, type);
+		else
+			binding(&data->cmdlist, &bind, type);
 	}
 	return (bind);
 }

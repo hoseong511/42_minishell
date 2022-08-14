@@ -6,7 +6,7 @@
 /*   By: hossong <hossong@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/06 16:43:27 by hossong           #+#    #+#             */
-/*   Updated: 2022/08/14 18:11:29 by hossong          ###   ########.fr       */
+/*   Updated: 2022/08/14 22:01:50 by hossong          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,6 +92,7 @@ int		add_end_token(t_list **lst, char *str);
 
 /* parser */
 void	add_cmd(t_list **lst, char *str, t_type type);
+void	add_cmd2(t_list **lst, char **str, t_type type);
 t_type	get_cmd_type(char *str);
 t_list	*lexer(t_data *data);
 t_list	*tokenizer(char *str);
@@ -108,6 +109,7 @@ void	execute_cmd(t_data *data);
 void	free_cmdlist(t_data *data);
 void	free_tokenlist(t_data *data);
 void	free_data(t_data *data);
+void	free_cmd(t_data *data, char *tar);
 
 
 

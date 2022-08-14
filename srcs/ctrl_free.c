@@ -6,11 +6,25 @@
 /*   By: hossong <hossong@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/14 17:27:38 by hossong           #+#    #+#             */
-/*   Updated: 2022/08/14 17:28:27 by hossong          ###   ########.fr       */
+/*   Updated: 2022/08/14 21:02:51 by hossong          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/main.h"
+
+void	free_cmd(t_data *data, char *tar)
+{
+	if (ft_strncmp(tar, "t_cmd", 6) == 0)
+	{
+		free(((t_cmd *)data->cmdlist->content)->str);
+		free(data->cmdlist->content);
+	}
+	else if (ft_strncmp(tar, "t_cmd2", 7) == 0)
+	{
+		free(((t_cmd2 *)data->cmdlist->content)->str);
+		free(data->cmdlist->content);
+	}
+}
 
 void	free_cmdlist(t_data *data)
 {
@@ -26,8 +40,7 @@ void	free_cmdlist(t_data *data)
 			free(((t_cmd2 *)data->cmdlist->content)->str[i]);
 			i++;
 		}
-		free(((t_cmd2 *)data->cmdlist->content)->str);
-		free(data->cmdlist->content);
+		free_cmd(data, "t_cmd2");
 		free(data->cmdlist);
 		data->cmdlist = tmp;
 	}
