@@ -6,7 +6,7 @@
 /*   By: hossong <hossong@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/06 16:43:27 by hossong           #+#    #+#             */
-/*   Updated: 2022/08/14 16:37:49 by hossong          ###   ########.fr       */
+/*   Updated: 2022/08/14 18:11:29 by hossong          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,6 @@ typedef struct s_env
 	char	*value;
 }	t_env;
 
-
 typedef struct s_data
 {
 	t_list		*envlist;
@@ -101,6 +100,14 @@ t_list	*bind_type(t_data *data);
 void	insert(t_list *a, t_list *b);
 void	push(t_list **list, t_list *node);
 t_list	*pop(t_list **list);
+
+/* excute */
+void	execute_cmd(t_data *data);
+
+/*free*/
+void	free_cmdlist(t_data *data);
+void	free_tokenlist(t_data *data);
+void	free_data(t_data *data);
 
 
 
