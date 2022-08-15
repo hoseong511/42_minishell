@@ -6,7 +6,7 @@
 /*   By: namkim <namkim@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/22 10:00:38 by hossong           #+#    #+#             */
-/*   Updated: 2022/08/08 17:25:58 by namkim           ###   ########.fr       */
+/*   Updated: 2022/08/15 15:58:54 by namkim           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,8 @@ char	*ft_strndup(const char *s1, size_t slen)
 {
 	char	*dst;
 
+	if (!s1 || slen == 0)
+		return (NULL);
 	dst = (char *)malloc(sizeof(char) * (slen + 1));
 	if (dst == NULL)
 		return (NULL);

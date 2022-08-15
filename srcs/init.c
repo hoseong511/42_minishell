@@ -6,7 +6,7 @@
 /*   By: namkim <namkim@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/12 15:46:57 by namkim            #+#    #+#             */
-/*   Updated: 2022/08/14 21:57:13 by namkim           ###   ########.fr       */
+/*   Updated: 2022/08/15 18:12:42 by namkim           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@ void	process_quote(t_list *component, t_list *envp, char quote)
 	if (quote == '\"')
 		do_expansion(&str, envp, quote);
 	remove_quote(&str, 0, ft_strlen(str) - 1);
+	component->content = str;
 }
 
 void	process_non_quote(t_list *component, t_list *envp)
@@ -35,6 +36,7 @@ void	process_non_quote(t_list *component, t_list *envp)
 		return ;
 	str = (char *)component->content;
 	do_expansion(&str, envp, 'a');
+	component->content = str;
 }
 
 void	make_component(t_list **lst, char *src, int size)
@@ -45,7 +47,6 @@ void	make_component(t_list **lst, char *src, int size)
 	if (!lst)
 		return ;
 	str = ft_strndup(src, size);
-	printf("token cmp: %s\n", str);
 	if (!str)
 		return ;
 	new = ft_lstnew(str);
@@ -122,9 +123,9 @@ void	load_data(t_data *data, char *str)
 	// 	printf("str: %s\n", str);
 	// 	token = token->next;
 	// }
-//	data->cmdlist = lexer(data);
+	data->cmdlist = lexer(data);
 //	print_t_cmds(data->tokenlist);
-	lexer(data);
+//	lexer(data);
 	// data->cmdlist = relocate_type(data->cmdlist);
 	// t_list	*reloc = data->cmdlist;
 	// while (reloc)

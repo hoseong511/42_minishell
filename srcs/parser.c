@@ -6,7 +6,7 @@
 /*   By: namkim <namkim@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/12 15:53:51 by namkim            #+#    #+#             */
-/*   Updated: 2022/08/14 22:17:31 by namkim           ###   ########.fr       */
+/*   Updated: 2022/08/15 19:54:32 by namkim           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,9 +26,10 @@ void	add_type(t_list *lst, t_type type)
 	}
 }
 
+//통하는지 check & NONE 과 NULL 분리할지?
 t_type	get_cmd_type(char *str)
 {
-	if (ft_strncmp(str, "", 1) == 0)	//통하는지 check & NONE 과 NULL 분리할지?
+	if (ft_strncmp(str, "", 1) == 0)
 		return (NONE);
 	else if (ft_strncmp(str, "|", 2) == 0)
 		return (PIPE);
@@ -120,9 +121,6 @@ t_list	*lexer(t_data *data)
 	put_type(data);
 	check_pipe_syntax(data);
 	check_redirection_syntax(data);
-	//syntax체크가 끝나고 나면 expasion & replacement
-	//replacement
-	print_t_cmds(data->tokenlist);
 	res = data->tokenlist;
 	while (res)
 	{

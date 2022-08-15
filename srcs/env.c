@@ -6,7 +6,7 @@
 /*   By: namkim <namkim@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/08 18:20:24 by namkim            #+#    #+#             */
-/*   Updated: 2022/08/14 17:43:37 by namkim           ###   ########.fr       */
+/*   Updated: 2022/08/15 17:50:25 by namkim           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,42 +27,6 @@ int	is_valid_env_name(char c, int idx)
 		return (TRUE);
 	return (FALSE);
 }
-
-// void	is_env_exist(t_list *target, t_list *data)
-// {
-// 	char	*str;
-// 	char	*keystr;
-// 	char	*value;
-// 	int		i;
-// 	int		j;
-
-// 	str = (char *)target->content;
-// 	i = 0;
-// 	value = NULL;
-// 	while (str[i])
-// 	{
-// 		if (str[i] == '$')
-// 		{
-// 			i++;
-// 			j = 0;
-// 			while (is_valid_env_name(str[i + j], j) == TRUE)
-// 				j++;
-// 			if (j != 0)
-// 			{
-// 				keystr = ft_strndup(str + i, j);
-// 				if (!keystr)
-// 					ft_error("Malloc error\n");
-// 				target->content = replace_env(str, keystr, data);
-// 				free(keystr);
-// 				free(str);
-// 			}
-// 			str = target->content;
-// 			i = -1;
-// 		}
-// 		i++;
-// 	}
-
-// }
 
 t_list	*get_env(char **envp)
 {
@@ -116,34 +80,6 @@ char	*match_env(char *keystr, t_list *data)
 	return (NULL);
 }
 
-// char	*replace_env(char *str, int range, char *keystr, t_list *data)
-// {
-// 	char	*var;
-// 	char	*prev;
-// 	char	*next;
-// 	char	*res;
-
-// 	res = NULL;
-// 	var = ft_strnstr(str, keystr, range);
-// 	if (var)
-// 	{
-// 		prev = ft_strndup(str, var - str - 1);
-// 		next = ft_strdup(var + ft_strlen(keystr));
-// 		var = match_env(keystr, data);
-// 		if (var)
-// 		{
-// 			res = ft_strjoin(prev, var);
-// 			free (prev);
-// 			prev = res;
-// 			res = ft_strjoin(prev, next);
-// 		}
-// 		else
-// 			res = ft_strjoin(prev, next);
-// 		free(prev);
-// 		free(next);
-// 	}
-// 	return (res);
-// }
 char	*replace_key_to_value(char *str, int start, char *keystr, t_list *data)
 {
 	char	*var;

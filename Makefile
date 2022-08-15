@@ -6,12 +6,12 @@
 #    By: namkim <namkim@student.42seoul.kr>         +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/08/07 14:34:58 by hossong           #+#    #+#              #
-#    Updated: 2022/08/14 15:45:50 by namkim           ###   ########.fr        #
+#    Updated: 2022/08/15 18:15:34 by namkim           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME	=	minishell
-CFLAGS 	=	-Wall -Wextra -Werror -g3
+CFLAGS 	=	-Wall -Wextra -Werror -g3 #-fsanitize=address
 
 LIB		=	-L$(HOME)/.brew/opt/readline/lib -lreadline -L ./lib/libft -lft
 LIBFT	=	lib/libft/libft.a
