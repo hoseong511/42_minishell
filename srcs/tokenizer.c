@@ -6,7 +6,7 @@
 /*   By: hossong <hossong@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/09 17:19:24 by hossong           #+#    #+#             */
-/*   Updated: 2022/08/14 10:12:05 by hossong          ###   ########.fr       */
+/*   Updated: 2022/08/15 16:13:10 by hossong          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ void	add_token(t_list **lst, char *str, size_t len)
 	ft_lstadd_back(lst, new);
 }
 
-int	add_quote_token(t_list **lst, char *str)
+int	add_quote_idx(char *str)
 {
 	int		j;
 	char	q;
@@ -35,9 +35,7 @@ int	add_quote_token(t_list **lst, char *str)
 	j = 1;
 	while (str[j] && str[j] != q)
 		j++;
-	if (str[j] == q)
-		add_token(lst, str, j + 1);
-	else
+	if (str[j] != q)
 		ft_error("unclosed quotes\n");
 	return (j);
 }
@@ -84,7 +82,7 @@ t_list	*tokenizer(char *str)
 		else if (str[i] == '<' || str[i] == '>')
 			i += add_redir_token(&lst, str + i);
 		else if ((str[i] == '\'' || str[i] == '\"'))
-			i += add_quote_token(&lst, str + i);
+			i += add_quote_idx(str + i);
 		else if ((str[i] >= 9 && str[i] <= 13) || str[i] == 32)
 			;
 		else

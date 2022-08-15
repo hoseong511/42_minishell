@@ -6,7 +6,7 @@
 /*   By: hossong <hossong@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/06 16:43:27 by hossong           #+#    #+#             */
-/*   Updated: 2022/08/14 22:01:50 by hossong          ###   ########.fr       */
+/*   Updated: 2022/08/15 16:13:11 by hossong          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,7 +87,6 @@ void	replacement(char **str, t_list *data);
 /* tokenizer */
 void	add_token(t_list **lst, char *str, size_t len);
 int		check_redir(t_list **lst, char *str);
-int		get_quote_end_idx(t_list **lst, char *str);
 int		add_end_token(t_list **lst, char *str);
 
 /* parser */
