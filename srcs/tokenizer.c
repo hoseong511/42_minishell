@@ -6,7 +6,7 @@
 /*   By: namkim <namkim@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/09 17:19:24 by hossong           #+#    #+#             */
-/*   Updated: 2022/08/14 16:11:35 by namkim           ###   ########.fr       */
+/*   Updated: 2022/08/15 15:43:30 by namkim           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,6 @@ void	add_token(t_list **lst, char *str, int start, size_t len)
 	char	*sub;
 	t_list	*new;
 	t_cmd	*token;
-
 
 	token = (t_cmd *)malloc(sizeof(t_cmd));
 	if (!token)

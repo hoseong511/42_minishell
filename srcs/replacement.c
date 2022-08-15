@@ -6,7 +6,7 @@
 /*   By: namkim <namkim@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/13 22:00:32 by namkim            #+#    #+#             */
-/*   Updated: 2022/08/14 22:18:04 by namkim           ###   ########.fr       */
+/*   Updated: 2022/08/15 18:13:54 by namkim           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,10 +41,12 @@ int	count_env(char *str, char chr)
 	int		i;
 	int		len;
 	int		res;
+	int		slen;
 
 	res = 0;
 	i = 0;
-	while (str[i])
+	slen = ft_strlen(str);
+	while (i < slen && str[i])
 	{
 		if (str[i] == '$')
 		{
@@ -101,6 +103,7 @@ void	do_replace_in_token(t_cmd *node, t_list *envp)
 	int		i;
 	int		j;
 	t_list	*component;
+	t_list	*this;
 
 	target = (char *)node->str;
 	i = 0;
@@ -119,18 +122,20 @@ void	do_replace_in_token(t_cmd *node, t_list *envp)
 			}
 			else
 			{
-				make_component(&component, target + i, (j - i));
+				make_component(&component, target + i, j);
 				process_non_quote(ft_lstlast(component), envp);
-				i = j;
+				i += j;
 			}
 			j = 0;
 		}
 		else
 			j++;
 	}
-	if (target[i + j] == '\0')	//여기서 안전(?)하게 빈문자도 생성하게 할지 또는 막을지 고민
+	//여기서 안전(?)하게 빈문자도 생성하게 할지 또는 막을지 고민
+	if (target[i + j] == '\0' && j != 0)
 	{
 		make_component(&component, target + i, j);
+		this = ft_lstlast(component);
 		process_non_quote(ft_lstlast(component), envp);
 	}
 	if (component)

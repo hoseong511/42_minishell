@@ -38,7 +38,6 @@ typedef struct s_env
 	char	*value;
 }	t_env;
 
-
 t_data	*init_shell(char **envp);
 
 void	add_token(t_list **lst, char *str, int start, size_t len);

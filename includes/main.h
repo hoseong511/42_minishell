@@ -6,7 +6,7 @@
 /*   By: namkim <namkim@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/06 16:43:27 by hossong           #+#    #+#             */
-/*   Updated: 2022/08/14 21:57:36 by namkim           ###   ########.fr       */
+/*   Updated: 2022/08/15 19:58:13 by namkim           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,9 +67,7 @@ typedef struct s_data
 void	ft_error(char *err_msg);
 
 int		check_quote(char *str);
-//char	*replace_env(char *str, int range, char *keystr, t_list *data);
 char	*match_env(char *keystr, t_list *data);
-void	is_env_exist(t_list *target, t_list *data);
 int		is_valid_env_name(char c, int idx);
 t_list	*get_env(char **envp);
 
