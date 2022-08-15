@@ -38,7 +38,6 @@ typedef struct s_env
 	char	*value;
 }	t_env;
 
-
 t_data	*init_shell(char **envp);
 
 void	add_token(t_list **lst, char *str, int start, size_t len);
@@ -50,8 +49,6 @@ t_list	*tokenizer(char *str);
 
 char	*replace_env(char *str, char *keystr, t_list *data);
 char	*match_env(char *keystr, t_list *data);
-void	is_env_exist(t_list *target, t_list *data);
-
-t_list	*parser(t_data *data);
+void	is_env_exist(void **target, t_list *data);
 
 #endif

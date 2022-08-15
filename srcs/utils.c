@@ -1,35 +1,34 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: namkim <namkim@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/08/06 16:42:28 by hossong           #+#    #+#             */
-/*   Updated: 2022/08/15 15:59:32 by namkim           ###   ########.fr       */
+/*   Created: 2022/08/13 21:35:13 by namkim            #+#    #+#             */
+/*   Updated: 2022/08/13 21:35:25 by namkim           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/main.h"
 
-int	main(int argc, char **argv, char **envp)
+void	print_t_cmds(t_list *tokenlist)
 {
+	t_list	*node;
+	int		type;
 	char	*str;
-	t_data	*data;
+	int		idx;
 
-	(void) argv;
-	if (argc != 1)
-		ft_error("Too much argument!\n");
-	printf("==minishell==\n");
-	data = init_data(envp);
-	while (1)
+	node = tokenlist;
+	if (!node)
+		printf("No tokens\n");
+	idx = 0;
+	while (node)
 	{
-		str = readline("mini-0.1$ ");
-		load_data(data, str);
-		if (data->status == FALSE)
-			continue ;
-		//load -> preprocess (token, syntax, parser)
-		free(str);
+		type = ((t_cmd *)node->content)->type;
+		str = ((t_cmd *)node->content)->str;
+		printf("[%d] <%d> %s\n", idx, type, str);
+		node = node->next;
+		idx++;
 	}
-	return (0);
 }

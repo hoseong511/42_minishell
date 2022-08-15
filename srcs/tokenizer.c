@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokenizer.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hossong <hossong@student.42seoul.kr>       +#+  +:+       +#+        */
+/*   By: namkim <namkim@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/09 17:19:24 by hossong           #+#    #+#             */
-/*   Updated: 2022/08/13 15:58:48 by hossong          ###   ########.fr       */
+/*   Updated: 2022/08/15 15:43:30 by namkim           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,12 +21,17 @@ void	add_token(t_list **lst, char *str, int start, size_t len)
 {
 	char	*sub;
 	t_list	*new;
+	t_cmd	*token;
 
-
+	token = (t_cmd *)malloc(sizeof(t_cmd));
+	if (!token)
+		ft_error("ERROR: malloc error\n");
 	sub = ft_substr(str, start, len);
 	if (!sub)
 		ft_error("ERROR: malloc error\n");
-	new = ft_lstnew(sub);
+	token->str = sub;
+	token->type = NONE;
+	new = ft_lstnew(token);
 	if (!new)
 		ft_error("ERROR: malloc error\n");
 	ft_lstadd_back(lst, new);
@@ -49,6 +54,21 @@ int	check_redir(t_list **lst, char *str, int start)
 	}
 }
 
+/* original */
+// int	get_quote_end_idx(char *str, int i)
+// {
+// 	int		j;
+// 	char	q;
+
+// 	q = str[i];
+// 	j = 1;
+// 	while (str[i + j] && str[i + j] != q)
+// 		j++;
+// 	if (!str[i + j])
+// 		ft_error("unclosed quotes\n");
+// 	return (j);
+// }
+
 int	get_quote_end_idx(char *str, int i)
 {
 	int		j;
@@ -60,7 +80,7 @@ int	get_quote_end_idx(char *str, int i)
 		j++;
 	if (!str[i + j])
 		ft_error("unclosed quotes\n");
-	return (j);
+	return (i + j);
 }
 
 t_list	*tokenizer(char *str)
@@ -85,7 +105,7 @@ t_list	*tokenizer(char *str)
 			start = i + 1;
 		}
 		else if ((str[i] == '\'' || str[i] == '\"'))
-			i += get_quote_end_idx(str, i);
+			i = get_quote_end_idx(str, i);
 	}
 	if (str[i] == '\0')
 		add_token(&lst, str, start, i);
