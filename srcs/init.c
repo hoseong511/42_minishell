@@ -6,7 +6,7 @@
 /*   By: hossong <hossong@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/12 15:46:57 by namkim            #+#    #+#             */
-/*   Updated: 2022/08/14 16:59:54 by hossong          ###   ########.fr       */
+/*   Updated: 2022/08/15 21:02:29 by hossong          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,78 +15,80 @@
 //환경변수 expansion
 //single quote / doublequote 처리
 //re_tokenize
-void	replace_quote(t_list *target, char quote, t_list *data)
+void	process_quote(t_list *component, t_list *envp, char quote)
 {
 	char	*str;
-	int		strlen;
-	// int		i;
 
-	// i = 0;
-	str = (char *)target->content;
-	strlen = ft_strlen(str);
-	str = ft_memmove(str, str, strlen - 1);
-	str[strlen - 1] = '\0';
+	if (!component)
+		return ;
+	str = (char *)component->content;
 	if (quote == '\"')
-		is_env_exist(target, data);
+		do_expansion(&str, envp, quote);
+	remove_quote(&str, 0, ft_strlen(str) - 1);
+	component->content = str;
 }
 
-void	replacement(char **str, t_list *data)  //한 token의 string
+void	process_non_quote(t_list *component, t_list *envp)
 {
-	int	 i;
-	int	 len;
-	char	q;
-	t_list  *lst;
-	t_list	*target;
+	char	*str;
 
-	i = 0;
-	len = 0;
-	lst = NULL;
-	while ((*str)[i + len])
-	{
-		if ((*str)[i + len] == '\"' || (*str)[i + len] == '\'')
-		{
-			if (len == 0)
-			{
-				q = (*str)[i];
-				len = ++i;
-				while ((*str)[len] != q)
-					len++;
-				add_token(&lst, (*str) + i, len);
-				target = ft_lstlast(lst); //lstlast를 찾아서 q의 값에 따라 처리
-				replace_quote(target, q, data);
-				i += len;
-				len = 0;
-			}
-			else
-			{
-				add_token(&lst, (*str) + i, len);
-				target = ft_lstlast(lst);
-				is_env_exist(target, data);
-				i += len;
-				len = 0;
-			}
-		}
-		else
-			len++;
-	}
-	if ((*str)[i + len] == '\0' && (*str)[i + len - 1])
-	{
-		add_token(&lst, (*str) + i, len);
-		target = ft_lstlast(lst);
-		is_env_exist(target, data);
-	}
+	if (!component)
+		return ;
+	str = (char *)component->content;
+	do_expansion(&str, envp, 'a');
+	component->content = str;
+}
+
+void	make_component(t_list **lst, char *src, int size)
+{
+	char	*str;
+	t_list	*new;
+
+	if (!lst)
+		return ;
+	str = ft_strndup(src, size);
+	if (!str)
+		return ;
+	new = ft_lstnew(str);
+	if (!new)
+		ft_error("ERROR: Malloc Error while replacement\n");
+	ft_lstadd_back(lst, new);
+}
+
+void	delete_component(t_list *cnode)
+{
+	void	*content;
+
+	if (!cnode)
+		return ;
+	content = cnode->content;
+	free(cnode);
+	cnode = NULL;
+	if (!content)
+		return ;
+	free(content);
+	content = NULL;
+}
+
+char	*join_components(t_list *component)
+{
+	t_list	*node;
+	t_list	*ltemp;
 	char	*temp;
-	temp = NULL;
-	free(*str);
-	*str = NULL;
-	while (lst)
+	char	*res;
+
+	node = component;
+	res = NULL;
+	while (node)
 	{
-		temp = *str;
-		*str = ft_strjoin(temp, (char *)lst->content);
-		if (temp)
-			free(temp);
-		lst = lst->next;
+		temp = res;
+		res = ft_strjoin(res, (char *)node->content);
+		ltemp = node;
+		node = node->next;
+		delete_component(ltemp);
+		free(temp);
 	}
+	return (res);
 }
 
 t_data	*init_data(char **envp)
@@ -115,14 +117,9 @@ void	load_data(t_data *data, char *str)
 	if (!data->tokenlist)
 		return ;
 	token = data->tokenlist;
-	while (token)
-	{
-		str = (char *)token->content;
-		// replacement(&str, data->envlist);
-		printf("str: %s\n", str);
-		token = token->next;
-	}
-	data->cmdlist = lexer(data);
+	data->tokenlist = lexer(data);
+	printf("=========================\n");
 	data->cmdlist = relocate_type(data);
 	data->cmdlist = bind_type(data);
+	print_t_cmds2(data->cmdlist);
 }

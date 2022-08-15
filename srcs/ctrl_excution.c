@@ -6,7 +6,7 @@
 /*   By: hossong <hossong@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/14 17:27:01 by hossong           #+#    #+#             */
-/*   Updated: 2022/08/14 21:11:38 by hossong          ###   ########.fr       */
+/*   Updated: 2022/08/15 20:51:40 by hossong          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,6 @@ void	execute_cmd(t_data *data)
 			// execve(, cmd, envp)
 		}
 		else
-			printf("%s\n", cmd[0]);
+			;
 	}	
 }

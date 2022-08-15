@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strdup.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hossong <hossong@student.42seoul.kr>       +#+  +:+       +#+        */
+/*   By: namkim <namkim@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/22 10:00:38 by hossong           #+#    #+#             */
-/*   Updated: 2022/08/10 16:08:03 by hossong          ###   ########.fr       */
+/*   Updated: 2022/08/14 22:01:23 by namkim           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ char	*ft_strndup(const char *s1, size_t slen)
 {
 	char	*dst;
 
-	if (!s1 || slen == 0)
+	if (!s1)
 		return (NULL);
 	dst = (char *)malloc(sizeof(char) * (slen + 1));
 	if (dst == NULL)

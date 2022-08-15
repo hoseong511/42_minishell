@@ -6,7 +6,7 @@
 /*   By: hossong <hossong@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/06 16:43:27 by hossong           #+#    #+#             */
-/*   Updated: 2022/08/15 16:13:11 by hossong          ###   ########.fr       */
+/*   Updated: 2022/08/15 21:04:40 by hossong          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,9 +27,9 @@
 # define TRUE 1
 # define FALSE 0
 
-
 typedef enum e_type
 {
+	NONE = -1,
 	ARGS,
 	PIPE,
 	R_IN,
@@ -62,17 +62,14 @@ typedef struct s_data
 	t_list		*envlist;
 	t_list		*tokenlist;
 	t_list		*cmdlist;
-	int			pip_cnt;	//or 실행해야하는 process의 수
+	int			pip_cnt;
 	int			status;
-							//이후 exit status등 필요한 데이터 추가
 }	t_data;
 
 void	ft_error(char *err_msg);
 
 int		check_quote(char *str);
-char	*replace_env(char *str, char *keystr, t_list *data);
 char	*match_env(char *keystr, t_list *data);
-void	is_env_exist(t_list *target, t_list *data);
 int		is_valid_env_name(char c, int idx);
 t_list	*get_env(char **envp);
 
@@ -88,6 +85,11 @@ void	replacement(char **str, t_list *data);
 void	add_token(t_list **lst, char *str, size_t len);
 int		check_redir(t_list **lst, char *str);
 int		add_end_token(t_list **lst, char *str);
+int		get_quote_end_idx(char *str, int i);
+int		add_quote_idx(char *str);
+
+/* token utils */
+void	print_t_cmds(t_list *tokenlist);
 
 /* parser */
 void	add_cmd(t_list **lst, char *str, t_type type);
@@ -110,6 +112,17 @@ void	free_tokenlist(t_data *data);
 void	free_data(t_data *data);
 void	free_cmd(t_data *data, char *tar);
 
+/*replacement fix*/
+void	do_replace_in_token(t_cmd *node, t_list *envp);
+void	remove_quote(char **target, int startidx, int endidx);
+char	*replace_key_to_value(char *str, int start, char *keystr, t_list *data);
+void	do_expansion(char **target, t_list *envp, char sign);
+void	make_component(t_list **lst, char *src, int size);
+char	*join_components(t_list *component);
+void	process_quote(t_list *component, t_list *envp, char quote);
+void	process_non_quote(t_list *component, t_list *envp);
+int		count_env(char *str, char chr);
 
+void	print_t_cmds2(t_list *tokenlist);
 
 #endif

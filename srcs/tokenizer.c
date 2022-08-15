@@ -6,7 +6,7 @@
 /*   By: hossong <hossong@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/09 17:19:24 by hossong           #+#    #+#             */
-/*   Updated: 2022/08/15 16:13:10 by hossong          ###   ########.fr       */
+/*   Updated: 2022/08/15 20:39:24 by hossong          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,11 +16,17 @@ void	add_token(t_list **lst, char *str, size_t len)
 {
 	char	*sub;
 	t_list	*new;
+	t_cmd	*token;
 
+	token = (t_cmd *)malloc(sizeof(t_cmd));
+	if (!token)
+		ft_error("ERROR: malloc error\n");
 	sub = ft_strndup(str, len);
 	if (!sub)
 		ft_error("ERROR: malloc error\n");
-	new = ft_lstnew(sub);
+	token->str = sub;
+	token->type = NONE;
+	new = ft_lstnew(token);
 	if (!new)
 		ft_error("ERROR: malloc error\n");
 	ft_lstadd_back(lst, new);
@@ -38,6 +44,20 @@ int	add_quote_idx(char *str)
 	if (str[j] != q)
 		ft_error("unclosed quotes\n");
 	return (j);
+}
+
+int	get_quote_end_idx(char *str, int i)
+{
+	int		j;
+	char	q;
+
+	q = str[i];
+	j = 1;
+	while (str[i + j] && str[i + j] != q)
+		j++;
+	if (str[i + j] != q)
+		ft_error("unclosed quotes\n");
+	return (i + j);
 }
 
 int	add_end_token(t_list **lst, char *str)

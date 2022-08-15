@@ -6,7 +6,7 @@
 /*   By: hossong <hossong@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/12 15:52:26 by hossong           #+#    #+#             */
-/*   Updated: 2022/08/14 22:10:19 by hossong          ###   ########.fr       */
+/*   Updated: 2022/08/15 20:45:51 by hossong          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ t_list	*relocate_type(t_data *data)
 
 	reloc = NULL;
 	tmp = NULL;
-	cmdlist = data->cmdlist;
+	cmdlist = data->tokenlist;
 	while (cmdlist)
 	{
 		type = ((t_cmd *)cmdlist->content)->type;
