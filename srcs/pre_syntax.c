@@ -6,24 +6,11 @@
 /*   By: hossong <hossong@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/13 14:52:14 by hossong           #+#    #+#             */
-/*   Updated: 2022/08/13 15:26:54 by hossong          ###   ########.fr       */
+/*   Updated: 2022/08/15 20:59:08 by hossong          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/main.h"
-
-static char	*ft_strstr(char *str, char *to_find)
-{
-	if (!(*to_find))
-		return (str);
-	while (*str)
-	{
-		if (ft_strchr(to_find, *str) != 0)
-			return (str);
-		str++;
-	}
-	return (0);
-}
 
 //1. 포함되지 말아야할 문자가 있는지 '\'
 //2. 닫히지 않은 quote가 있는지
@@ -43,15 +30,13 @@ int	check_quote(char *str)
 
 	i = -1;
 	quote = NULL;
-	if (ft_strstr(str, INHIBIT))
-		return (FALSE);
 	while (str[++i])
 	{
 		if (str[i] == '\'' || str[i] == '\"')
 		{
 			if (!quote)
 				quote = ft_lstnew(&str[i]);
-			else if (quote && (*(char *)(quote->content)) != str[i]) // void* conversion
+			else if (quote && (*(char *)(quote->content)) != str[i])
 				ft_lstadd_front(&quote, ft_lstnew(&str[i]));
 			else
 				pop_quote(&quote);

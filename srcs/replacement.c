@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   replacement.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: namkim <namkim@student.42seoul.kr>         +#+  +:+       +#+        */
+/*   By: hossong <hossong@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/13 22:00:32 by namkim            #+#    #+#             */
-/*   Updated: 2022/08/15 18:13:54 by namkim           ###   ########.fr       */
+/*   Updated: 2022/08/15 21:09:06 by hossong          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ int	count_env(char *str, char chr)
 				i += len - 1;
 			}
 		}
-		else if (chr != '\"' && str[i] == '\'')	//쌍따옴표가 아닐때만 '를 피함
+		else if (chr != '\"' && str[i] == '\'')
 			i = get_quote_end_idx(str, i);
 		i++;
 	}
@@ -131,7 +131,6 @@ void	do_replace_in_token(t_cmd *node, t_list *envp)
 		else
 			j++;
 	}
-	//여기서 안전(?)하게 빈문자도 생성하게 할지 또는 막을지 고민
 	if (target[i + j] == '\0' && j != 0)
 	{
 		make_component(&component, target + i, j);

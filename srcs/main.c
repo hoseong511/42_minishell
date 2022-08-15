@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: namkim <namkim@student.42seoul.kr>         +#+  +:+       +#+        */
+/*   By: hossong <hossong@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/06 16:42:28 by hossong           #+#    #+#             */
-/*   Updated: 2022/08/15 15:59:32 by namkim           ###   ########.fr       */
+/*   Updated: 2022/08/15 20:50:10 by hossong          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,8 +28,11 @@ int	main(int argc, char **argv, char **envp)
 		load_data(data, str);
 		if (data->status == FALSE)
 			continue ;
-		//load -> preprocess (token, syntax, parser)
 		free(str);
+		execute_cmd(data);
+		// free_tokenlist(data);
+		// free_cmdlist(data);
 	}
+	free_data(data);
 	return (0);
 }

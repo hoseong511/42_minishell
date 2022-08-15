@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: namkim <namkim@student.42seoul.kr>         +#+  +:+       +#+        */
+/*   By: hossong <hossong@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/12 15:53:51 by namkim            #+#    #+#             */
-/*   Updated: 2022/08/15 19:54:32 by namkim           ###   ########.fr       */
+/*   Updated: 2022/08/15 20:49:39 by hossong          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,22 @@ void	add_type(t_list *lst, t_type type)
 	}
 }
 
-//통하는지 check & NONE 과 NULL 분리할지?
+void	add_cmd2(t_list **lst, char **str, t_type type)
+{
+	t_cmd2	*cmd2;
+	t_list	*new;
+
+	cmd2 = (t_cmd2 *)malloc(sizeof(t_cmd2));
+	if (!cmd2)
+		ft_error("ERROR: malloc error\n");
+	cmd2->str = str;
+	cmd2->type = type;
+	new = ft_lstnew(cmd2);
+	if (!new)
+		ft_error("ERROR: malloc error\n");
+	ft_lstadd_back(lst, new);
+}
+
 t_type	get_cmd_type(char *str)
 {
 	if (ft_strncmp(str, "", 1) == 0)
@@ -128,6 +143,7 @@ t_list	*lexer(t_data *data)
 		res = res->next;
 	}
 	print_t_cmds(data->tokenlist);
+	res = data->tokenlist;
 	// printf("how many commands: %d\n", data->pip_cnt);
 	return (res);
 }

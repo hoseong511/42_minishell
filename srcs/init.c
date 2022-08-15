@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: namkim <namkim@student.42seoul.kr>         +#+  +:+       +#+        */
+/*   By: hossong <hossong@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/12 15:46:57 by namkim            #+#    #+#             */
-/*   Updated: 2022/08/15 18:12:42 by namkim           ###   ########.fr       */
+/*   Updated: 2022/08/15 21:02:29 by hossong          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,28 +109,17 @@ t_data	*init_data(char **envp)
 void	load_data(t_data *data, char *str)
 {
 	t_list	*token;
-//	t_list	*node;
 
 	data->status = check_quote(str);
 	if (data->status == FALSE)
 		return ;
 	data->tokenlist = tokenizer(str);
+	if (!data->tokenlist)
+		return ;
 	token = data->tokenlist;
-	// while (token)
-	// {
-	// 	str = (char *)token->content;
-	// 	 replacement(&str, data->envlist);
-	// 	printf("str: %s\n", str);
-	// 	token = token->next;
-	// }
-	data->cmdlist = lexer(data);
-//	print_t_cmds(data->tokenlist);
-//	lexer(data);
-	// data->cmdlist = relocate_type(data->cmdlist);
-	// t_list	*reloc = data->cmdlist;
-	// while (reloc)
-	// {
-	// 	printf("%s\n", ((t_cmd *)(reloc->content))->str);
-	// 	reloc = reloc->next;
-	// }
+	data->tokenlist = lexer(data);
+	printf("=========================\n");
+	data->cmdlist = relocate_type(data);
+	data->cmdlist = bind_type(data);
+	print_t_cmds2(data->cmdlist);
 }

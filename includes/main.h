@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.h                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: namkim <namkim@student.42seoul.kr>         +#+  +:+       +#+        */
+/*   By: hossong <hossong@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/06 16:43:27 by hossong           #+#    #+#             */
-/*   Updated: 2022/08/15 19:58:13 by namkim           ###   ########.fr       */
+/*   Updated: 2022/08/15 21:04:40 by hossong          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,6 @@
 # include <stdio.h>
 # include <unistd.h>
 # include <readline/readline.h>
-# include <readline/history.h>
 # include <stdlib.h>
 # include <sys/wait.h>
 # include <string.h>
@@ -25,10 +24,8 @@
 # include "../lib/libft/libft.h"
 
 # define BUF_SIZE 1024
-# define INHIBIT "\\;`"
 # define TRUE 1
 # define FALSE 0
-
 
 typedef enum e_type
 {
@@ -44,9 +41,15 @@ typedef enum e_type
 
 typedef struct s_cmd
 {
-	char		*str;
-	t_type		type;
+	char	*str;
+	t_type	type;
 }	t_cmd;
+
+typedef struct s_cmd2
+{
+	char	**str;
+	t_type	type;
+}	t_cmd2;
 
 typedef struct s_env
 {
@@ -58,10 +61,9 @@ typedef struct s_data
 {
 	t_list		*envlist;
 	t_list		*tokenlist;
-	t_list		*cmdlist;	//reloc 후 bind 단계에서 쓰면 될 듯하다.
-	int			pip_cnt;	//or 실행해야하는 process의 수
+	t_list		*cmdlist;
+	int			pip_cnt;
 	int			status;
-							//이후 exit status등 필요한 데이터 추가
 }	t_data;
 
 void	ft_error(char *err_msg);
@@ -80,21 +82,35 @@ void	replace_quote(t_list *target, char quote, t_list *data);
 void	replacement(char **str, t_list *data);
 
 /* tokenizer */
-void	add_token(t_list **lst, char *str, int start, size_t len);
-int		check_redir(t_list **lst, char *str, int start);
+void	add_token(t_list **lst, char *str, size_t len);
+int		check_redir(t_list **lst, char *str);
+int		add_end_token(t_list **lst, char *str);
 int		get_quote_end_idx(char *str, int i);
+int		add_quote_idx(char *str);
+
 /* token utils */
 void	print_t_cmds(t_list *tokenlist);
 
 /* parser */
 void	add_cmd(t_list **lst, char *str, t_type type);
+void	add_cmd2(t_list **lst, char **str, t_type type);
 t_type	get_cmd_type(char *str);
 t_list	*lexer(t_data *data);
 t_list	*tokenizer(char *str);
-t_list	*relocate_type(t_list *cmdlist);
+t_list	*relocate_type(t_data *data);
+t_list	*bind_type(t_data *data);
 void	insert(t_list *a, t_list *b);
 void	push(t_list **list, t_list *node);
 t_list	*pop(t_list **list);
+
+/* excute */
+void	execute_cmd(t_data *data);
+
+/*free*/
+void	free_cmdlist(t_data *data);
+void	free_tokenlist(t_data *data);
+void	free_data(t_data *data);
+void	free_cmd(t_data *data, char *tar);
 
 /*replacement fix*/
 void	do_replace_in_token(t_cmd *node, t_list *envp);
@@ -105,5 +121,8 @@ void	make_component(t_list **lst, char *src, int size);
 char	*join_components(t_list *component);
 void	process_quote(t_list *component, t_list *envp, char quote);
 void	process_non_quote(t_list *component, t_list *envp);
+int		count_env(char *str, char chr);
+
+void	print_t_cmds2(t_list *tokenlist);
 
 #endif
