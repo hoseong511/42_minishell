@@ -6,7 +6,7 @@
 /*   By: hossong <hossong@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/13 01:17:11 by hossong           #+#    #+#             */
-/*   Updated: 2022/08/17 00:18:25 by hossong          ###   ########.fr       */
+/*   Updated: 2022/08/17 00:40:33 by hossong          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,8 @@ void	append_ab(t_list **lst, t_list *a, t_list *b)
 
 void	insert_src(t_list **des, t_list **src, t_list **tmp)
 {
+	if (!(*src))
+		return ;
 	if (!(*tmp))
 	{
 		ft_lstadd_front(des, ft_lstlast(*src));

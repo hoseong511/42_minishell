@@ -6,13 +6,13 @@
 /*   By: hossong <hossong@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/12 15:52:26 by hossong           #+#    #+#             */
-/*   Updated: 2022/08/17 00:18:27 by hossong          ###   ########.fr       */
+/*   Updated: 2022/08/17 00:35:49 by hossong          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/main.h"
 
-t_list	*relocate_type(t_list *tokenlist)
+t_list	*relocate(t_list *tokenlist)
 {
 	t_type	type;
 	t_list	*des;
