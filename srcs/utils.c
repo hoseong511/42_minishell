@@ -6,7 +6,7 @@
 /*   By: hossong <hossong@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/13 21:35:13 by namkim            #+#    #+#             */
-/*   Updated: 2022/08/15 20:57:18 by hossong          ###   ########.fr       */
+/*   Updated: 2022/08/16 17:42:27 by hossong          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,14 +33,14 @@ void	print_t_cmds(t_list *tokenlist)
 	}
 }
 
-void	print_t_cmds2(t_list *tokenlist)
+void	print_t_cmds2(t_list *cmdlist)
 {
 	t_list	*node;
 	int		type;
 	char	**str;
 	int		idx;
 
-	node = tokenlist;
+	node = cmdlist;
 	if (!node)
 		printf("No tokens\n");
 	idx = 0;
@@ -51,7 +51,7 @@ void	print_t_cmds2(t_list *tokenlist)
 		printf("[%d] <%d> ", idx, type);
 		while (*str)
 		{
-			printf("%s", *str);
+			printf("%s ", *str);
 			str++;
 		}
 		printf("\n");
