@@ -6,7 +6,7 @@
 /*   By: hossong <hossong@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/13 22:00:32 by namkim            #+#    #+#             */
-/*   Updated: 2022/08/15 21:09:06 by hossong          ###   ########.fr       */
+/*   Updated: 2022/08/16 20:37:43 by hossong          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,7 +103,6 @@ void	do_replace_in_token(t_cmd *node, t_list *envp)
 	int		i;
 	int		j;
 	t_list	*component;
-	t_list	*this;
 
 	target = (char *)node->str;
 	i = 0;
@@ -134,7 +133,6 @@ void	do_replace_in_token(t_cmd *node, t_list *envp)
 	if (target[i + j] == '\0' && j != 0)
 	{
 		make_component(&component, target + i, j);
-		this = ft_lstlast(component);
 		process_non_quote(ft_lstlast(component), envp);
 	}
 	if (component)

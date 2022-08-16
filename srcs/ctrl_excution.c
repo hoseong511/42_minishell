@@ -6,7 +6,7 @@
 /*   By: hossong <hossong@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/14 17:27:01 by hossong           #+#    #+#             */
-/*   Updated: 2022/08/15 20:51:40 by hossong          ###   ########.fr       */
+/*   Updated: 2022/08/16 20:40:21 by hossong          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,8 +33,8 @@ void	execute_cmd(t_data *data)
 			;
 		else if (ft_strncmp(cmd[0], "exit", 5) == 0)
 		{
-			free_tokenlist(data);
-			free_cmdlist(data);
+			// free_tokenlist(data);
+			// free_cmdlist(data);
 			// execve(, cmd, envp)
 		}
 		else
