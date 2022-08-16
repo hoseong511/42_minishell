@@ -6,7 +6,7 @@
 /*   By: hossong <hossong@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/09 17:19:24 by hossong           #+#    #+#             */
-/*   Updated: 2022/08/15 20:39:24 by hossong          ###   ########.fr       */
+/*   Updated: 2022/08/16 16:12:36 by hossong          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,11 @@ int	add_end_token(t_list **lst, char *str)
 	while (!((str[i] >= 9 && str[i] <= 13) || str[i] == 32 \
 			|| str[i] == '|' || str[i] == '<' \
 			|| str[i] == '>' || str[i] == '\0'))
+	{
+		if (str[i] == '\'' || str[i] == '\"')
+			i += add_quote_idx(str + i);
 		i++;
+	}
 	add_token(lst, str, i);
 	return (i - 1);
 }
@@ -101,8 +105,6 @@ t_list	*tokenizer(char *str)
 			add_token(&lst, str + i, 1);
 		else if (str[i] == '<' || str[i] == '>')
 			i += add_redir_token(&lst, str + i);
-		else if ((str[i] == '\'' || str[i] == '\"'))
-			i += add_quote_idx(str + i);
 		else if ((str[i] >= 9 && str[i] <= 13) || str[i] == 32)
 			;
 		else
