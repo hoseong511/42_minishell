@@ -6,7 +6,7 @@
 /*   By: hossong <hossong@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/09 17:19:24 by hossong           #+#    #+#             */
-/*   Updated: 2022/08/16 15:55:54 by hossong          ###   ########.fr       */
+/*   Updated: 2022/08/16 16:12:36 by hossong          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,20 @@ void	add_token(t_list **lst, char *str, size_t len)
 	ft_lstadd_back(lst, new);
 }
 
+int	add_quote_idx(char *str)
+{
+	int		j;
+	char	q;
+
+	q = *str;
+	j = 1;
+	while (str[j] && str[j] != q)
+		j++;
+	if (str[j] != q)
+		ft_error("unclosed quotes\n");
+	return (j);
+}
+
 int	get_quote_end_idx(char *str, int i)
 {
 	int		j;
@@ -54,7 +68,11 @@ int	add_end_token(t_list **lst, char *str)
 	while (!((str[i] >= 9 && str[i] <= 13) || str[i] == 32 \
 			|| str[i] == '|' || str[i] == '<' \
 			|| str[i] == '>' || str[i] == '\0'))
+	{
+		if (str[i] == '\'' || str[i] == '\"')
+			i += add_quote_idx(str + i);
 		i++;
+	}
 	add_token(lst, str, i);
 	return (i - 1);
 }
