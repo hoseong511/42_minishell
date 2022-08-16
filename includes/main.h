@@ -6,7 +6,7 @@
 /*   By: hossong <hossong@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/06 16:43:27 by hossong           #+#    #+#             */
-/*   Updated: 2022/08/15 21:04:40 by hossong          ###   ########.fr       */
+/*   Updated: 2022/08/16 20:27:41 by hossong          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,7 +98,7 @@ t_type	get_cmd_type(char *str);
 t_list	*lexer(t_data *data);
 t_list	*tokenizer(char *str);
 t_list	*relocate_type(t_data *data);
-t_list	*bind_type(t_data *data);
+t_list	*bind(t_data *data);
 void	insert(t_list *a, t_list *b);
 void	push(t_list **list, t_list *node);
 t_list	*pop(t_list **list);
@@ -107,10 +107,10 @@ t_list	*pop(t_list **list);
 void	execute_cmd(t_data *data);
 
 /*free*/
-void	free_cmdlist(t_data *data);
+void	free_cmdlist(t_list *cmdlist);
 void	free_tokenlist(t_data *data);
 void	free_data(t_data *data);
-void	free_cmd(t_data *data, char *tar);
+void	free_cmd(t_list *cmdlist, char *tar);
 
 /*replacement fix*/
 void	do_replace_in_token(t_cmd *node, t_list *envp);

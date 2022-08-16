@@ -6,7 +6,7 @@
 /*   By: hossong <hossong@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/12 15:52:26 by hossong           #+#    #+#             */
-/*   Updated: 2022/08/15 20:45:51 by hossong          ###   ########.fr       */
+/*   Updated: 2022/08/16 20:32:55 by hossong          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,7 @@ static char	**bind_content(t_list *node, int i)
 	return (des);
 }
 
-static void	binding(t_list **cmdlist, t_list **bind, t_type type)
+static void	bind_type(t_list **cmdlist, t_list **bind, t_type type)
 {
 	t_list	*tmp;
 	char	**des;
@@ -102,22 +102,36 @@ static void	binding(t_list **cmdlist, t_list **bind, t_type type)
 	add_cmd2(bind, des, type);
 }
 
-t_list	*bind_type(t_data *data)
+static void	bind_cmd(t_list **lst, t_list **tmp)
+{
+	t_list	*new;
+
+	new = ft_lstnew(*tmp);
+	*tmp = NULL;
+	ft_lstadd_back(lst, new);
+}
+
+t_list	*bind(t_data *data)
 {
 	t_list	*bind;
+	t_list	*tmp;
 	t_type	type;
 
 	bind = NULL;
+	tmp = NULL;
 	while (data->cmdlist)
 	{
 		type = ((t_cmd *)data->cmdlist->content)->type;
 		if (type == PIPE)
 		{
+			bind_cmd(&bind, &tmp);
 			free_cmd(data, "t_cmd");
 			free(pop(&data->cmdlist));
 		}
 		else
-			binding(&data->cmdlist, &bind, type);
+			bind_type(&data->cmdlist, &tmp, type);
 	}
+	if (!data->cmdlist)
+		bind_cmd(&bind, &tmp);
 	return (bind);
 }
