@@ -6,7 +6,7 @@
 /*   By: hossong <hossong@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/06 16:43:27 by hossong           #+#    #+#             */
-/*   Updated: 2022/08/17 00:18:23 by hossong          ###   ########.fr       */
+/*   Updated: 2022/08/17 00:47:40 by hossong          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,8 +97,8 @@ void	add_cmd2(t_list **lst, char **str, t_type type);
 t_type	get_cmd_type(char *str);
 t_list	*lexer(t_data *data);
 t_list	*tokenizer(char *str);
-t_list	*relocate_type(t_list *tokenlist);
-t_list	*bind(t_data *data);
+t_list	*relocate(t_list *tokenlist);
+t_list	*bind(t_list *cmdlist);
 void	insert(t_list **a, t_list *b);
 t_list	*pop(t_list **list);
 void	append_ab(t_list **lst, t_list *a, t_list *b);

@@ -6,7 +6,7 @@
 /*   By: hossong <hossong@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/12 15:52:26 by hossong           #+#    #+#             */
-/*   Updated: 2022/08/17 00:35:49 by hossong          ###   ########.fr       */
+/*   Updated: 2022/08/17 00:51:26 by hossong          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,7 +98,7 @@ static void	bind_cmd(t_list **lst, t_list **tmp)
 	ft_lstadd_back(lst, new);
 }
 
-t_list	*bind(t_data *data)
+t_list	*bind(t_list *cmdlist)
 {
 	t_list	*bind;
 	t_list	*tmp;
@@ -106,19 +106,19 @@ t_list	*bind(t_data *data)
 
 	bind = NULL;
 	tmp = NULL;
-	while (data->cmdlist)
+	while (cmdlist)
 	{
-		type = ((t_cmd *)data->cmdlist->content)->type;
+		type = ((t_cmd *)cmdlist->content)->type;
 		if (type == PIPE)
 		{
 			bind_cmd(&bind, &tmp);
-			free_cmd(data->cmdlist, "t_cmd");
-			free(pop(&data->cmdlist));
+			free_cmd(cmdlist, "t_cmd");
+			free(pop(&cmdlist));
 		}
 		else
-			bind_type(&data->cmdlist, &tmp, type);
+			bind_type(&cmdlist, &tmp, type);
 	}
-	if (!data->cmdlist)
+	if (!cmdlist)
 		bind_cmd(&bind, &tmp);
 	return (bind);
 }
