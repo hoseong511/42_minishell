@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hossong <hossong@student.42seoul.kr>       +#+  +:+       +#+        */
+/*   By: namkim <namkim@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/12 15:53:51 by namkim            #+#    #+#             */
-/*   Updated: 2022/08/15 20:49:39 by hossong          ###   ########.fr       */
+/*   Updated: 2022/08/16 20:06:46 by namkim           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,6 +74,9 @@ static void	check_pipe_syntax(t_data *data)
 	{
 		if (((t_cmd *)tnode->content)->type == PIPE)
 		{
+			if (!tnode->next)
+				ft_error("Syntax Error : \
+syntax error near unexpected token `|'\n");
 			tnext = ((t_cmd *)tnode->next->content)->type;
 			if (tnext != PIPE && tnext != NONE)
 				data->pip_cnt++;
@@ -96,10 +99,13 @@ static void	check_redirection_syntax(t_data *data)
 		type = ((t_cmd *)tnode->content)->type;
 		if (type > PIPE && type < R_ARG)
 		{
-			if (((t_cmd *)tnode->next->content)->type == ARGS)
+			if (!tnode->next)
+				ft_error("Syntax Error :\
+syntax error near unexpected token `newline'\n");
+			else if (((t_cmd *)tnode->next->content)->type == ARGS)
 				((t_cmd *)tnode->next->content)->type = R_ARG;
 			else
-				ft_error("Syntax Error : Redirection has no args\n");
+				ft_error("Syntax Error : syntax error near unexpected token\n");
 			tnode = tnode->next;
 		}
 		tnode = tnode->next;
