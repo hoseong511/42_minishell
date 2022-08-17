@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.h                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hossong <hossong@student.42seoul.kr>       +#+  +:+       +#+        */
+/*   By: namkim <namkim@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/06 16:43:27 by hossong           #+#    #+#             */
-/*   Updated: 2022/08/15 21:04:40 by hossong          ###   ########.fr       */
+/*   Updated: 2022/08/17 19:58:40 by namkim           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@
 # include <sys/wait.h>
 # include <string.h>
 # include <sys/errno.h>
+# include <sys/stat.h>
 
 # include "../lib/libft/libft.h"
 
@@ -59,19 +60,19 @@ typedef struct s_env
 
 typedef struct s_data
 {
-	t_list		*envlist;
+	char		**envlist;
 	t_list		*tokenlist;
 	t_list		*cmdlist;
-	int			pip_cnt;
+	int			cmd_cnt;
 	int			status;
 }	t_data;
 
 void	ft_error(char *err_msg);
-
-int		check_quote(char *str);
-char	*match_env(char *keystr, t_list *data);
+char	*match_env(char *keystr, char **envlist);
 int		is_valid_env_name(char c, int idx);
-t_list	*get_env(char **envp);
+char	**get_env(char **envp);
+int		get_env_len(char *target);
+void	replace_env(char **target, int start, int keysize, char **envp);
 
 /* control data */
 t_data	*init_data(char **envp);
@@ -103,6 +104,11 @@ void	insert(t_list *a, t_list *b);
 void	push(t_list **list, t_list *node);
 t_list	*pop(t_list **list);
 
+/* syntax */
+int		check_quote(char *str);
+void	check_pipe_syntax(t_data *data);
+void	check_redirection_syntax(t_data *data);
+
 /* excute */
 void	execute_cmd(t_data *data);
 
@@ -113,16 +119,21 @@ void	free_data(t_data *data);
 void	free_cmd(t_data *data, char *tar);
 
 /*replacement fix*/
-void	do_replace_in_token(t_cmd *node, t_list *envp);
+void	do_replace_in_token(t_cmd *node, char **envp);
 void	remove_quote(char **target, int startidx, int endidx);
-char	*replace_key_to_value(char *str, int start, char *keystr, t_list *data);
-void	do_expansion(char **target, t_list *envp, char sign);
+char	*replace_key_to_value(char *str, int start, char *keystr, char **envp);
+void	do_expansion(char **target, char **envp, char sign);
 void	make_component(t_list **lst, char *src, int size);
 char	*join_components(t_list *component);
-void	process_quote(t_list *component, t_list *envp, char quote);
-void	process_non_quote(t_list *component, t_list *envp);
+void	process_quote(t_list *component, char **envp, char quote);
+void	process_non_quote(t_list *component, char **envp);
 int		count_env(char *str, char chr);
 
+/* print utils */
 void	print_t_cmds2(t_list *tokenlist);
+
+/* execution utils */
+char	**get_path(t_data *data);
+char	*get_exe_file(char	**path, char *cmd, t_data *data);
 
 #endif
