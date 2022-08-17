@@ -6,7 +6,7 @@
 /*   By: hossong <hossong@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/06 16:42:28 by hossong           #+#    #+#             */
-/*   Updated: 2022/08/17 00:04:49 by hossong          ###   ########.fr       */
+/*   Updated: 2022/08/17 18:10:03 by hossong          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,8 +28,9 @@ int	main(int argc, char **argv, char **envp)
 		load_data(data, str);
 		if (data->status == FALSE)
 			continue ;
+		execution(data);
+		// free_cmdlist(data->cmdlist);
 		free(str);
-		execute_cmd(data);
 	}
 	free_data(data);
 	return (0);

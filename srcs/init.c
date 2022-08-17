@@ -6,7 +6,7 @@
 /*   By: hossong <hossong@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/12 15:46:57 by namkim            #+#    #+#             */
-/*   Updated: 2022/08/17 00:47:26 by hossong          ###   ########.fr       */
+/*   Updated: 2022/08/17 16:55:06 by hossong          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,7 +101,7 @@ t_data	*init_data(char **envp)
 	res->envlist = get_env(envp);
 	res->tokenlist = NULL;
 	res->cmdlist = NULL;
-	res->pip_cnt = 0;
+	res->cmd_cnt = 0;
 	res->status = TRUE;
 	return (res);
 }

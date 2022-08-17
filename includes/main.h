@@ -6,7 +6,7 @@
 /*   By: hossong <hossong@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/06 16:43:27 by hossong           #+#    #+#             */
-/*   Updated: 2022/08/17 00:47:40 by hossong          ###   ########.fr       */
+/*   Updated: 2022/08/17 17:56:17 by hossong          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,16 +57,31 @@ typedef struct s_env
 	char	*value;
 }	t_env;
 
+typedef struct s_pipe
+{
+	int	fd[2];
+}	t_pipe;
+
+typedef struct s_proc
+{
+	pid_t	pid;
+	t_pipe	pipe[2];
+	int		status;
+}	t_proc;
+
 typedef struct s_data
 {
-	t_list		*envlist;
 	t_list		*tokenlist;
 	t_list		*cmdlist;
-	int			pip_cnt;
+	t_list		*envlist;
+	int			cmd_cnt;
 	int			status;
+	int			exit_status;
+	t_proc		*info;
 }	t_data;
 
 void	ft_error(char *err_msg);
+void	ft_perror(char *err_msg, int err);
 
 int		check_quote(char *str);
 char	*match_env(char *keystr, t_list *data);
@@ -105,7 +120,7 @@ void	append_ab(t_list **lst, t_list *a, t_list *b);
 void	insert_src(t_list **des, t_list **src, t_list **tmp);
 
 /* excute */
-void	execute_cmd(t_data *data);
+void	execution(t_data *data);
 
 /*free*/
 void	free_cmdlist(t_list *cmdlist);

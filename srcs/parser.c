@@ -6,7 +6,7 @@
 /*   By: hossong <hossong@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/12 15:53:51 by namkim            #+#    #+#             */
-/*   Updated: 2022/08/15 20:49:39 by hossong          ###   ########.fr       */
+/*   Updated: 2022/08/17 19:33:24 by hossong          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,14 +69,14 @@ static void	check_pipe_syntax(t_data *data)
 	tnode = data->tokenlist;
 	if (((t_cmd *)tnode->content)->type == PIPE)
 		ft_error("Syntax Error : syntax error near unexpected token `|'\n");
-	data->pip_cnt++;
+	data->cmd_cnt++;
 	while (tnode)
 	{
 		if (((t_cmd *)tnode->content)->type == PIPE)
 		{
 			tnext = ((t_cmd *)tnode->next->content)->type;
 			if (tnext != PIPE && tnext != NONE)
-				data->pip_cnt++;
+				data->cmd_cnt++;
 			else
 				ft_error("Syntax Error : \
 syntax error near unexpected token `|'\n");
@@ -144,6 +144,6 @@ t_list	*lexer(t_data *data)
 	}
 	print_t_cmds(data->tokenlist);
 	res = data->tokenlist;
-	// printf("how many commands: %d\n", data->pip_cnt);
+	// printf("how many commands: %d\n", data->cmd_cnt);
 	return (res);
 }
