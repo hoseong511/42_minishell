@@ -6,7 +6,7 @@
 /*   By: namkim <namkim@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/16 20:09:37 by namkim            #+#    #+#             */
-/*   Updated: 2022/08/17 17:37:19 by namkim           ###   ########.fr       */
+/*   Updated: 2022/08/17 19:49:57 by namkim           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,11 +61,9 @@ char	*get_exe_file(char	**path, char *cmd, t_data *data)
 
 	i = 0;
 	res = NULL;
-	printf("path: %s\n", path[0]);
 	while (path[i])
 	{
 		addr = get_exe_format(path[i], cmd);
-		printf("j-addr: %s\n", addr);
 		sign = stat(addr, &sb);	//호출 성공시 0, 실패시 -1 & errno set
 		if (sign == 0)
 		{
@@ -90,44 +88,3 @@ char	*get_exe_file(char	**path, char *cmd, t_data *data)
 	}
 	return (res);
 }
-
-// void	do_execution(t_data *data)
-// {
-// 	t_cmd2	*cmdlist;
-// 	pid_t	pid;
-// 	int		i;
-// 	int		fd[2];
-
-
-// 	cmdlist = data->cmdlist;
-// 	i = 0;
-// 	while (i < data->cmd_cnt)	//cmdlist의 구조 :
-// 	{
-// 		//cmdnode = 첫번째 cmdnode ; cmdnode = {char **cmd, t_type type}
-// 		while (cmdnode)
-// 		{
-// 			if (fork(fd) < 0)
-// 				오류;
-// 			if (pid > 0)
-// 			{
-// 				//do parent;
-// 				wait();	//특정 pid만 수용? 순차실행 보장 issue,
-// 				//부모나 자식에서 SIGINT등 시그널 들어올 때 고려
-// 				close(fd[1])
-// 				//자식 프로세스의 결과를 읽어온다: --> 그리고 다시 출력스트림으로 넘겨줘야하지 않나? 다음 child process로 결과값 넘기기?
-// 			}
-// 			else if (pid == 0)
-// 			{
-// 				//do child - child가 일반 args / redirections ... ;
-// 				//시그널 setting
-// 				close(fd[0]);
-// 				dup2(fd[1], 1);
-// 				execve();
-// 				//만약 execve를 실패한다면?
-// 			}
-// 			else
-// 				오류;
-// 		}
-// 	}
-// 	//exit_status란?
-// }

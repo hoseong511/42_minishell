@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   bind_type.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hossong <hossong@student.42seoul.kr>       +#+  +:+       +#+        */
+/*   By: namkim <namkim@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/12 15:52:26 by hossong           #+#    #+#             */
-/*   Updated: 2022/08/15 20:45:51 by hossong          ###   ########.fr       */
+/*   Updated: 2022/08/17 19:55:32 by namkim           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ t_list	*relocate_type(t_data *data)
 	{
 		type = ((t_cmd *)cmdlist->content)->type;
 		if (type == PIPE)
-				tmp = cmdlist;
+			tmp = cmdlist;
 		if (type >= R_IN && type <= R_HEREDOC)
 		{
 			if (tmp && ((t_cmd *)tmp->content)->type == PIPE)

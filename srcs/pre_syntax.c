@@ -6,7 +6,7 @@
 /*   By: namkim <namkim@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/13 14:52:14 by hossong           #+#    #+#             */
-/*   Updated: 2022/08/17 19:43:14 by namkim           ###   ########.fr       */
+/*   Updated: 2022/08/17 19:54:34 by namkim           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,8 +56,6 @@ void	check_pipe_syntax(t_data *data)
 	t_type	tnext;
 
 	tnode = data->tokenlist;
-	// if (!tnode)	아무 요소도 없으면 아예 여기 안 들어옴
-	// 	return ;
 	if (((t_cmd *)tnode->content)->type == PIPE)
 		ft_error("Syntax Error : syntax error near unexpected token `|'\n");
 	data->cmd_cnt++;

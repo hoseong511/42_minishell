@@ -6,64 +6,11 @@
 /*   By: namkim <namkim@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/13 22:00:32 by namkim            #+#    #+#             */
-/*   Updated: 2022/08/17 18:08:21 by namkim           ###   ########.fr       */
+/*   Updated: 2022/08/17 19:53:20 by namkim           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/main.h"
-
-int	get_env_len(char *target)
-{
-	int	i;
-
-	i = 0;
-	while (is_valid_env_name(target[i], i) == TRUE)
-		i++;
-	return (i);
-}
-
-void	replace_env(char **target, int start, int keysize, char **envp)
-{
-	char	*str;
-	char	*keystr;
-
-	str = *target;
-	keystr = ft_strndup(str + start, keysize);
-	if (!keystr)
-		ft_error("Malloc error\n");
-	*target = replace_key_to_value(str, start, keystr, envp);
-	free(str);
-	free(keystr);
-}
-
-int	count_env(char *str, char chr)
-{
-	int		i;
-	int		len;
-	int		res;
-	int		slen;
-
-	res = 0;
-	i = 0;
-	slen = ft_strlen(str);
-	while (i < slen && str[i])
-	{
-		if (str[i] == '$')
-		{
-			i++;
-			len = get_env_len(str + i);
-			if (len != 0)
-			{
-				res++;
-				i += len - 1;
-			}
-		}
-		else if (chr != '\"' && str[i] == '\'')
-			i = get_quote_end_idx(str, i);
-		i++;
-	}
-	return (res);
-}
 
 //이 안에 있는 모든 환경변수 변경
 //start end로 안 되면 환경변수의 개수 세기?
