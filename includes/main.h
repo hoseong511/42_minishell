@@ -6,7 +6,7 @@
 /*   By: hossong <hossong@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/06 16:43:27 by hossong           #+#    #+#             */
-/*   Updated: 2022/08/17 17:56:17 by hossong          ###   ########.fr       */
+/*   Updated: 2022/08/17 20:28:12 by hossong          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@
 # include <sys/wait.h>
 # include <string.h>
 # include <sys/errno.h>
+# include <sys/stat.h>
 
 # include "../lib/libft/libft.h"
 
@@ -71,9 +72,9 @@ typedef struct s_proc
 
 typedef struct s_data
 {
+	char		**envlist;
 	t_list		*tokenlist;
 	t_list		*cmdlist;
-	t_list		*envlist;
 	int			cmd_cnt;
 	int			status;
 	int			exit_status;
@@ -82,11 +83,11 @@ typedef struct s_data
 
 void	ft_error(char *err_msg);
 void	ft_perror(char *err_msg, int err);
-
-int		check_quote(char *str);
-char	*match_env(char *keystr, t_list *data);
+char	*match_env(char *keystr, char **envlist);
 int		is_valid_env_name(char c, int idx);
-t_list	*get_env(char **envp);
+char	**get_env(char **envp);
+int		get_env_len(char *target);
+void	replace_env(char **target, int start, int keysize, char **envp);
 
 /* control data */
 t_data	*init_data(char **envp);
@@ -119,6 +120,11 @@ t_list	*pop(t_list **list);
 void	append_ab(t_list **lst, t_list *a, t_list *b);
 void	insert_src(t_list **des, t_list **src, t_list **tmp);
 
+/* syntax */
+int		check_quote(char *str);
+void	check_pipe_syntax(t_data *data);
+void	check_redirection_syntax(t_data *data);
+
 /* excute */
 void	execution(t_data *data);
 
@@ -129,16 +135,21 @@ void	free_data(t_data *data);
 void	free_cmd(t_list *cmdlist, char *tar);
 
 /*replacement fix*/
-void	do_replace_in_token(t_cmd *node, t_list *envp);
+void	do_replace_in_token(t_cmd *node, char **envp);
 void	remove_quote(char **target, int startidx, int endidx);
-char	*replace_key_to_value(char *str, int start, char *keystr, t_list *data);
-void	do_expansion(char **target, t_list *envp, char sign);
+char	*replace_key_to_value(char *str, int start, char *keystr, char **envp);
+void	do_expansion(char **target, char **envp, char sign);
 void	make_component(t_list **lst, char *src, int size);
 char	*join_components(t_list *component);
-void	process_quote(t_list *component, t_list *envp, char quote);
-void	process_non_quote(t_list *component, t_list *envp);
+void	process_quote(t_list *component, char **envp, char quote);
+void	process_non_quote(t_list *component, char **envp);
 int		count_env(char *str, char chr);
 
+/* print utils */
 void	print_t_cmds2(t_list *tokenlist);
+
+/* execution utils */
+char	**get_path(t_data *data);
+char	*get_exe_file(char	**path, char *cmd, t_data *data);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: hossong <hossong@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/12 15:53:51 by namkim            #+#    #+#             */
-/*   Updated: 2022/08/17 19:33:24 by hossong          ###   ########.fr       */
+/*   Updated: 2022/08/17 20:26:28 by hossong          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,52 +58,6 @@ t_type	get_cmd_type(char *str)
 		return (R_APPD);
 	else
 		return (ARGS);
-}
-
-//pipe는 시작도 끝도 아니고, 연속하지 않는다.
-static void	check_pipe_syntax(t_data *data)
-{
-	t_list	*tnode;
-	t_type	tnext;
-
-	tnode = data->tokenlist;
-	if (((t_cmd *)tnode->content)->type == PIPE)
-		ft_error("Syntax Error : syntax error near unexpected token `|'\n");
-	data->cmd_cnt++;
-	while (tnode)
-	{
-		if (((t_cmd *)tnode->content)->type == PIPE)
-		{
-			tnext = ((t_cmd *)tnode->next->content)->type;
-			if (tnext != PIPE && tnext != NONE)
-				data->cmd_cnt++;
-			else
-				ft_error("Syntax Error : \
-syntax error near unexpected token `|'\n");
-		}
-		tnode = tnode->next;
-	}
-}
-
-static void	check_redirection_syntax(t_data *data)
-{
-	t_list	*tnode;
-	t_type	type;
-
-	tnode = data->tokenlist;
-	while (tnode)
-	{
-		type = ((t_cmd *)tnode->content)->type;
-		if (type > PIPE && type < R_ARG)
-		{
-			if (((t_cmd *)tnode->next->content)->type == ARGS)
-				((t_cmd *)tnode->next->content)->type = R_ARG;
-			else
-				ft_error("Syntax Error : Redirection has no args\n");
-			tnode = tnode->next;
-		}
-		tnode = tnode->next;
-	}
 }
 
 static void	put_type(t_data *data)
