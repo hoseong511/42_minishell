@@ -6,7 +6,7 @@
 /*   By: namkim <namkim@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/16 20:09:37 by namkim            #+#    #+#             */
-/*   Updated: 2022/08/16 21:40:31 by namkim           ###   ########.fr       */
+/*   Updated: 2022/08/17 17:37:19 by namkim           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,19 +18,40 @@
 	0. implemented 된 명령어인가? -> 해당 함수 호출
 	1. PATH -> value호출 -> : 기준으로 split -> 경로를 돌면서 명령어가 존재하는지 점검 -> 존재 시 실행경로 확보
 	2. 실행경로 확보시 -> execve로 실행
+	3. 실행 성공 ->
+		3-2. 실행 실패 ->
+	..4. 다음 명령 실행
+		0-3 실행
+	5. 사용된 모든 구조체 free (token, cmd, path(?))
+	6. 다시 prompt 띄우기
 */
-
 char	**get_path(t_data *data)
 {
 	char	**res;
 	char	*path_value;
 
-	path_value = match_env("PATH", data);
+	path_value = match_env("PATH", data->envlist);
 	res = ft_split(path_value, ':');
 	return (res);
 }
 
-char	*get_exe_file(char	**path, char *cmd)
+char	*get_exe_format(char *path, char *cmd)
+{
+	char	*temp;
+	char	*res;
+
+	res = NULL;
+	if (!path && !cmd)
+		return (NULL);
+	temp = ft_strjoin(path, "/");
+	if (!temp)
+		return (NULL);
+	res = ft_strjoin(temp, cmd);
+	free (temp);
+	return (res);
+}
+
+char	*get_exe_file(char	**path, char *cmd, t_data *data)
 {
 	char		*res;
 	char		*addr;
@@ -38,11 +59,13 @@ char	*get_exe_file(char	**path, char *cmd)
 	struct stat	sb;
 	int			sign;
 
-	i = -1;
+	i = 0;
 	res = NULL;
+	printf("path: %s\n", path[0]);
 	while (path[i])
 	{
-		addr = ft_strjoin(path[i], cmd);
+		addr = get_exe_format(path[i], cmd);
+		printf("j-addr: %s\n", addr);
 		sign = stat(addr, &sb);	//호출 성공시 0, 실패시 -1 & errno set
 		if (sign == 0)
 		{
@@ -51,14 +74,60 @@ char	*get_exe_file(char	**path, char *cmd)
 			//id user로 했을 때 group 권한을 다 줬는데 왜 안 읽히는지...?
 							//000중 어느쪽을 기준으로 권한 체크해야하는지?
 							//우선은 소유주를 기준으로 체크
-			//만약 권한이 있을 때 (실행가능한 상태일 때)
+			//만약 권한이 있을 때 (실행가능한 상태일 때) -- but 만약 권한이 없더라도 실행은 하는게 맞는 것 같다. 왜? errno받아야 됨.
 			if ((sb.st_mode & S_IXUSR) != 0)
 			{
 				res = addr;
-				return (res);
+				printf("addr: %s\n", res);
+				execve(res, NULL, NULL);
 			}
+			else
+				data->status = -5; //#define no permissioin
+			return (res);
 		}
 		free(addr);
+		i++;
 	}
 	return (res);
 }
+
+// void	do_execution(t_data *data)
+// {
+// 	t_cmd2	*cmdlist;
+// 	pid_t	pid;
+// 	int		i;
+// 	int		fd[2];
+
+
+// 	cmdlist = data->cmdlist;
+// 	i = 0;
+// 	while (i < data->cmd_cnt)	//cmdlist의 구조 :
+// 	{
+// 		//cmdnode = 첫번째 cmdnode ; cmdnode = {char **cmd, t_type type}
+// 		while (cmdnode)
+// 		{
+// 			if (fork(fd) < 0)
+// 				오류;
+// 			if (pid > 0)
+// 			{
+// 				//do parent;
+// 				wait();	//특정 pid만 수용? 순차실행 보장 issue,
+// 				//부모나 자식에서 SIGINT등 시그널 들어올 때 고려
+// 				close(fd[1])
+// 				//자식 프로세스의 결과를 읽어온다: --> 그리고 다시 출력스트림으로 넘겨줘야하지 않나? 다음 child process로 결과값 넘기기?
+// 			}
+// 			else if (pid == 0)
+// 			{
+// 				//do child - child가 일반 args / redirections ... ;
+// 				//시그널 setting
+// 				close(fd[0]);
+// 				dup2(fd[1], 1);
+// 				execve();
+// 				//만약 execve를 실패한다면?
+// 			}
+// 			else
+// 				오류;
+// 		}
+// 	}
+// 	//exit_status란?
+// }

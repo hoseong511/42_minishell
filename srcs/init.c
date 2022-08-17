@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hossong <hossong@student.42seoul.kr>       +#+  +:+       +#+        */
+/*   By: namkim <namkim@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/12 15:46:57 by namkim            #+#    #+#             */
-/*   Updated: 2022/08/15 21:02:29 by hossong          ###   ########.fr       */
+/*   Updated: 2022/08/17 18:10:28 by namkim           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 //환경변수 expansion
 //single quote / doublequote 처리
 //re_tokenize
-void	process_quote(t_list *component, t_list *envp, char quote)
+void	process_quote(t_list *component, char **envp, char quote)
 {
 	char	*str;
 
@@ -28,7 +28,7 @@ void	process_quote(t_list *component, t_list *envp, char quote)
 	component->content = str;
 }
 
-void	process_non_quote(t_list *component, t_list *envp)
+void	process_non_quote(t_list *component, char **envp)
 {
 	char	*str;
 
@@ -101,7 +101,7 @@ t_data	*init_data(char **envp)
 	res->envlist = get_env(envp);
 	res->tokenlist = NULL;
 	res->cmdlist = NULL;
-	res->pip_cnt = 0;
+	res->cmd_cnt = 0;
 	res->status = TRUE;
 	return (res);
 }
@@ -122,4 +122,16 @@ void	load_data(t_data *data, char *str)
 	data->cmdlist = relocate_type(data);
 	data->cmdlist = bind_type(data);
 	print_t_cmds2(data->cmdlist);
+	t_cmd2	*cmd2cont;
+	char	**path;
+	cmd2cont = data->cmdlist->content;
+	path = get_path(data);
+	// printf("path : %s\n", path[0]);
+	// printf("path : %s\n", path[1]);
+	// printf("path : %s\n", path[2]);
+	// printf("path : %s\n", path[3]);
+	// printf("path : %s\n", path[4]);
+//	printf("cmdnode->str: %s\n", cmd2cont->str[0]);
+	get_exe_file(path, cmd2cont->str[0], data);
+
 }

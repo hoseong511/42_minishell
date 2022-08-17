@@ -6,7 +6,7 @@
 /*   By: namkim <namkim@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/12 15:53:51 by namkim            #+#    #+#             */
-/*   Updated: 2022/08/16 20:06:46 by namkim           ###   ########.fr       */
+/*   Updated: 2022/08/17 17:37:19 by namkim           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,9 +67,11 @@ static void	check_pipe_syntax(t_data *data)
 	t_type	tnext;
 
 	tnode = data->tokenlist;
+	// if (!tnode)	아무 요소도 없으면 아예 여기 안 들어옴
+	// 	return ;
 	if (((t_cmd *)tnode->content)->type == PIPE)
 		ft_error("Syntax Error : syntax error near unexpected token `|'\n");
-	data->pip_cnt++;
+	data->cmd_cnt++;
 	while (tnode)
 	{
 		if (((t_cmd *)tnode->content)->type == PIPE)
@@ -79,7 +81,7 @@ static void	check_pipe_syntax(t_data *data)
 syntax error near unexpected token `|'\n");
 			tnext = ((t_cmd *)tnode->next->content)->type;
 			if (tnext != PIPE && tnext != NONE)
-				data->pip_cnt++;
+				data->cmd_cnt++;
 			else
 				ft_error("Syntax Error : \
 syntax error near unexpected token `|'\n");
@@ -150,6 +152,6 @@ t_list	*lexer(t_data *data)
 	}
 	print_t_cmds(data->tokenlist);
 	res = data->tokenlist;
-	// printf("how many commands: %d\n", data->pip_cnt);
+	// printf("how many commands: %d\n", data->cmd_cnt);
 	return (res);
 }

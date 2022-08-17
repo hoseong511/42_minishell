@@ -6,7 +6,7 @@
 /*   By: namkim <namkim@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/06 16:43:27 by hossong           #+#    #+#             */
-/*   Updated: 2022/08/16 20:21:18 by namkim           ###   ########.fr       */
+/*   Updated: 2022/08/17 18:11:01 by namkim           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,19 +60,21 @@ typedef struct s_env
 
 typedef struct s_data
 {
-	t_list		*envlist;
+//	t_list		*envlist;
+	char		**envlist;
 	t_list		*tokenlist;
 	t_list		*cmdlist;
-	int			pip_cnt;
+	int			cmd_cnt;
 	int			status;
 }	t_data;
 
 void	ft_error(char *err_msg);
 
 int		check_quote(char *str);
-char	*match_env(char *keystr, t_list *data);
+//char	*match_env(char *keystr, t_list *data);
+char	*match_env(char *keystr, char **envlist);
 int		is_valid_env_name(char c, int idx);
-t_list	*get_env(char **envp);
+char	**get_env(char **envp);
 
 /* control data */
 t_data	*init_data(char **envp);
@@ -114,16 +116,24 @@ void	free_data(t_data *data);
 void	free_cmd(t_data *data, char *tar);
 
 /*replacement fix*/
-void	do_replace_in_token(t_cmd *node, t_list *envp);
+void	do_replace_in_token(t_cmd *node, char **envp);
 void	remove_quote(char **target, int startidx, int endidx);
-char	*replace_key_to_value(char *str, int start, char *keystr, t_list *data);
-void	do_expansion(char **target, t_list *envp, char sign);
+char	*replace_key_to_value(char *str, int start, char *keystr, char **envp);
+//void	do_expansion(char **target, t_list *envp, char sign);
+void	do_expansion(char **target, char **envp, char sign);
 void	make_component(t_list **lst, char *src, int size);
 char	*join_components(t_list *component);
-void	process_quote(t_list *component, t_list *envp, char quote);
-void	process_non_quote(t_list *component, t_list *envp);
+// void	process_quote(t_list *component, t_list *envp, char quote);
+// void	process_non_quote(t_list *component, t_list *envp);
+void	process_quote(t_list *component, char **envp, char quote);
+void	process_non_quote(t_list *component, char **envp);
 int		count_env(char *str, char chr);
 
 void	print_t_cmds2(t_list *tokenlist);
+
+/* execution utils */
+char	**get_path(t_data *data);
+char	*get_exe_file(char	**path, char *cmd, t_data *data);
+
 
 #endif
