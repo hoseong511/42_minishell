@@ -1,22 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strchr.c                                        :+:      :+:    :+:   */
+/*   signal.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: namkim <namkim@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/11/19 13:11:16 by hossong           #+#    #+#             */
-/*   Updated: 2022/08/08 17:39:33 by namkim           ###   ########.fr       */
+/*   Created: 2022/08/16 22:13:27 by namkim            #+#    #+#             */
+/*   Updated: 2022/08/17 19:54:26 by namkim           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
-
-char	*ft_strchr(const char *s, int c)
-{
-	while (*s != '\0' && *s != (char)c)
-		s++;
-	if (*s == (char)c)
-		return ((char *)s);
-	return (0);
-}
+#include "../includes/main.h"
+/*
+Ctrl + C : SIGINT
+Ctrl + D : exit shell... exit shell 하는 건 너무 많은데..?ㅠㅠ
+Ctrl+D is not a signal, it's EOF (End-Of-File).
+It closes the stdin pipe. If read(STDIN) returns 0 (원래는 이렇다)
+Ctrl + \ : do nothing : sigquit
+*/
