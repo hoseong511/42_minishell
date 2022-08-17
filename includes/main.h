@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.h                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: namkim <namkim@student.42seoul.kr>         +#+  +:+       +#+        */
+/*   By: hossong <hossong@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/06 16:43:27 by hossong           #+#    #+#             */
-/*   Updated: 2022/08/17 19:58:40 by namkim           ###   ########.fr       */
+/*   Updated: 2022/08/17 20:28:12 by hossong          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,18 @@ typedef struct s_env
 	char	*value;
 }	t_env;
 
+typedef struct s_pipe
+{
+	int	fd[2];
+}	t_pipe;
+
+typedef struct s_proc
+{
+	pid_t	pid;
+	t_pipe	pipe[2];
+	int		status;
+}	t_proc;
+
 typedef struct s_data
 {
 	char		**envlist;
@@ -65,9 +77,12 @@ typedef struct s_data
 	t_list		*cmdlist;
 	int			cmd_cnt;
 	int			status;
+	int			exit_status;
+	t_proc		*info;
 }	t_data;
 
 void	ft_error(char *err_msg);
+void	ft_perror(char *err_msg, int err);
 char	*match_env(char *keystr, char **envlist);
 int		is_valid_env_name(char c, int idx);
 char	**get_env(char **envp);
@@ -98,11 +113,12 @@ void	add_cmd2(t_list **lst, char **str, t_type type);
 t_type	get_cmd_type(char *str);
 t_list	*lexer(t_data *data);
 t_list	*tokenizer(char *str);
-t_list	*relocate_type(t_data *data);
-t_list	*bind_type(t_data *data);
-void	insert(t_list *a, t_list *b);
-void	push(t_list **list, t_list *node);
+t_list	*relocate(t_list *tokenlist);
+t_list	*bind(t_list *cmdlist);
+void	insert(t_list **a, t_list *b);
 t_list	*pop(t_list **list);
+void	append_ab(t_list **lst, t_list *a, t_list *b);
+void	insert_src(t_list **des, t_list **src, t_list **tmp);
 
 /* syntax */
 int		check_quote(char *str);
@@ -110,13 +126,13 @@ void	check_pipe_syntax(t_data *data);
 void	check_redirection_syntax(t_data *data);
 
 /* excute */
-void	execute_cmd(t_data *data);
+void	execution(t_data *data);
 
 /*free*/
-void	free_cmdlist(t_data *data);
+void	free_cmdlist(t_list *cmdlist);
 void	free_tokenlist(t_data *data);
 void	free_data(t_data *data);
-void	free_cmd(t_data *data, char *tar);
+void	free_cmd(t_list *cmdlist, char *tar);
 
 /*replacement fix*/
 void	do_replace_in_token(t_cmd *node, char **envp);

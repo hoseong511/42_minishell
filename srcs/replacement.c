@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   replacement.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: namkim <namkim@student.42seoul.kr>         +#+  +:+       +#+        */
+/*   By: hossong <hossong@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/13 22:00:32 by namkim            #+#    #+#             */
-/*   Updated: 2022/08/17 19:53:20 by namkim           ###   ########.fr       */
+/*   Updated: 2022/08/17 20:27:47 by hossong          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,6 @@ void	do_replace_in_token(t_cmd *node, char **envp)
 	int		i;
 	int		j;
 	t_list	*component;
-	t_list	*this;
 
 	target = (char *)node->str;
 	i = 0;
@@ -81,7 +80,6 @@ void	do_replace_in_token(t_cmd *node, char **envp)
 	if (target[i + j] == '\0' && j != 0)
 	{
 		make_component(&component, target + i, j);
-		this = ft_lstlast(component);
 		process_non_quote(ft_lstlast(component), envp);//
 	}
 	if (component)

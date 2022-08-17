@@ -3,55 +3,42 @@
 /*                                                        :::      ::::::::   */
 /*   bind_type.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: namkim <namkim@student.42seoul.kr>         +#+  +:+       +#+        */
+/*   By: hossong <hossong@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/12 15:52:26 by hossong           #+#    #+#             */
-/*   Updated: 2022/08/17 19:55:32 by namkim           ###   ########.fr       */
+/*   Updated: 2022/08/17 20:25:56 by hossong          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/main.h"
 
-static void	move_redir(t_list **tmp, t_list *a, t_list *b)
-{
-	if (*tmp && ((t_cmd *)(*tmp)->content)->type == PIPE)
-	{
-		insert(*tmp, b);
-		insert(*tmp, a);
-	}
-	else
-	{
-		push(tmp, b);
-		push(tmp, a);
-	}
-}
-
-t_list	*relocate_type(t_data *data)
+t_list	*relocate(t_list *tokenlist)
 {
 	t_type	type;
-	t_list	*cmdlist;
-	t_list	*reloc;
+	t_list	*des;
+	t_list	*src;
 	t_list	*tmp;
 
-	reloc = NULL;
+	des = NULL;
 	tmp = NULL;
-	cmdlist = data->tokenlist;
-	while (cmdlist)
+	src = NULL;
+	while (tokenlist)
 	{
-		type = ((t_cmd *)cmdlist->content)->type;
-		if (type == PIPE)
-			tmp = cmdlist;
+		type = ((t_cmd *)tokenlist->content)->type;
 		if (type >= R_IN && type <= R_HEREDOC)
+			append_ab(&src, pop(&tokenlist), pop(&tokenlist));
+		else if (type == PIPE)
 		{
-			if (tmp && ((t_cmd *)tmp->content)->type == PIPE)
-				move_redir(&tmp, pop(&cmdlist), pop(&cmdlist));
-			else
-				move_redir(&reloc, pop(&cmdlist), pop(&cmdlist));
+			insert_src(&des, &src, &tmp);
+			tmp = pop(&tokenlist);
+			ft_lstadd_back(&des, tmp);
 		}
 		else
-			ft_lstadd_back(&reloc, pop(&cmdlist));
+			ft_lstadd_back(&des, pop(&tokenlist));
+		if (!tokenlist)
+			insert_src(&des, &src, &tmp);
 	}
-	return (reloc);
+	return (des);
 }
 
 static char	**bind_content(t_list *node, int i)
@@ -76,7 +63,7 @@ static char	**bind_content(t_list *node, int i)
 	return (des);
 }
 
-static void	binding(t_list **cmdlist, t_list **bind, t_type type)
+static void	bind_type(t_list **cmdlist, t_list **bind, t_type type)
 {
 	t_list	*tmp;
 	char	**des;
@@ -102,22 +89,36 @@ static void	binding(t_list **cmdlist, t_list **bind, t_type type)
 	add_cmd2(bind, des, type);
 }
 
-t_list	*bind_type(t_data *data)
+static void	bind_cmd(t_list **lst, t_list **tmp)
+{
+	t_list	*new;
+
+	new = ft_lstnew(*tmp);
+	*tmp = NULL;
+	ft_lstadd_back(lst, new);
+}
+
+t_list	*bind(t_list *cmdlist)
 {
 	t_list	*bind;
+	t_list	*tmp;
 	t_type	type;
 
 	bind = NULL;
-	while (data->cmdlist)
+	tmp = NULL;
+	while (cmdlist)
 	{
-		type = ((t_cmd *)data->cmdlist->content)->type;
+		type = ((t_cmd *)cmdlist->content)->type;
 		if (type == PIPE)
 		{
-			free_cmd(data, "t_cmd");
-			free(pop(&data->cmdlist));
+			bind_cmd(&bind, &tmp);
+			free_cmd(cmdlist, "t_cmd");
+			free(pop(&cmdlist));
 		}
 		else
-			binding(&data->cmdlist, &bind, type);
+			bind_type(&cmdlist, &tmp, type);
 	}
+	if (!cmdlist)
+		bind_cmd(&bind, &tmp);
 	return (bind);
 }

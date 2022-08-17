@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: namkim <namkim@student.42seoul.kr>         +#+  +:+       +#+        */
+/*   By: hossong <hossong@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/12 15:46:57 by namkim            #+#    #+#             */
-/*   Updated: 2022/08/17 19:56:19 by namkim           ###   ########.fr       */
+/*   Updated: 2022/08/17 20:25:39 by hossong          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,19 +29,16 @@ t_data	*init_data(char **envp)
 
 void	load_data(t_data *data, char *str)
 {
-	t_list	*token;
-
 	data->status = check_quote(str);
 	if (data->status == FALSE)
 		return ;
 	data->tokenlist = tokenizer(str);
 	if (!data->tokenlist)
 		return ;
-	token = data->tokenlist;
 	data->tokenlist = lexer(data);
 	printf("=========================\n");
-	data->cmdlist = relocate_type(data);
-	data->cmdlist = bind_type(data);
+	data->cmdlist = relocate(data->tokenlist);
+	data->cmdlist = bind(data->cmdlist);
 	print_t_cmds2(data->cmdlist);
 	t_cmd2	*cmd2cont;
 	char	**path;

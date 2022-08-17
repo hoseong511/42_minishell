@@ -6,43 +6,64 @@
 /*   By: hossong <hossong@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/14 17:27:38 by hossong           #+#    #+#             */
-/*   Updated: 2022/08/15 20:25:18 by hossong          ###   ########.fr       */
+/*   Updated: 2022/08/16 20:32:21 by hossong          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/main.h"
 
-void	free_cmd(t_data *data, char *tar)
+void	free_cmd(t_list *cmdlist, char *tar)
 {
 	if (ft_strncmp(tar, "t_cmd", 6) == 0)
 	{
-		free(((t_cmd *)data->cmdlist->content)->str);
-		free(data->cmdlist->content);
+		free(((t_cmd *)cmdlist->content)->str);
+		free(cmdlist->content);
 	}
 	else if (ft_strncmp(tar, "t_cmd2", 7) == 0)
 	{
-		free(((t_cmd2 *)data->cmdlist->content)->str);
-		free(data->cmdlist->content);
+		free(((t_cmd2 *)cmdlist->content)->str);
+		free(cmdlist->content);
 	}
 }
 
-void	free_cmdlist(t_data *data)
+void	free_str(char **str)
+{
+	int	i;
+
+	i = 0;
+	while (str[i])
+	{
+		free(str[i]);
+		i++;
+	}
+	free(str);
+}
+
+void	free_cmd_content(t_list *lst)
 {
 	t_list	*tmp;
-	int		i;
 
-	while (data->cmdlist)
+	while (lst)
 	{
-		tmp = data->cmdlist->next;
-		i = 0;
-		while (((t_cmd2 *)data->cmdlist->content)->str[i])
-		{
-			free(((t_cmd2 *)data->cmdlist->content)->str[i]);
-			i++;
-		}
-		free_cmd(data, "t_cmd2");
-		free(data->cmdlist);
-		data->cmdlist = tmp;
+		tmp = lst->next;
+		free_str(((t_cmd2 *)lst->content)->str);
+		free(lst->content);
+		free(lst);
+		lst = tmp;
+	}
+	free(lst->content);
+}
+
+void	free_cmdlist(t_list *cmdlist)
+{
+	t_list	*tmp;
+
+	while (cmdlist)
+	{
+		tmp = cmdlist->next;
+		free_cmd_content((t_list *)cmdlist->content);
+		free(cmdlist);
+		cmdlist = tmp;
 	}
 }
 
