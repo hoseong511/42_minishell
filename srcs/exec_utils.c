@@ -6,7 +6,7 @@
 /*   By: namkim <namkim@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/16 20:09:37 by namkim            #+#    #+#             */
-/*   Updated: 2022/08/18 16:30:01 by namkim           ###   ########.fr       */
+/*   Updated: 2022/08/18 19:35:24 by namkim           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,12 +25,12 @@
 	5. 사용된 모든 구조체 free (token, cmd, path(?))
 	6. 다시 prompt 띄우기
 */
-char	**get_path(t_data *data)
+char	**get_path(char **envlist)
 {
 	char	**res;
 	char	*path_value;
 
-	path_value = match_env("PATH", data->envlist);
+	path_value = match_env("PATH", envlist);
 	res = ft_split(path_value, ':');
 	free(path_value);
 	return (res);
@@ -52,34 +52,49 @@ char	*get_exe_format(char *path, char *cmd)
 	return (res);
 }
 
-//get_filepath로 이름 바꾸기
-char	*get_exe_file(char	**path, char *cmd, t_data *data)
+int	is_valid_exe_file(char *addr)
 {
-	char		*res;
-	char		*addr;
-	int			i;
-	struct stat	sb;
+	struct stat sb;
 	int			sign;
 
+	if (!addr)
+		return (NULL);
+	sign = stat(addr, &sb);
+	if (sign == 0)
+	{
+		if ((sb.st_mode & S_IXUSR) != 0)
+			return (TRUE);
+		else
+			return (-1);
+	}
+	return (-2);
+}
+
+//get_filepath로 이름 바꾸기
+char	*get_exe_file(char	**envp, char *cmd)
+{
+	char	*addr;
+	int		i;
+	int		sign;
+	char	**path;
+
 	i = 0;
-	res = NULL;
+	addr = NULL;
+	path = get_path(envp);
 	while (path[i])
 	{
 		addr = get_exe_format(path[i], cmd);
-		sign = stat(addr, &sb);
-		if (sign == 0)
-		{
-			if ((sb.st_mode & S_IXUSR) != 0)
-			{
-				res = addr;
-				return (res);
-			}
-			else
-				data->status = -5;
-			return (res);
-		}
+		sign = is_valid_exe_file(addr);
+		if (sign == TRUE)
+			return (addr);
 		free(addr);
+		addr = NULL;
 		i++;
 	}
-	return (res);
+	if (sign == -1)
+		printf("%s: %s\n", cmd, "Permission Denied");
+	if (sign == -2)
+		printf("%s: %s\n", cmd, "command not found");
+	exit(1);
+	return (addr);
 }

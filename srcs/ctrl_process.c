@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ctrl_process.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hossong <hossong@student.42seoul.kr>       +#+  +:+       +#+        */
+/*   By: namkim <namkim@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/18 12:32:30 by hossong           #+#    #+#             */
-/*   Updated: 2022/08/18 15:50:20 by hossong          ###   ########.fr       */
+/*   Updated: 2022/08/18 17:30:58 by namkim           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,10 @@ void	child_process(t_data *data, t_list *args, int depth)
 	(void)data;
 	(void)args;
 	(void)depth;
-	redirection();
+	t_list	*node;
+
+	node = redirection(args);
+	printf("%s\n", ((t_cmd2 *)node->content)->str[0]);
 	execute_arg();
 	sleep(2);
 	exit(1);

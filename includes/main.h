@@ -6,7 +6,7 @@
 /*   By: namkim <namkim@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/06 16:43:27 by hossong           #+#    #+#             */
-/*   Updated: 2022/08/18 16:30:02 by namkim           ###   ########.fr       */
+/*   Updated: 2022/08/18 18:03:49 by namkim           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -147,8 +147,10 @@ void	child_process(t_data *data, t_list *c_node, int depth);
 void	execute_arg(void);
 
 /* redirection*/
-void	redirection(void);
-void	settings_redirection(void);
+t_list	*redirection(t_list *args);
+void	redirection_in(char *filepath);
+void	redirection_out(char *filepath);
+void	redirection_append(char *filepath);
 void	init_pipe(t_proc *info, int depth);
 
 /*free*/
@@ -172,7 +174,7 @@ int		count_env(char *str, char chr);
 void	print_t_cmds2(t_list *tokenlist);
 
 /* execution utils */
-char	**get_path(t_data *data);
-char	*get_exe_file(char	**path, char *cmd, t_data *data);
+char	**get_path(char **envlist);
+char	*get_exe_file(char	**path, char *cmd);
 
 #endif
