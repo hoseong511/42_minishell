@@ -6,7 +6,7 @@
 /*   By: hossong <hossong@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/06 16:43:27 by hossong           #+#    #+#             */
-/*   Updated: 2022/08/18 23:53:11 by hossong          ###   ########.fr       */
+/*   Updated: 2022/08/19 01:30:45 by hossong          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,15 +71,14 @@ typedef struct s_env
 
 typedef struct s_pipe
 {
-	int	fd0[2];
-	int	fd1[2];
+	int	fd[2];
 }	t_pipe;
 
 typedef struct s_proc
 {
 	pid_t	pid;
-	t_pipe	pipe;
 	int		status;
+	t_pipe	pipe[2];
 }	t_proc;
 
 typedef struct s_data
@@ -91,10 +90,10 @@ typedef struct s_data
 	int			status;
 	int			exit_status;
 	t_proc		*info;
-	t_pipe		pipe;
 }	t_data;
 
 void	ft_error(char *err_msg);
+void	ft_error2(char *arg, char *err_msg);
 void	ft_perror(char *err_msg, int err);
 char	*match_env(char *keystr, char **envlist);
 int		is_valid_env_name(char c, int idx);
