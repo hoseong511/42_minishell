@@ -6,7 +6,7 @@
 /*   By: hossong <hossong@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/06 16:43:27 by hossong           #+#    #+#             */
-/*   Updated: 2022/08/19 01:30:45 by hossong          ###   ########.fr       */
+/*   Updated: 2022/08/19 02:07:38 by hossong          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,6 +95,7 @@ typedef struct s_data
 void	ft_error(char *err_msg);
 void	ft_error2(char *arg, char *err_msg);
 void	ft_perror(char *err_msg, int err);
+void	ft_dup2(int fd1, int fd2);
 char	*match_env(char *keystr, char **envlist);
 int		is_valid_env_name(char c, int idx);
 char	**get_env(char **envp);
@@ -147,6 +148,7 @@ void	parent_process(t_data *data, int depth);
 void	child_process(t_data *data, t_list *c_node, int depth);
 void	exec_arg(t_data *data, t_list *args);
 void	pipe_io(t_data *data, int depth, int cmd_cnt);
+
 
 /* redirection*/
 void	init_pipe(t_data *data, int depth, int cnt);
