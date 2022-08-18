@@ -6,7 +6,7 @@
 /*   By: hossong <hossong@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/06 16:43:27 by hossong           #+#    #+#             */
-/*   Updated: 2022/08/18 19:27:59 by hossong          ###   ########.fr       */
+/*   Updated: 2022/08/18 19:51:51 by hossong          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -148,9 +148,11 @@ void	exec_arg(t_data *data, t_list *args);
 void	pipe_io(t_proc *info, int depth, int cmd_cnt);
 
 /* redirection*/
-void	redirection(void);
-void	settings_redirection(void);
 void	init_pipe(t_proc *info, int depth, int cnt);
+t_list	*redirection(t_list *args);
+void	redirection_in(char *filepath);
+void	redirection_out(char *filepath);
+void	redirection_append(char *filepath);
 
 /*free*/
 void	free_cmdlist(t_list *cmdlist);
@@ -173,7 +175,7 @@ int		count_env(char *str, char chr);
 void	print_t_cmds2(t_list *tokenlist);
 
 /* execution utils */
-char	**get_path(char **path);
+char	**get_path(char **envlist);
 char	*get_exe_file(char	**path, char *cmd);
 
 #endif

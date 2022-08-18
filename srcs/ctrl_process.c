@@ -6,7 +6,7 @@
 /*   By: hossong <hossong@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/18 12:32:30 by hossong           #+#    #+#             */
-/*   Updated: 2022/08/18 19:38:09 by hossong          ###   ########.fr       */
+/*   Updated: 2022/08/18 20:16:34 by hossong          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,14 +77,11 @@ void	exec_builtin(t_list *args)
 
 void	child_process(t_data *data, t_list *args, int depth)
 {
-	(void)data;
-	(void)args;
+	t_list	*node;
+
 	(void)depth;
-	redirection();
-	
-		// pipe_io(data->info,);
-	exec_arg(data, args);
-	exit(1);
+	node = redirection(args);
+	exec_arg(data, node);
 }
 
 void	parent_process(t_data *data, int depth)
