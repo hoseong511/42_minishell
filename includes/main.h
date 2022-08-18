@@ -6,7 +6,7 @@
 /*   By: namkim <namkim@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/06 16:43:27 by hossong           #+#    #+#             */
-/*   Updated: 2022/08/18 14:34:41 by namkim           ###   ########.fr       */
+/*   Updated: 2022/08/18 16:28:24 by namkim           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,6 @@
 
 # include "../lib/libft/libft.h"
 
-# define BUF_SIZE 1024
 # define TRUE 1
 # define FALSE 0
 
@@ -40,6 +39,17 @@ typedef enum e_type
 	R_HEREDOC,
 	R_ARG
 }	t_type;
+
+typedef enum e_built
+{
+	ECHO = 1,
+	CD,
+	PWD,
+	EXPORT,
+	UNSET,
+	ENV,
+	EXIT
+}	t_built;
 
 typedef struct s_cmd
 {
@@ -127,7 +137,19 @@ void	check_pipe_syntax(t_data *data);
 void	check_redirection_syntax(t_data *data);
 
 /* excute */
+t_proc	*init_proc_info(void);
 void	execution(t_data *data);
+t_built	check_builtin(t_list *args);
+void	exec_builtin(t_list *args);
+void	exec_process(t_data *data, t_list *cmdlist);
+void	parent_process(t_data *data, int depth);
+void	child_process(t_data *data, t_list *c_node, int depth);
+void	execute_arg(void);
+
+/* redirection*/
+void	redirection(void);
+void	settings_redirection(void);
+void	init_pipe(t_proc *info, int depth);
 
 /*free*/
 void	free_cmdlist(t_list *cmdlist);

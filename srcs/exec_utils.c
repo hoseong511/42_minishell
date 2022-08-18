@@ -6,7 +6,7 @@
 /*   By: namkim <namkim@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/16 20:09:37 by namkim            #+#    #+#             */
-/*   Updated: 2022/08/18 15:41:11 by namkim           ###   ########.fr       */
+/*   Updated: 2022/08/18 16:28:17 by namkim           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,7 @@ char	**get_path(t_data *data)
 
 	path_value = match_env("PATH", data->envlist);
 	res = ft_split(path_value, ':');
+	free(path_value);
 	return (res);
 }
 
