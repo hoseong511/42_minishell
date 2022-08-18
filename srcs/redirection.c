@@ -3,25 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   redirection.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hossong <hossong@student.42seoul.kr>       +#+  +:+       +#+        */
+/*   By: namkim <namkim@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/18 13:38:07 by hossong           #+#    #+#             */
-/*   Updated: 2022/08/18 13:44:45 by hossong          ###   ########.fr       */
+/*   Updated: 2022/08/18 17:24:16 by namkim           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "main.h"
-
-void	settings_redirection(void)
-{
-	printf("settings_redirection\n");
-}
-
-void	redirection(void)
-{
-	printf("redirection\n");
-	settings_redirection();
-}
 
 void	init_pipe(t_proc *info, int depth)
 {

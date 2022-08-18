@@ -6,7 +6,7 @@
 /*   By: namkim <namkim@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/13 14:52:14 by hossong           #+#    #+#             */
-/*   Updated: 2022/08/17 19:54:34 by namkim           ###   ########.fr       */
+/*   Updated: 2022/08/18 17:50:22 by namkim           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,8 @@ int	check_quote(char *str)
 
 	i = -1;
 	quote = NULL;
+	if (!str)
+		return (FALSE); //여기서 ctrl + D 처리한다
 	while (str[++i])
 	{
 		if (str[i] == '\'' || str[i] == '\"')
