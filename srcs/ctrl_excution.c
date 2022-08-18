@@ -6,7 +6,7 @@
 /*   By: hossong <hossong@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/14 17:27:01 by hossong           #+#    #+#             */
-/*   Updated: 2022/08/18 01:01:10 by hossong          ###   ########.fr       */
+/*   Updated: 2022/08/18 13:27:09 by hossong          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,40 +28,6 @@ void	excute_cmd(void)
 	printf("excute_cmd\n");
 }
 
-void	do_child_proc(t_data *data, t_list *c_node, int depth)
-{
-	(void)data;
-	(void)c_node;
-	(void)depth;
-	redirection();
-	excute_cmd();
-	sleep(2);
-	exit(1);
-}
-
-void	do_parent_proc(t_data *data, int depth)
-{
-	(void)data;
-	(void)depth;
-	if (data->cmd_cnt > 1)
-	{
-		if (depth % 2 == 0)
-			close(data->info->pipe[0].fd[1]);
-		else
-		{
-			close(data->info->pipe[0].fd[0]);
-			close(data->info->pipe[1].fd[1]);
-		}
-	}
-	if (depth == data->cmd_cnt - 1)
-	{
-		while (wait(&data->info->status) != -1)
-			;
-		printf("parent, exit_status : %d\n", WEXITSTATUS(data->info->status));
-		//close(data->info->pipe[1].fd[0]);
-	}
-}
-
 void	init_pipe(t_proc *info, int depth)
 {
 	if (depth % 2 == 0 && pipe(info->pipe[0].fd) != 0)
@@ -81,13 +47,11 @@ t_proc	*init_info(void)
 	return (new);
 }
 
-void	execution(t_data *data)
+void	exec_process(t_data *data, t_list *cmdlist)
 {
-	t_list	*cmdlist;
-	int		depth;
+	int	depth;
 
 	data->info = init_info();
-	cmdlist = data->cmdlist;
 	depth = 0;
 	while (cmdlist && depth < data->cmd_cnt)
 	{
@@ -103,5 +67,20 @@ void	execution(t_data *data)
 		cmdlist = cmdlist->next;
 		depth++;
 	}
+}
+
+void	execution(t_data *data)
+{
+	t_list	*cmdlist;
+	t_built	is_built;
+
+	cmdlist = data->cmdlist;
+	if (!cmdlist)
+		return ;
+	is_built = check_builtin((t_list *)cmdlist->content);
+	if (data->cmd_cnt == 1 && is_built)
+		exec_builtin((t_list *)cmdlist->content, is_built);
+	else
+		exec_process(data, cmdlist);
 	data->cmd_cnt = 0;
 }

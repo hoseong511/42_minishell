@@ -6,7 +6,7 @@
 /*   By: hossong <hossong@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/06 16:43:27 by hossong           #+#    #+#             */
-/*   Updated: 2022/08/17 20:28:12 by hossong          ###   ########.fr       */
+/*   Updated: 2022/08/18 13:18:14 by hossong          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,17 @@ typedef enum e_type
 	R_HEREDOC,
 	R_ARG
 }	t_type;
+
+typedef enum e_built
+{
+	ECHO = 1,
+	CD,
+	PWD,
+	EXPORT,
+	UNSET,
+	ENV,
+	EXIT
+}	t_built;
 
 typedef struct s_cmd
 {
@@ -127,6 +138,7 @@ void	check_redirection_syntax(t_data *data);
 
 /* excute */
 void	execution(t_data *data);
+t_built	check_builtin(t_list *args);
 
 /*free*/
 void	free_cmdlist(t_list *cmdlist);
