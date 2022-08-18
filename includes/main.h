@@ -6,7 +6,7 @@
 /*   By: hossong <hossong@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/06 16:43:27 by hossong           #+#    #+#             */
-/*   Updated: 2022/08/18 13:48:29 by hossong          ###   ########.fr       */
+/*   Updated: 2022/08/18 15:50:20 by hossong          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,10 +21,10 @@
 # include <string.h>
 # include <sys/errno.h>
 # include <sys/stat.h>
+# include <fcntl.h>
 
 # include "../lib/libft/libft.h"
 
-# define BUF_SIZE 1024
 # define TRUE 1
 # define FALSE 0
 
@@ -144,7 +144,7 @@ void	exec_builtin(t_list *args);
 void	exec_process(t_data *data, t_list *cmdlist);
 void	parent_process(t_data *data, int depth);
 void	child_process(t_data *data, t_list *c_node, int depth);
-void	excute_cmd(void);
+void	execute_arg(void);
 
 /* redirection*/
 void	redirection(void);

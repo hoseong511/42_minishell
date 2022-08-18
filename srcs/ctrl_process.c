@@ -6,7 +6,7 @@
 /*   By: hossong <hossong@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/18 12:32:30 by hossong           #+#    #+#             */
-/*   Updated: 2022/08/18 13:50:19 by hossong          ###   ########.fr       */
+/*   Updated: 2022/08/18 15:50:20 by hossong          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,7 @@ void	child_process(t_data *data, t_list *args, int depth)
 	(void)args;
 	(void)depth;
 	redirection();
-	excute_cmd();
+	execute_arg();
 	sleep(2);
 	exit(1);
 }

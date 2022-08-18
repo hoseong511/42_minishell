@@ -6,13 +6,13 @@
 /*   By: hossong <hossong@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/14 17:27:01 by hossong           #+#    #+#             */
-/*   Updated: 2022/08/18 13:47:30 by hossong          ###   ########.fr       */
+/*   Updated: 2022/08/18 15:23:51 by hossong          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/main.h"
 
-void	excute_cmd(void)
+void	excute_arg(void)
 {
 	printf("excute_cmd\n");
 }
