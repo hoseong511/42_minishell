@@ -6,15 +6,24 @@
 /*   By: hossong <hossong@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/14 17:27:01 by hossong           #+#    #+#             */
-/*   Updated: 2022/08/18 15:23:51 by hossong          ###   ########.fr       */
+/*   Updated: 2022/08/18 17:51:49 by hossong          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/main.h"
 
-void	excute_arg(void)
+void	exec_arg(t_data *data, t_list *args)
 {
-	printf("excute_cmd\n");
+	char	**arg;
+	char	*path;
+
+	arg = ((t_cmd2 *)args->content)->str;
+	path = get_exe_file(data->envlist, arg[0]);
+	printf("path : %s\n", path);
+	execve(path, arg, data->envlist);
+	printf("error\n");
+	exit(1);
+
 }
 
 void	exec_process(t_data *data, t_list *cmdlist)
@@ -27,7 +36,7 @@ void	exec_process(t_data *data, t_list *cmdlist)
 	{
 		data->info->pid = fork();
 		if (data->cmd_cnt > 1)
-			init_pipe(data->info, depth);
+			init_pipe(data->info, depth, data->cmd_cnt);
 		if (data->info->pid > 0)
 			parent_process(data, depth);
 		else if (data->info->pid == 0)

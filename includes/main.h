@@ -6,7 +6,7 @@
 /*   By: hossong <hossong@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/06 16:43:27 by hossong           #+#    #+#             */
-/*   Updated: 2022/08/18 16:21:11 by hossong          ###   ########.fr       */
+/*   Updated: 2022/08/18 18:00:06 by hossong          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -144,12 +144,12 @@ void	exec_builtin(t_list *args);
 void	exec_process(t_data *data, t_list *cmdlist);
 void	parent_process(t_data *data, int depth);
 void	child_process(t_data *data, t_list *c_node, int depth);
-void	execute_arg(void);
+void	exec_arg(t_data *data, t_list *args);
 
 /* redirection*/
 void	redirection(void);
 void	settings_redirection(void);
-void	init_pipe(t_proc *info, int depth);
+void	init_pipe(t_proc *info, int depth, int cnt);
 
 /*free*/
 void	free_cmdlist(t_list *cmdlist);
@@ -172,7 +172,7 @@ int		count_env(char *str, char chr);
 void	print_t_cmds2(t_list *tokenlist);
 
 /* execution utils */
-char	**get_path(t_data *data);
-char	*get_exe_file(char	**path, char *cmd, t_data *data);
+char	**get_path(char **path);
+char	*get_exe_file(char	**path, char *cmd);
 
 #endif

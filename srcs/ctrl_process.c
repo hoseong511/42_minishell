@@ -6,7 +6,7 @@
 /*   By: hossong <hossong@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/18 12:32:30 by hossong           #+#    #+#             */
-/*   Updated: 2022/08/18 15:50:20 by hossong          ###   ########.fr       */
+/*   Updated: 2022/08/18 17:51:15 by hossong          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,26 +54,31 @@ t_built	check_builtin(t_list *args)
 
 void	exec_builtin(t_list *args)
 {
-	t_built	no;
+	t_built	builtin;
 
-	no = check_builtin(args);
-	if (!no)
+	builtin = check_builtin(args);
+	if (!builtin)
 		return ;
-	else if (no == ECHO)
+	else if (builtin == ECHO)
 		printf("ECHO\n");
-	else if (no == CD)
+	else if (builtin == CD)
 		printf("CD\n");
-	else if (no == PWD)
+	else if (builtin == PWD)
 		printf("PWD\n");
-	else if (no == EXPORT)
+	else if (builtin == EXPORT)
 		printf("EXPORT\n");
-	else if (no == UNSET)
+	else if (builtin == UNSET)
 		printf("UNSET\n");
-	else if (no == ENV)
+	else if (builtin == ENV)
 		printf("ENV\n");
-	else if (no == EXIT)
+	else if (builtin == EXIT)
 		printf("EXIT\n");
 }
+
+// void	pipe_io(void)
+// {
+// 	dup2();
+// }
 
 void	child_process(t_data *data, t_list *args, int depth)
 {
@@ -81,30 +86,31 @@ void	child_process(t_data *data, t_list *args, int depth)
 	(void)args;
 	(void)depth;
 	redirection();
-	execute_arg();
-	sleep(2);
+	exec_arg(data, args);
 	exit(1);
 }
 
 void	parent_process(t_data *data, int depth)
 {
 	(void)data;
-	(void)depth;
 	if (data->cmd_cnt > 1)
 	{
 		if (depth % 2 == 0)
 			close(data->info->pipe[0].fd[1]);
-		else
-		{
-			close(data->info->pipe[0].fd[0]);
+		else if (data->cmd_cnt > 2 && depth % 2)
 			close(data->info->pipe[1].fd[1]);
-		}
 	}
 	if (depth == data->cmd_cnt - 1)
 	{
 		while (wait(&data->info->status) != -1)
 			;
+		if (data->cmd_cnt > 1)
+		{
+			if (depth % 2 == 0)
+				close(data->info->pipe[1].fd[0]);
+			else if (data->cmd_cnt > 2 && depth % 2)
+				close(data->info->pipe[0].fd[0]);
+		}
 		printf("parent, exit_status : %d\n", WEXITSTATUS(data->info->status));
-		//close(data->info->pipe[1].fd[0]);
 	}
 }
