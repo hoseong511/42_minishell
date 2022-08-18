@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirections.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: namkim <namkim@student.42seoul.kr>         +#+  +:+       +#+        */
+/*   By: hossong <hossong@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/18 14:04:20 by namkim            #+#    #+#             */
-/*   Updated: 2022/08/18 19:36:50 by namkim           ###   ########.fr       */
+/*   Updated: 2022/08/18 20:01:19 by hossong          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ void	redirection_in(char *filepath)
 		if (sign == 0)
 			printf("%s: %s\n", filepath, "Permission Denied");
 		else
-			printf("%s: %s", filepath, strerror(errno));
+			printf("%s: %s\n", filepath, strerror(errno));
 		exit(1);
 	}
 	else
@@ -45,10 +45,10 @@ void	redirection_out(char *filepath)
 
 	if (!filepath)
 		ft_error("Syntax Error\n");
-	fd = open(filepath, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+	fd = open(filepath, O_RDWR | O_CREAT | O_TRUNC, 0644);
 	if (fd < 0)
 	{
-		printf("%s: %s", filepath, "Permission Denied");
+		printf("%s: %s\n", filepath, "Permission Denied");
 		exit(1);
 	}
 	else
@@ -65,10 +65,10 @@ void	redirection_append(char *filepath)
 
 	if (!filepath)
 		ft_error("Syntax Error\n");
-	fd = open(filepath, O_WRONLY | O_APPEND | O_TRUNC, 0644);
+	fd = open(filepath, O_RDWR | O_CREAT | O_APPEND, 0644);
 	if (fd < 0)
 	{
-		printf("%s: %s", filepath, "Permission Denied");
+		printf("%s: %s\n", filepath, "Permission Denied");
 		exit(1);
 	}
 	else
@@ -95,6 +95,7 @@ void	redirection_heredoc(char *end_of_file)
 {
 	int	fd;
 
+	(void)end_of_file;
 	fd = open(".tmp", O_RDWR | O_CREAT, 644);
 
 }
