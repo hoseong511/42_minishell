@@ -6,7 +6,7 @@
 /*   By: hossong <hossong@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/14 17:27:01 by hossong           #+#    #+#             */
-/*   Updated: 2022/08/18 19:52:00 by hossong          ###   ########.fr       */
+/*   Updated: 2022/08/19 00:20:36 by hossong          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,8 +32,8 @@ void	exec_process(t_data *data, t_list *cmdlist)
 	while (cmdlist && depth < data->cmd_cnt)
 	{
 		data->info->pid = fork();
-		if (data->cmd_cnt > 1)
-			init_pipe(data->info, depth, data->cmd_cnt);
+		if (data->cmd_cnt != 1)
+			init_pipe(data, depth, data->cmd_cnt);
 		if (data->info->pid > 0)
 			parent_process(data, depth);
 		else if (data->info->pid == 0)

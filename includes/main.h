@@ -6,7 +6,7 @@
 /*   By: hossong <hossong@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/06 16:43:27 by hossong           #+#    #+#             */
-/*   Updated: 2022/08/18 19:51:51 by hossong          ###   ########.fr       */
+/*   Updated: 2022/08/18 23:53:11 by hossong          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,13 +71,14 @@ typedef struct s_env
 
 typedef struct s_pipe
 {
-	int	fd[2];
+	int	fd0[2];
+	int	fd1[2];
 }	t_pipe;
 
 typedef struct s_proc
 {
 	pid_t	pid;
-	t_pipe	pipe[2];
+	t_pipe	pipe;
 	int		status;
 }	t_proc;
 
@@ -90,6 +91,7 @@ typedef struct s_data
 	int			status;
 	int			exit_status;
 	t_proc		*info;
+	t_pipe		pipe;
 }	t_data;
 
 void	ft_error(char *err_msg);
@@ -145,10 +147,10 @@ void	exec_process(t_data *data, t_list *cmdlist);
 void	parent_process(t_data *data, int depth);
 void	child_process(t_data *data, t_list *c_node, int depth);
 void	exec_arg(t_data *data, t_list *args);
-void	pipe_io(t_proc *info, int depth, int cmd_cnt);
+void	pipe_io(t_data *data, int depth, int cmd_cnt);
 
 /* redirection*/
-void	init_pipe(t_proc *info, int depth, int cnt);
+void	init_pipe(t_data *data, int depth, int cnt);
 t_list	*redirection(t_list *args);
 void	redirection_in(char *filepath);
 void	redirection_out(char *filepath);

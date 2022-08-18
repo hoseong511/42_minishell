@@ -6,7 +6,7 @@
 /*   By: hossong <hossong@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/18 12:32:30 by hossong           #+#    #+#             */
-/*   Updated: 2022/08/18 20:16:34 by hossong          ###   ########.fr       */
+/*   Updated: 2022/08/19 00:21:33 by hossong          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,30 +81,29 @@ void	child_process(t_data *data, t_list *args, int depth)
 
 	(void)depth;
 	node = redirection(args);
+	pipe_io(data, depth, data->cmd_cnt);
 	exec_arg(data, node);
 }
 
 void	parent_process(t_data *data, int depth)
 {
-	(void)data;
-	if (data->cmd_cnt > 1)
+	if (data->cmd_cnt < 2)
+		wait(&data->info->status);
+	else if (depth != data->cmd_cnt - 1)
 	{
 		if (depth % 2 == 0)
-			close(data->info->pipe[0].fd[1]);
-		else if (data->cmd_cnt > 2 && depth % 2)
-			close(data->info->pipe[1].fd[1]);
+			close(data->pipe.fd0[1]);
+		else
+			close(data->pipe.fd1[1]);
 	}
-	if (depth == data->cmd_cnt - 1)
+	else
 	{
 		while (wait(&data->info->status) != -1)
 			;
-		if (data->cmd_cnt > 1)
-		{
-			if (depth % 2 == 0)
-				close(data->info->pipe[1].fd[0]);
-			else if (data->cmd_cnt > 2 && depth % 2)
-				close(data->info->pipe[0].fd[0]);
-		}
-		data->exit_status = WEXITSTATUS(data->info->status);
+		if (depth % 2 == 0)
+			close(data->pipe.fd1[0]);
+		else
+			close(data->pipe.fd0[0]);
 	}
+	data->exit_status = WEXITSTATUS(data->info->status);
 }
