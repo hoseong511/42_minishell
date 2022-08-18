@@ -6,11 +6,22 @@
 /*   By: hossong <hossong@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/18 12:32:30 by hossong           #+#    #+#             */
-/*   Updated: 2022/08/18 13:26:54 by hossong          ###   ########.fr       */
+/*   Updated: 2022/08/18 13:50:19 by hossong          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "main.h"
+
+t_proc	*init_proc_info(void)
+{
+	t_proc	*new;
+
+	new = (t_proc *)malloc(sizeof(t_proc));
+	if (!new)
+		ft_error("ERROR: Malloc Error\n");
+	ft_memset(new, 0, sizeof(t_proc));
+	return (new);
+}
 
 t_built	check_builtin(t_list *args)
 {
@@ -49,25 +60,25 @@ void	exec_builtin(t_list *args)
 	if (!no)
 		return ;
 	else if (no == ECHO)
-		;
+		printf("ECHO\n");
 	else if (no == CD)
-		;
+		printf("CD\n");
 	else if (no == PWD)
-		;
+		printf("PWD\n");
 	else if (no == EXPORT)
-		;
+		printf("EXPORT\n");
 	else if (no == UNSET)
-		;
+		printf("UNSET\n");
 	else if (no == ENV)
-		;
+		printf("ENV\n");
 	else if (no == EXIT)
-		;
+		printf("EXIT\n");
 }
 
-void	do_child_proc(t_data *data, t_list *c_node, int depth)
+void	child_process(t_data *data, t_list *args, int depth)
 {
 	(void)data;
-	(void)c_node;
+	(void)args;
 	(void)depth;
 	redirection();
 	excute_cmd();
@@ -75,7 +86,7 @@ void	do_child_proc(t_data *data, t_list *c_node, int depth)
 	exit(1);
 }
 
-void	do_parent_proc(t_data *data, int depth)
+void	parent_process(t_data *data, int depth)
 {
 	(void)data;
 	(void)depth;
