@@ -6,7 +6,7 @@
 /*   By: hossong <hossong@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/14 17:27:38 by hossong           #+#    #+#             */
-/*   Updated: 2022/08/16 20:32:21 by hossong          ###   ########.fr       */
+/*   Updated: 2022/08/18 00:10:36 by hossong          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,16 +83,5 @@ void	free_tokenlist(t_data *data)
 
 void	free_data(t_data *data)
 {
-	t_list	*tmp;
-
-	while (data->envlist)
-	{
-		tmp = data->envlist->next;
-		free(((t_env *)data->envlist->content)->key);
-		free(((t_env *)data->envlist->content)->value);
-		free(data->envlist->content);
-		free(data->envlist);
-		data->envlist = tmp;
-	}
 	free(data);
 }

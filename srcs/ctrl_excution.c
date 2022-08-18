@@ -6,74 +6,51 @@
 /*   By: hossong <hossong@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/14 17:27:01 by hossong           #+#    #+#             */
-/*   Updated: 2022/08/17 19:31:36 by hossong          ###   ########.fr       */
+/*   Updated: 2022/08/18 15:23:51 by hossong          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/main.h"
 
-void	settings_redirection(void)
-{
-	printf("settings_redirection\n");
-}
-
-void	redirection(void)
-{
-	printf("redirection\n");
-	settings_redirection();
-}
-
-void	excute_cmd(void)
+void	excute_arg(void)
 {
 	printf("excute_cmd\n");
 }
 
-void	do_child_proc(t_data *data, t_list *c_node, int depth)
+void	exec_process(t_data *data, t_list *cmdlist)
 {
-	(void)data;
-	(void)c_node;
-	(void)depth;
-	redirection();
-	excute_cmd();
-	sleep(1);
-	exit(1);
-}
+	int	depth;
 
-void	do_parent_proc(t_data *data, int depth)
-{
-	int	status;
-
-	(void)data;
-	(void)depth;
-	wait(&status);
-	printf("parent, exit_status : %d\n", WEXITSTATUS(status));
-}
-
-void	execution(t_data *data)
-{
-	t_list	*cmdlist;
-	t_proc	*info;
-	int		depth;
-
-	info = (t_proc *)malloc(sizeof(t_proc));
-	if (!info)
-		ft_error("ERROR: Malloc Error\n");
-	ft_memset(info, 0, sizeof(t_proc));
-	data->info = info;
-	cmdlist = data->cmdlist;
+	data->info = init_proc_info();
 	depth = 0;
 	while (cmdlist && depth < data->cmd_cnt)
 	{
-		info->pid = fork();
-		if (depth == 0 && pipe(info->pipe[0].fd))
-			ft_perror("pipe", errno);
-		if (info->pid > 0)
-			do_parent_proc(data, depth);
-		else if (info->pid == 0)
-			do_child_proc(data, (t_list *)cmdlist->content, depth);
+		data->info->pid = fork();
+		if (data->cmd_cnt > 1)
+			init_pipe(data->info, depth);
+		if (data->info->pid > 0)
+			parent_process(data, depth);
+		else if (data->info->pid == 0)
+			child_process(data, (t_list *)cmdlist->content, depth);
 		else
 			ft_perror("fork error", errno);
 		cmdlist = cmdlist->next;
 		depth++;
 	}
+}
+
+void	execution(t_data *data)
+{
+	t_list	*cmdlist;
+	t_built	is_built;
+
+	cmdlist = data->cmdlist;
+	if (!cmdlist)
+		return ;
+	is_built = check_builtin((t_list *)cmdlist->content);
+	if (data->cmd_cnt == 1 && is_built)
+		exec_builtin((t_list *)cmdlist->content);
+	else
+		exec_process(data, cmdlist);
+	data->cmd_cnt = 0;
 }
