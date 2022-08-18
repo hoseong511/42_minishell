@@ -6,7 +6,7 @@
 /*   By: hossong <hossong@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/14 17:27:01 by hossong           #+#    #+#             */
-/*   Updated: 2022/08/18 17:51:49 by hossong          ###   ########.fr       */
+/*   Updated: 2022/08/18 19:36:47 by hossong          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,11 +19,8 @@ void	exec_arg(t_data *data, t_list *args)
 
 	arg = ((t_cmd2 *)args->content)->str;
 	path = get_exe_file(data->envlist, arg[0]);
-	printf("path : %s\n", path);
 	execve(path, arg, data->envlist);
-	printf("error\n");
 	exit(1);
-
 }
 
 void	exec_process(t_data *data, t_list *cmdlist)

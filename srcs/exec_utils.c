@@ -6,7 +6,7 @@
 /*   By: hossong <hossong@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/16 20:09:37 by namkim            #+#    #+#             */
-/*   Updated: 2022/08/18 18:13:36 by hossong          ###   ########.fr       */
+/*   Updated: 2022/08/18 19:20:12 by hossong          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,10 +31,8 @@ char	**get_path(char **path)
 	char	*path_value;
 
 	path_value = match_env("PATH", path);
-	printf("path : %s\n", path_value);
 	res = ft_split(path_value, ':');
 	free(path_value);
-	printf("res[1] : %s\n", res[1]);
 	return (res);
 }
 
@@ -66,7 +64,6 @@ char	*get_exe_file(char	**envp, char *cmd)
 
 	i = 0;
 	res = NULL;
-	printf("%s\n", envp[1]);
 	path = get_path(envp);
 	while (path[i])
 	{

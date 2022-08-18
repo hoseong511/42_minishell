@@ -6,7 +6,7 @@
 /*   By: hossong <hossong@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/06 16:43:27 by hossong           #+#    #+#             */
-/*   Updated: 2022/08/18 18:00:06 by hossong          ###   ########.fr       */
+/*   Updated: 2022/08/18 19:27:59 by hossong          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -145,6 +145,7 @@ void	exec_process(t_data *data, t_list *cmdlist);
 void	parent_process(t_data *data, int depth);
 void	child_process(t_data *data, t_list *c_node, int depth);
 void	exec_arg(t_data *data, t_list *args);
+void	pipe_io(t_proc *info, int depth, int cmd_cnt);
 
 /* redirection*/
 void	redirection(void);

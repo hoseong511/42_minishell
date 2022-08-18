@@ -6,7 +6,7 @@
 /*   By: hossong <hossong@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/18 12:32:30 by hossong           #+#    #+#             */
-/*   Updated: 2022/08/18 17:51:15 by hossong          ###   ########.fr       */
+/*   Updated: 2022/08/18 19:38:09 by hossong          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,17 +75,14 @@ void	exec_builtin(t_list *args)
 		printf("EXIT\n");
 }
 
-// void	pipe_io(void)
-// {
-// 	dup2();
-// }
-
 void	child_process(t_data *data, t_list *args, int depth)
 {
 	(void)data;
 	(void)args;
 	(void)depth;
 	redirection();
+	
+		// pipe_io(data->info,);
 	exec_arg(data, args);
 	exit(1);
 }
@@ -111,6 +108,6 @@ void	parent_process(t_data *data, int depth)
 			else if (data->cmd_cnt > 2 && depth % 2)
 				close(data->info->pipe[0].fd[0]);
 		}
-		printf("parent, exit_status : %d\n", WEXITSTATUS(data->info->status));
+		data->exit_status = WEXITSTATUS(data->info->status);
 	}
 }
