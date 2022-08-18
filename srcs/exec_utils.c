@@ -6,7 +6,7 @@
 /*   By: namkim <namkim@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/16 20:09:37 by namkim            #+#    #+#             */
-/*   Updated: 2022/08/17 19:49:57 by namkim           ###   ########.fr       */
+/*   Updated: 2022/08/18 15:41:11 by namkim           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,7 @@ char	*get_exe_format(char *path, char *cmd)
 	return (res);
 }
 
+//get_filepath로 이름 바꾸기
 char	*get_exe_file(char	**path, char *cmd, t_data *data)
 {
 	char		*res;
@@ -64,23 +65,16 @@ char	*get_exe_file(char	**path, char *cmd, t_data *data)
 	while (path[i])
 	{
 		addr = get_exe_format(path[i], cmd);
-		sign = stat(addr, &sb);	//호출 성공시 0, 실패시 -1 & errno set
+		sign = stat(addr, &sb);
 		if (sign == 0)
 		{
-			//먼저 권한체크 : 읽기 / 실행일 때 각각 다름....
-			//만약 권한이 없다면 : continue;
-			//id user로 했을 때 group 권한을 다 줬는데 왜 안 읽히는지...?
-							//000중 어느쪽을 기준으로 권한 체크해야하는지?
-							//우선은 소유주를 기준으로 체크
-			//만약 권한이 있을 때 (실행가능한 상태일 때) -- but 만약 권한이 없더라도 실행은 하는게 맞는 것 같다. 왜? errno받아야 됨.
 			if ((sb.st_mode & S_IXUSR) != 0)
 			{
 				res = addr;
-				printf("addr: %s\n", res);
-				execve(res, NULL, NULL);
+				return (res);
 			}
 			else
-				data->status = -5; //#define no permissioin
+				data->status = -5;
 			return (res);
 		}
 		free(addr);
