@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: namkim <namkim@student.42seoul.kr>         +#+  +:+       +#+        */
+/*   By: hossong <hossong@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/12 15:46:57 by namkim            #+#    #+#             */
-/*   Updated: 2022/08/18 17:50:19 by namkim           ###   ########.fr       */
+/*   Updated: 2022/08/18 19:52:26 by hossong          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,15 +40,13 @@ void	load_data(t_data *data, char *str)
 	data->cmdlist = relocate(data->tokenlist);
 	data->cmdlist = bind(data->cmdlist);
 	print_t_cmds2(data->cmdlist);
-	t_cmd2	*cmd2cont;
-	char	**path;
-	cmd2cont = data->cmdlist->content;
-	path = get_path(data);
+	// t_cmd2	*cmd2cont;
+	// cmd2cont = data->cmdlist->content;
 	// printf("path : %s\n", path[0]);
 	// printf("path : %s\n", path[1]);
 	// printf("path : %s\n", path[2]);
 	// printf("path : %s\n", path[3]);
 	// printf("path : %s\n", path[4]);
 //	printf("cmdnode->str: %s\n", cmd2cont->str[0]);
-	get_exe_file(path, cmd2cont->str[0], data);
+	// get_exe_file(data->envlist, cmd2cont->str[0]);
 }

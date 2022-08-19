@@ -6,7 +6,7 @@
 /*   By: namkim <namkim@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/06 16:43:27 by hossong           #+#    #+#             */
-/*   Updated: 2022/08/18 18:03:49 by namkim           ###   ########.fr       */
+/*   Updated: 2022/08/19 13:39:28 by namkim           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,6 +84,8 @@ typedef struct s_proc
 typedef struct s_data
 {
 	char		**envlist;
+	int			envlist_size;
+	int			envlist_cnt;
 	t_list		*tokenlist;
 	t_list		*cmdlist;
 	int			cmd_cnt;
@@ -144,14 +146,15 @@ void	exec_builtin(t_list *args);
 void	exec_process(t_data *data, t_list *cmdlist);
 void	parent_process(t_data *data, int depth);
 void	child_process(t_data *data, t_list *c_node, int depth);
-void	execute_arg(void);
+void	exec_arg(t_data *data, t_list *args);
+void	pipe_io(t_proc *info, int depth, int cmd_cnt);
 
 /* redirection*/
+void	init_pipe(t_proc *info, int depth, int cnt);
 t_list	*redirection(t_list *args);
 void	redirection_in(char *filepath);
 void	redirection_out(char *filepath);
 void	redirection_append(char *filepath);
-void	init_pipe(t_proc *info, int depth);
 
 /*free*/
 void	free_cmdlist(t_list *cmdlist);

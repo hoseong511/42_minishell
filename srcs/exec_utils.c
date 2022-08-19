@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: namkim <namkim@student.42seoul.kr>         +#+  +:+       +#+        */
+/*   By: hossong <hossong@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/16 20:09:37 by namkim            #+#    #+#             */
-/*   Updated: 2022/08/18 19:35:24 by namkim           ###   ########.fr       */
+/*   Updated: 2022/08/18 19:54:53 by hossong          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,13 +52,13 @@ char	*get_exe_format(char *path, char *cmd)
 	return (res);
 }
 
-int	is_valid_exe_file(char *addr)
+static int	is_valid_exe_file(char *addr)
 {
-	struct stat sb;
+	struct stat	sb;
 	int			sign;
 
 	if (!addr)
-		return (NULL);
+		return (0);
 	sign = stat(addr, &sb);
 	if (sign == 0)
 	{

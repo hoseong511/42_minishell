@@ -6,7 +6,7 @@
 /*   By: namkim <namkim@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/18 14:04:20 by namkim            #+#    #+#             */
-/*   Updated: 2022/08/18 19:36:50 by namkim           ###   ########.fr       */
+/*   Updated: 2022/08/19 10:52:57 by namkim           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ void	redirection_in(char *filepath)
 		if (sign == 0)
 			printf("%s: %s\n", filepath, "Permission Denied");
 		else
-			printf("%s: %s", filepath, strerror(errno));
+			printf("%s: %s\n", filepath, strerror(errno));
 		exit(1);
 	}
 	else
@@ -45,10 +45,10 @@ void	redirection_out(char *filepath)
 
 	if (!filepath)
 		ft_error("Syntax Error\n");
-	fd = open(filepath, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+	fd = open(filepath, O_RDWR | O_CREAT | O_TRUNC, 0644);
 	if (fd < 0)
 	{
-		printf("%s: %s", filepath, "Permission Denied");
+		printf("%s: %s\n", filepath, "Permission Denied");
 		exit(1);
 	}
 	else
@@ -65,10 +65,10 @@ void	redirection_append(char *filepath)
 
 	if (!filepath)
 		ft_error("Syntax Error\n");
-	fd = open(filepath, O_WRONLY | O_APPEND | O_TRUNC, 0644);
+	fd = open(filepath, O_RDWR | O_CREAT | O_APPEND, 0644);
 	if (fd < 0)
 	{
-		printf("%s: %s", filepath, "Permission Denied");
+		printf("%s: %s\n", filepath, "Permission Denied");
 		exit(1);
 	}
 	else
@@ -93,10 +93,44 @@ void	redirection_append(char *filepath)
 */
 void	redirection_heredoc(char *end_of_file)
 {
-	int	fd;
+	int		fd;
+	char	*str;
 
-	fd = open(".tmp", O_RDWR | O_CREAT, 644);
-
+	//왜 존재하는 파일을 열면 오류가 나는지? O_TRUNC가 있는데도?
+	fd = open(".tmp", O_RDWR | O_CREAT | O_TRUNC, 0644);
+	if (fd < 0)
+		ft_error("Heredoc open error\n");
+	str = NULL;
+	while (TRUE)
+	{
+		printf("%s\n", end_of_file);
+		str = readline("> ");	//두번째로 들어왔을 땐 이 줄을 수행하지 않는 것 같다... 왜?
+		if (ft_strncmp(str, end_of_file, ft_strlen(end_of_file) + 1) == 0)
+		{
+			free(str);
+			str = NULL;
+			break ;
+		}
+		else
+		{
+			write(fd, str, ft_strlen(str));
+			write(fd, "\n", 1);	//여기서 바로 stdin으로 쓰면 어떻게 되지...? -> stdin에 쓰는데도 stdout에 표시된다.
+			free (str);
+			str = NULL;
+		}
+	}
+	close(fd);
+	//redirection_in(".tmp");
+	fd = open(".tmp", O_RDONLY);	// 왜 꼭 다시 닫았다 열어야하는건지
+	// if (fd < 0)
+	// 	printf("open fail\n");
+	if (dup2(fd, 0) < 0)
+		ft_perror("Dup2", errno);
+	printf("success\n");
+	unlink(".tmp");
+	close(fd);
+	// fd = open(".tmp", O_RDONLY);
+	// str = get_next_line
 }
 
 //시작 지점부터 시작해서 redirection이 끝날때까지 while문
@@ -111,7 +145,10 @@ t_list	*redirection(t_list *args)
 	while (node)
 	{
 		if (((t_cmd2 *)node->content)->type < R_IN)
+		{
+			printf("out?\n");
 			return (node);
+		}
 		else if (((t_cmd2 *)node->content)->type == R_IN)
 			redirection_in(((t_cmd2 *)node->content)->str[1]);
 		else if (((t_cmd2 *)node->content)->type == R_OUT)
@@ -119,9 +156,11 @@ t_list	*redirection(t_list *args)
 		else if (((t_cmd2 *)node->content)->type == R_APPD)
 			redirection_append(((t_cmd2 *)node->content)->str[1]);
 		else if (((t_cmd2 *)node->content)->type == R_HEREDOC)
-			printf("this is HEREDOC\n");
-//			redirection_in(((t_cmd2 *)node->next->content)->str);
+			redirection_heredoc(((t_cmd2 *)node->content)->str[1]);
+		printf("here?\n");
+//			printf("this is HEREDOC\n");
 		node = node->next;
 	}
+	printf("return?\n");
 	return (node);
 }
