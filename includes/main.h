@@ -6,7 +6,7 @@
 /*   By: hossong <hossong@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/06 16:43:27 by hossong           #+#    #+#             */
-/*   Updated: 2022/08/19 16:51:44 by hossong          ###   ########.fr       */
+/*   Updated: 2022/08/19 22:44:31 by hossong          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,6 +92,9 @@ typedef struct s_data
 	int			status;
 	int			exit_status;
 	t_proc		*info;
+	int			stdin_fd;
+	int			stdout_fd;
+	int			redir;
 }	t_data;
 
 void	ft_error(char *err_msg);
@@ -158,6 +161,8 @@ t_list	*redirection(t_list *args);
 void	redirection_in(char *filepath);
 void	redirection_out(char *filepath);
 void	redirection_append(char *filepath);
+t_list	*redirection_left(t_data *data, t_list *args);
+t_list	*redirection_right(t_list *args);
 
 /*free*/
 void	free_cmdlist(t_list *cmdlist);
