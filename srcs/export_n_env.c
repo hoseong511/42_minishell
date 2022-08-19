@@ -6,7 +6,7 @@
 /*   By: namkim <namkim@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/19 10:54:24 by namkim            #+#    #+#             */
-/*   Updated: 2022/08/19 14:09:52 by namkim           ###   ########.fr       */
+/*   Updated: 2022/08/19 14:57:22 by namkim           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,32 +34,61 @@ int	check_args(char	*target, char chr)
 //export만 입력하는 경우
 //로컬변수를 환경변수로 변경하는 명령어 -> 먼저 key를 등록하고, 로컬변수를 등록하는 순서로 환경변수로 등록할 수도 있다ㄸㄹㄹ...
 //로컬변수를 사용할지 여부를 결정해야할 듯
-void	ft_export(char **args, char	**envp)
+//value expansion --> expansion해서 들어올 것 (참고로 key도 expansion한다)
+//key를 분리해서 존재하는지 확인
+//존재하면, 원래 있는 걸 지우고, 그 자리에 삽입
+//존재하지 않으면, 삽입 가능한지 체크하고 배열이 다 차있으면, 다시 할당해서 (size + 10) 삽입
+void	ft_export(char **args, t_data *data)
 {
 	int		i;
 	int		len;
+	int		idx;
 	char	*key;
-
 
 	i = 1;
 	if (!args[1])
-		//왜인지 알파벳 순서대로 보여준다.. declare -x 라는 포맷과 함께
+		ft_env(args, data->envlist);//왜인지 알파벳 순서대로 보여준다.. declare -x 라는 포맷과 함께
 	while (args[i])
 	{
 		//key & value -> 문법이 맞는지 확인
-		//value expansion --> expansion해서 들어올 것 (참고로 key도 expansion한다)
-		//key를 분리해서 존재하는지 확인
-		//존재하면, 원래 있는 걸 지우고, 그 자리에 삽입
-		//존재하지 않으면, 삽입 가능한지 체크하고 배열이 다 차있으면, 다시 할당해서 (size + 10) 삽입
+		len = get_env_len(args[i]);
+		if (args[i][len] == '=')
+		{
+			key = ft_strdnup(args[i], len);
+			idx = get_env_idx(key, data->envlist);
+			if (idx >= 0)
+			{
+				free(data->envlist[idx]);
+				data->envlist[idx] = args[i];
+			}
+			else
+				add_env_to_envlist(args[i], data);
+		}
+		//else : 로컬 변수를 쓴다면...
 	}
 }
 
-void	ft_env(char **envp)
+void	ft_env(char **args, t_data *data)
 {
+	char	**envp;
+
+	envp = data->envlist;
+	if (args[1])
+	{
+		if (args[0][2] == 'n')
+			printf("env: %s: No such file or directory\n", args[1]);
+		if (args[0][2] == 'x')
+			printf("export: `%s': not a valid identifier\n", args[1]);
+		exit(1);
+	}
 	if (!envp)
 		return ;
 	while (*envp)
-		ft_printf("%s\n", *envp++);
+	{
+		if (args[0][2] == 'x')
+			printf("declare -x ");
+		printf("%s\n", *envp++);
+	}
 }
 
 //envp사이즈 관리할까...? 관리하는게 편할 것 같음.
@@ -100,4 +129,4 @@ void	unset(char **args, t_data *data)
 //pwd : argument를 몇개 넣든 무시하는 것 같다
 //a=$(pwd) < 이런 식의 사용이 가능하지만! 우리는 괄호를 해석하지 않는다...
 //대문자로도 된다!
-//cd 할 때마다 env에 PWD와 OLDPWD가 업데이트 된다
+//cd 할 때마다 env에 PWD와 OLDPWD가 업데이트 된다 (bash는 OLDPWD 없음)
