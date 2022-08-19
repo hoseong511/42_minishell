@@ -6,7 +6,7 @@
 /*   By: hossong <hossong@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/14 17:27:01 by hossong           #+#    #+#             */
-/*   Updated: 2022/08/19 01:28:33 by hossong          ###   ########.fr       */
+/*   Updated: 2022/08/19 11:37:38 by hossong          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,8 @@ void	exec_arg(t_data *data, t_list *args)
 	char	*path;
 
 	arg = ((t_cmd2 *)args->content)->str;
+	if (check_builtin(args))
+		exec_builtin(args);
 	path = get_exe_file(data->envlist, arg[0]);
 	execve(path, arg, data->envlist);
 	exit(1);
