@@ -6,7 +6,7 @@
 /*   By: hossong <hossong@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/16 20:09:37 by namkim            #+#    #+#             */
-/*   Updated: 2022/08/18 19:54:53 by hossong          ###   ########.fr       */
+/*   Updated: 2022/08/19 01:30:09 by hossong          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,9 +92,9 @@ char	*get_exe_file(char	**envp, char *cmd)
 		i++;
 	}
 	if (sign == -1)
-		printf("%s: %s\n", cmd, "Permission Denied");
+		ft_error2(cmd, ": Permission Denied\n");
 	if (sign == -2)
-		printf("%s: %s\n", cmd, "command not found");
+		ft_error2(cmd, ": command not found\n");
 	exit(1);
 	return (addr);
 }

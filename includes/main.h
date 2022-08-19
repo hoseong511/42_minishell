@@ -77,8 +77,8 @@ typedef struct s_pipe
 typedef struct s_proc
 {
 	pid_t	pid;
-	t_pipe	pipe[2];
 	int		status;
+	t_pipe	pipe[2];
 }	t_proc;
 
 typedef struct s_data
@@ -95,7 +95,9 @@ typedef struct s_data
 }	t_data;
 
 void	ft_error(char *err_msg);
+void	ft_error2(char *arg, char *err_msg);
 void	ft_perror(char *err_msg, int err);
+void	ft_dup2(int fd1, int fd2);
 char	*match_env(char *keystr, char **envlist);
 int		is_valid_env_name(char c, int idx);
 char	**get_env(char **envp);
@@ -147,10 +149,11 @@ void	exec_process(t_data *data, t_list *cmdlist);
 void	parent_process(t_data *data, int depth);
 void	child_process(t_data *data, t_list *c_node, int depth);
 void	exec_arg(t_data *data, t_list *args);
-void	pipe_io(t_proc *info, int depth, int cmd_cnt);
+void	pipe_io(t_data *data, int depth, int cmd_cnt);
+
 
 /* redirection*/
-void	init_pipe(t_proc *info, int depth, int cnt);
+void	init_pipe(t_data *data, int depth, int cnt);
 t_list	*redirection(t_list *args);
 void	redirection_in(char *filepath);
 void	redirection_out(char *filepath);
