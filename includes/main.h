@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.h                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hossong <hossong@student.42seoul.kr>       +#+  +:+       +#+        */
+/*   By: namkim <namkim@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/06 16:43:27 by hossong           #+#    #+#             */
-/*   Updated: 2022/08/18 19:51:51 by hossong          ###   ########.fr       */
+/*   Updated: 2022/08/19 13:39:28 by namkim           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,6 +84,8 @@ typedef struct s_proc
 typedef struct s_data
 {
 	char		**envlist;
+	int			envlist_size;
+	int			envlist_cnt;
 	t_list		*tokenlist;
 	t_list		*cmdlist;
 	int			cmd_cnt;

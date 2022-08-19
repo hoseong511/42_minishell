@@ -6,7 +6,7 @@
 /*   By: namkim <namkim@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/19 10:54:24 by namkim            #+#    #+#             */
-/*   Updated: 2022/08/19 12:24:16 by namkim           ###   ########.fr       */
+/*   Updated: 2022/08/19 14:09:52 by namkim           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,8 @@ void	ft_export(char **args, char	**envp)
 
 
 	i = 1;
+	if (!args[1])
+		//왜인지 알파벳 순서대로 보여준다.. declare -x 라는 포맷과 함께
 	while (args[i])
 	{
 		//key & value -> 문법이 맞는지 확인
@@ -67,28 +69,25 @@ void	ft_env(char **envp)
 //envp에서 키 값이 같은 애가 있는지 찾는다
 //있으면? 삭제: free하고 memcpy...
 //실험 필요
-void	unset(char **args, char **envp)
+void	unset(char **args, t_data *data)
 {
-	int	i;
-	int	e;
+	int		i;
+	int		e;
+	char	**envp;
+	int		idx;
 
 	i = 1;
+	envp = data->envlist;
 	while (args[i])
 	{
-		e = 0;
+		idx = get_env_idx(args[i], data->envlist);
+		if (idx >= 0)
 		{
-			if (ft_strncmp(args[i], envp[e], ft_strlen(args[i])) == 0)
-			{
-				if (envp[e][ft_strlen(args[i])] == '=')
-				{
-					free (envp[e]);
-					while (envp[++e])	//만약 환경변수의 숫자를 관리한다면, 그냥 제일 끝에 있는 걸 여기 삽입할 수도 있을 것 같다.
-						envp[e - 1] = envp[e];
-					envp[e] = NULL;
-					return ;
-				}
-			}
-			e++;
+			free (envp[idx]);
+			envp[idx] = envp[data->envlist_cnt - 1];
+			envp[data->envlist_cnt - 1] = NULL;
+			data->envlist_cnt--;
+			return ;
 		}
 		i++;
 	}
