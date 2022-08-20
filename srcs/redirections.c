@@ -6,7 +6,7 @@
 /*   By: namkim <namkim@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/18 14:04:20 by namkim            #+#    #+#             */
-/*   Updated: 2022/08/19 20:08:03 by namkim           ###   ########.fr       */
+/*   Updated: 2022/08/20 14:40:06 by namkim           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -137,79 +137,79 @@ void	redirection_heredoc(char *end_of_file)
 //check redirection 종류
 //종류에 따라 unit실행
 //반환(command가 시작하는 부분)
-t_list	*redirection(t_list *args)
+// t_list	*redirection(t_list *args)
+// {
+// 	t_list	*node;
+
+// 	node = args;
+// 	while (node)
+// 	{
+// 		if (((t_cmd2 *)node->content)->type < R_IN)
+// 		{
+// 			printf("out?\n");
+// 			return (node);
+// 		}
+// 		else if (((t_cmd2 *)node->content)->type == R_IN)
+// 			redirection_in(((t_cmd2 *)node->content)->str[1]);
+// 		else if (((t_cmd2 *)node->content)->type == R_OUT)
+// 			redirection_out(((t_cmd2 *)node->content)->str[1]);
+// 		else if (((t_cmd2 *)node->content)->type == R_APPD)
+// 			redirection_append(((t_cmd2 *)node->content)->str[1]);
+// 		else if (((t_cmd2 *)node->content)->type == R_HEREDOC)
+// 			redirection_heredoc(((t_cmd2 *)node->content)->str[1]);
+// 		printf("here?\n");
+// //			printf("this is HEREDOC\n");
+// 		node = node->next;
+// 	}
+// 	printf("return?\n");
+// 	return (node);
+// }
+t_list	*redirection_left(t_list *args)
 {
 	t_list	*node;
+	t_type	node_type;
 
 	node = args;
 	while (node)
 	{
-		if (((t_cmd2 *)node->content)->type < R_IN)
+		node_type = ((t_cmd2 *)node->content)->type;
+		if (node_type < R_IN || node_type == R_OUT || node_type == R_APPD)
 		{
 			printf("out?\n");
 			return (node);
 		}
-		else if (((t_cmd2 *)node->content)->type == R_IN)
+		else if (node_type == R_IN)
 			redirection_in(((t_cmd2 *)node->content)->str[1]);
-		else if (((t_cmd2 *)node->content)->type == R_OUT)
-			redirection_out(((t_cmd2 *)node->content)->str[1]);
-		else if (((t_cmd2 *)node->content)->type == R_APPD)
-			redirection_append(((t_cmd2 *)node->content)->str[1]);
-		else if (((t_cmd2 *)node->content)->type == R_HEREDOC)
+		else if (node_type == R_HEREDOC)
 			redirection_heredoc(((t_cmd2 *)node->content)->str[1]);
-		printf("here?\n");
-//			printf("this is HEREDOC\n");
 		node = node->next;
 	}
 	printf("return?\n");
 	return (node);
 }
-// t_list	*redirection_left(t_list *args)
-// {
-// 	t_list	*node;
-// 	t_type	node_type;
 
-// 	node = args;
-// 	while (node)
-// 	{
-// 		node_type = ((t_cmd2 *)node->content)->type;
-// 		if (node_type < R_IN || node_type == R_OUT || node_type == R_APPD)
-// 		{
-// 			printf("out?\n");
-// 			return (node);
-// 		}
-// 		else if (node_type == R_IN)
-// 			redirection_in(((t_cmd2 *)node->content)->str[1]);
-// 		else if (node_type == R_HEREDOC)
-// 			redirection_heredoc(((t_cmd2 *)node->content)->str[1]);
-// 		node = node->next;
-// 	}
-// 	printf("return?\n");
-// 	return (node);
-// }
+t_list	*redirection_right(t_list *args)
+{
+	t_list	*node;
+	t_type	node_type;
 
-// t_list	*redirection_right(t_list *args)
-// {
-// 	t_list	*node;
-// 	t_type	node_type;
-
-// 	node = args;
-// 	while (node)
-// 	{
-// 		node_type = ((t_cmd2 *)node->content)->type;
-// 		if (node_type < R_IN)
-// 		{
-// 			printf("out?\n");
-// 			return (node);
-// 		}
-// 		else if (node_type == R_IN || node_type == R_HEREDOC)
-// 			node = node->next;
-// 		else if (node_type == R_OUT)
-// 			redirection_out(((t_cmd2 *)node->content)->str[1]);
-// 		else if (node_type == R_APPD)
-// 			redirection_append(((t_cmd2 *)node->content)->str[1]);
-// 		node = node->next;
-// 	}
-// 	printf("return?\n");
-// 	return (node);
-// }
+	node = args;
+	while (node)
+	{
+		node_type = ((t_cmd2 *)node->content)->type;
+		if (node_type < R_IN)
+		{
+			printf("out?\n");
+			return (node);
+		}
+		else if (node_type == R_IN || node_type == R_HEREDOC)
+			node = node->next;
+		else if (node_type == R_OUT)
+			redirection_out(((t_cmd2 *)node->content)->str[1]);
+		else if (node_type == R_APPD)
+			redirection_append(((t_cmd2 *)node->content)->str[1]);
+		node = node->next;
+	}
+	printf("return?\n");
+	return (node);
+}

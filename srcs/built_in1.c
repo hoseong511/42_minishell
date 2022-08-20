@@ -1,23 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   export_n_env.c                                     :+:      :+:    :+:   */
+/*   built_in1.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: namkim <namkim@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/19 10:54:24 by namkim            #+#    #+#             */
-/*   Updated: 2022/08/20 10:24:37 by namkim           ###   ########.fr       */
+/*   Updated: 2022/08/20 13:09:52 by namkim           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/main.h"
 
-static int	insert_env(char *arg, t_data *data)
+int	insert_env(char *arg, t_data *data)
 {
 	int		len;
 	int		idx;
 	char	*key;
 
+	write(1, "aaa\n", 4);
 	len = get_env_len(arg);
 	if (arg[len] == '=')
 	{
@@ -52,9 +53,7 @@ void	ft_export(char **args, t_data *data)
 	int		i;
 	int		sign;
 
-	i = 0;
-	if (ft_strncmp("cd", args[0], 3) == 0)
-		i++;
+	i = 1;
 	if (!args[i])
 		ft_env(args, data);
 	sign = FALSE;
@@ -86,8 +85,6 @@ void	ft_env(char **args, t_data *data)
 			printf("declare -x ");
 		printf("%s\n", *envp++);
 	}
-	// if (args[0][1] == 'n')
-	// 	printf("_=/usr/bin/%s\n", args[0]);
 }
 
 //envp사이즈 관리할까...? 관리하는게 편할 것 같음.
@@ -142,65 +139,4 @@ void	ft_pwd(char **args)
 		free(res);
 	}
 
-}
-//a=$(pwd) < 이런 식의 사용이 가능하지만! 우리는 괄호를 해석하지 않는다...
-//cd 할 때마다 env에 PWD와 OLDPWD가 업데이트 된다 (bash는 OLDPWD 없음)
-
-//cd - : 이전 위치로(할 필요 없음)
-//cd ~ : home directory로(할 필요 없음)
-//cd with no args : home directory로(할 필요 없지 않을까...?)
-//위치로 옮기고, env update
-void	ft_cd(char **args, t_data *data)
-{
-	char	*path;
-	char	*pwd;
-	int		sign;
-
-	if (!args[1])
-		path = match_env("HOME", data->envlist);	//확인할 것
-	else
-		path = args[1];
-	sign = chdir(path);
-	if (sign == 0)
-	{
-		free(path);
-		pwd = getcwd(NULL, 0);
-		if (!pwd)
-			ft_error("Couldn't get working directory\n");
-		path = ft_strjoin("PWD=", pwd);
-		insert_env(path, data);
-		free(pwd);
-		free(path);
-	}
-	else
-	{
-		printf("cd: %s: No such file or directory\n", args[1]);
-		exit(1);
-	}
-}
-
-//여기서 모든 메모리 해제를 넣어줘야 하는지...? 어차피 exit가 모두 처리할건데도?
-void	ft_exit(void)	//argument?
-{
-//	(void) data;
-	printf("exit\n");
-	exit(0);
-}
-
-void	ft_echo(char **args)
-{
-	int	i;
-
-	i = 1;
-	if (ft_strncmp(args[i], "-n", 3) == 0)
-		i++;
-	while (args[i + 1])
-	{
-		write(1, args[i], ft_strlen(args[i]));
-		write(1, " ", 1);
-		i++;
-	}
-	write(1, args[i], ft_strlen(args[i]));
-	if (ft_strncmp(args[1], "-n", 3) != 0)
-		write(1, "\n", 1);
 }

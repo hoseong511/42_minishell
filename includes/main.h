@@ -6,7 +6,7 @@
 /*   By: namkim <namkim@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/06 16:43:27 by hossong           #+#    #+#             */
-/*   Updated: 2022/08/19 20:49:43 by namkim           ###   ########.fr       */
+/*   Updated: 2022/08/20 14:40:23 by namkim           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,7 +100,7 @@ void	ft_perror(char *err_msg, int err);
 void	ft_dup2(int fd1, int fd2);
 char	*match_env(char *keystr, char **envlist);
 int		is_valid_env_name(char c, int idx);
-char	**get_env(char **envp);
+char	**get_env(char **envp, t_data *data);
 int		get_env_len(char *target);
 void	replace_env(char **target, int start, int keysize, char **envp);
 
@@ -154,9 +154,9 @@ void	pipe_io(t_data *data, int depth, int cmd_cnt);
 
 /* redirection*/
 void	init_pipe(t_data *data, int depth, int cnt);
-t_list	*redirection(t_list *args);
-// t_list	*redirection_left(t_list *args);
-// t_list	*redirection_right(t_list *args);
+//t_list	*redirection(t_list *args);
+t_list	*redirection_left(t_list *args);
+t_list	*redirection_right(t_list *args);
 void	redirection_in(char *filepath);
 void	redirection_out(char *filepath);
 void	redirection_append(char *filepath);
@@ -186,6 +186,7 @@ char	**get_path(char **envlist);
 char	*get_exe_file(char	**path, char *cmd);
 
 /* built-in functions */
+int		insert_env(char *arg, t_data *data);
 void	ft_export(char **args, t_data *data);
 void	ft_env(char **args, t_data *data);
 void	ft_unset(char **args, t_data *data);

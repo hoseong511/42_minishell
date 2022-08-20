@@ -6,21 +6,21 @@
 /*   By: namkim <namkim@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/12 15:46:57 by namkim            #+#    #+#             */
-/*   Updated: 2022/08/19 20:51:43 by namkim           ###   ########.fr       */
+/*   Updated: 2022/08/20 14:24:14 by namkim           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/main.h"
 
-static int	get_envlist_size(char **envp)
-{
-	int	i;
+// static int	get_envlist_size(char **envp)
+// {
+// 	int	i;
 
-	i = 0;
-	while (envp[i])
-		i++;
-	return (i);
-}
+// 	i = 0;
+// 	while (*envp++)
+// 		i++;
+// 	return (i);
+// }
 
 t_data	*init_data(char **envp)
 {
@@ -29,9 +29,8 @@ t_data	*init_data(char **envp)
 	res = malloc(sizeof(t_data));
 	if (!res)
 		ft_error("Malloc Error While Initialize\n");
-	res->envlist = get_env(envp);
-	res->envlist_cnt = get_envlist_size(res->envlist);
-	res->envlist_size = get_envlist_size(res->envlist);
+	res->envlist = get_env(envp, res);
+	res->envlist_cnt = res->envlist_size;
 	res->tokenlist = NULL;
 	res->cmdlist = NULL;
 	res->cmd_cnt = 0;
