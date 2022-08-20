@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ctrl_process.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hossong <hossong@student.42seoul.kr>       +#+  +:+       +#+        */
+/*   By: namkim <namkim@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/18 12:32:30 by hossong           #+#    #+#             */
-/*   Updated: 2022/08/18 20:16:34 by hossong          ###   ########.fr       */
+/*   Updated: 2022/08/20 08:11:54 by namkim           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ t_built	check_builtin(t_list *args)
 	return (ret);
 }
 
-void	exec_builtin(t_list *args)
+void	exec_builtin(t_list *args, t_data *data)
 {
 	t_built	builtin;
 
@@ -60,19 +60,19 @@ void	exec_builtin(t_list *args)
 	if (!builtin)
 		return ;
 	else if (builtin == ECHO)
-		printf("ECHO\n");
+		ft_echo(((t_cmd2 *)args->content)->str);
 	else if (builtin == CD)
-		printf("CD\n");
+		ft_cd(((t_cmd2 *)args->content)->str, data);
 	else if (builtin == PWD)
-		printf("PWD\n");
+		ft_pwd(((t_cmd2 *)args->content)->str);
 	else if (builtin == EXPORT)
-		printf("EXPORT\n");
+		ft_export(((t_cmd2 *)args->content)->str, data);
 	else if (builtin == UNSET)
-		printf("UNSET\n");
+		ft_unset(((t_cmd2 *)args->content)->str, data);
 	else if (builtin == ENV)
-		printf("ENV\n");
+		ft_env(((t_cmd2 *)args->content)->str, data);
 	else if (builtin == EXIT)
-		printf("EXIT\n");
+		ft_exit();
 }
 
 void	child_process(t_data *data, t_list *args, int depth)
@@ -80,31 +80,39 @@ void	child_process(t_data *data, t_list *args, int depth)
 	t_list	*node;
 
 	(void)depth;
+//	node = redirection_left(args);
+	pipe_io(data, depth, data->cmd_cnt);
 	node = redirection(args);
+//	node = redirection_right(args);
 	exec_arg(data, node);
 }
 
 void	parent_process(t_data *data, int depth)
 {
-	(void)data;
-	if (data->cmd_cnt > 1)
+	wait(&data->info->status);
+	if (data->cmd_cnt < 2)
+		;
+	else if (depth == 0)
+		close(data->info->pipe[0].fd[1]);
+	else if (depth != data->cmd_cnt - 1)
 	{
 		if (depth % 2 == 0)
-			close(data->info->pipe[0].fd[1]);
-		else if (data->cmd_cnt > 2 && depth % 2)
-			close(data->info->pipe[1].fd[1]);
-	}
-	if (depth == data->cmd_cnt - 1)
-	{
-		while (wait(&data->info->status) != -1)
-			;
-		if (data->cmd_cnt > 1)
 		{
-			if (depth % 2 == 0)
-				close(data->info->pipe[1].fd[0]);
-			else if (data->cmd_cnt > 2 && depth % 2)
-				close(data->info->pipe[0].fd[0]);
+			close(data->info->pipe[1].fd[0]);
+			close(data->info->pipe[0].fd[1]);
 		}
-		data->exit_status = WEXITSTATUS(data->info->status);
+		else
+		{
+			close(data->info->pipe[0].fd[0]);
+			close(data->info->pipe[1].fd[1]);
+		}
 	}
+	else
+	{
+		if (depth % 2 == 0)
+			close(data->info->pipe[1].fd[0]);
+		else
+			close(data->info->pipe[0].fd[0]);
+	}
+	data->exit_status = WEXITSTATUS(data->info->status);
 }
