@@ -6,7 +6,7 @@
 /*   By: namkim <namkim@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/08 18:20:24 by namkim            #+#    #+#             */
-/*   Updated: 2022/08/17 19:41:07 by namkim           ###   ########.fr       */
+/*   Updated: 2022/08/20 14:25:09 by namkim           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ int	is_valid_env_name(char c, int idx)
 	return (FALSE);
 }
 
-char	**get_env(char **envp)
+char	**get_env(char **envp, t_data *data)
 {
 	int		list_size;
 	int		i;
@@ -40,7 +40,8 @@ char	**get_env(char **envp)
 	while (envp[list_size])
 		list_size++;
 	i = 0;
-	res = (char **)malloc(sizeof(char *) * list_size);
+	res = (char **)malloc(sizeof(char *) * (list_size + 1));
+	data->envlist_size = list_size;
 	while (i < list_size)
 	{
 		res[i] = ft_strdup(envp[i]);
@@ -53,6 +54,7 @@ char	**get_env(char **envp)
 		}
 		i++;
 	}
+	res[i] = NULL;
 	return (res);
 }
 
@@ -75,7 +77,10 @@ char	*match_env(char *keystr, char **envlist)
 		{
 			if (envlist[i][key_len] == '=')
 			{
+				char *str = ft_strchr(envlist[i], '=');
+				printf("1. %s\n", str);
 				res = ft_strdup(ft_strchr(envlist[i], '=') + 1);
+				printf("2. %s\n", str);
 				return (res);
 			}
 		}
