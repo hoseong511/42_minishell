@@ -6,7 +6,7 @@
 /*   By: hossong <hossong@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/12 15:46:57 by namkim            #+#    #+#             */
-/*   Updated: 2022/08/18 19:52:26 by hossong          ###   ########.fr       */
+/*   Updated: 2022/08/20 00:19:29 by hossong          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,9 @@ t_data	*init_data(char **envp)
 	res->cmdlist = NULL;
 	res->cmd_cnt = 0;
 	res->status = TRUE;
+	res->stdin_fd = dup(0);
+	res->stdout_fd = dup(1);
+	res->redir = 0;
 	return (res);
 }
 
