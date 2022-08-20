@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ctrl_env1.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: namkim <namkim@student.42seoul.kr>         +#+  +:+       +#+        */
+/*   By: hossong <hossong@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/08 18:20:24 by namkim            #+#    #+#             */
-/*   Updated: 2022/08/17 19:41:07 by namkim           ###   ########.fr       */
+/*   Updated: 2022/08/20 16:03:15 by hossong          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ int	is_valid_env_name(char c, int idx)
 	return (FALSE);
 }
 
-char	**get_env(char **envp)
+char	**get_env(char **envp, t_data *data)
 {
 	int		list_size;
 	int		i;
@@ -40,7 +40,8 @@ char	**get_env(char **envp)
 	while (envp[list_size])
 		list_size++;
 	i = 0;
-	res = (char **)malloc(sizeof(char *) * list_size);
+	res = (char **)malloc(sizeof(char *) * (list_size + 1));
+	data->envlist_size = list_size;
 	while (i < list_size)
 	{
 		res[i] = ft_strdup(envp[i]);
@@ -53,6 +54,7 @@ char	**get_env(char **envp)
 		}
 		i++;
 	}
+	res[i] = NULL;
 	return (res);
 }
 

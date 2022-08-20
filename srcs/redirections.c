@@ -6,7 +6,7 @@
 /*   By: hossong <hossong@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/18 14:04:20 by namkim            #+#    #+#             */
-/*   Updated: 2022/08/20 00:21:29 by hossong          ###   ########.fr       */
+/*   Updated: 2022/08/20 16:15:15 by hossong          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,6 +92,7 @@ void	redirection_heredoc(t_data *data, char *end_of_file)
 	while (pid == 0)
 	{
 		str = readline("> ");
+		do_expansion(&str, data->envlist, '"');
 		if (ft_strncmp(str, end_of_file, ft_strlen(end_of_file) + 1) == 0)
 			exit(0);
 		write(p_fd[1], str, ft_strlen(str));
@@ -105,28 +106,6 @@ void	redirection_heredoc(t_data *data, char *end_of_file)
 		ft_dup2(p_fd[0], 0);
 		close(p_fd[0]);
 	}
-}
-
-t_list	*redirection(t_list *args)
-{
-	t_list	*node;
-
-	node = args;
-	while (node)
-	{
-		if (((t_cmd2 *)node->content)->type < R_IN)
-			return (node);
-		else if (((t_cmd2 *)node->content)->type == R_IN)
-			redirection_in(((t_cmd2 *)node->content)->str[1]);
-		else if (((t_cmd2 *)node->content)->type == R_OUT)
-			redirection_out(((t_cmd2 *)node->content)->str[1]);
-		else if (((t_cmd2 *)node->content)->type == R_APPD)
-			redirection_append(((t_cmd2 *)node->content)->str[1]);
-		else if (((t_cmd2 *)node->content)->type == R_HEREDOC)
-			//redirection_heredoc(((t_cmd2 *)node->content)->str[1]);
-		node = node->next;
-	}
-	return (node);
 }
 
 t_list	*redirection_left(t_data *data, t_list *args)
@@ -161,14 +140,11 @@ t_list	*redirection_right(t_list *args)
 		node_type = ((t_cmd2 *)node->content)->type;
 		if (node_type < R_IN)
 			return (node);
-		else if (node_type == R_IN || node_type == R_HEREDOC)
-			node = node->next;
 		else if (node_type == R_OUT)
 			redirection_out(((t_cmd2 *)node->content)->str[1]);
 		else if (node_type == R_APPD)
 			redirection_append(((t_cmd2 *)node->content)->str[1]);
 		node = node->next;
 	}
-	printf("return?\n");
 	return (node);
 }

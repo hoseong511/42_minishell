@@ -6,7 +6,7 @@
 /*   By: namkim <namkim@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/19 13:40:01 by namkim            #+#    #+#             */
-/*   Updated: 2022/08/19 14:06:56 by namkim           ###   ########.fr       */
+/*   Updated: 2022/08/19 17:21:37 by namkim           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ int	add_env_to_envlist(char *env, t_data *data)
 		data->envlist = new_envlist;
 		data->envlist_size += 10;
 	}
-	data->envlist[data->envlist_cnt] = env;
+	data->envlist[data->envlist_cnt] = ft_strdup(env);//복제해서 넣는다
 	(data->envlist_cnt)++;
 	return (TRUE);
 }

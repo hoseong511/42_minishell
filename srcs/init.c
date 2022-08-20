@@ -6,7 +6,7 @@
 /*   By: hossong <hossong@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/12 15:46:57 by namkim            #+#    #+#             */
-/*   Updated: 2022/08/20 00:19:29 by hossong          ###   ########.fr       */
+/*   Updated: 2022/08/20 15:55:46 by hossong          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,8 @@ t_data	*init_data(char **envp)
 	res = malloc(sizeof(t_data));
 	if (!res)
 		ft_error("Malloc Error While Initialize\n");
-	res->envlist = get_env(envp);
+	res->envlist = get_env(envp, res);
+	res->envlist_cnt = res->envlist_size;
 	res->tokenlist = NULL;
 	res->cmdlist = NULL;
 	res->cmd_cnt = 0;
@@ -32,24 +33,10 @@ t_data	*init_data(char **envp)
 
 void	load_data(t_data *data, char *str)
 {
-	data->status = check_quote(str);
-	if (data->status == FALSE)
-		return ;
 	data->tokenlist = tokenizer(str);
 	if (!data->tokenlist)
 		return ;
 	data->tokenlist = lexer(data);
-	printf("=========================\n");
 	data->cmdlist = relocate(data->tokenlist);
 	data->cmdlist = bind(data->cmdlist);
-	print_t_cmds2(data->cmdlist);
-	// t_cmd2	*cmd2cont;
-	// cmd2cont = data->cmdlist->content;
-	// printf("path : %s\n", path[0]);
-	// printf("path : %s\n", path[1]);
-	// printf("path : %s\n", path[2]);
-	// printf("path : %s\n", path[3]);
-	// printf("path : %s\n", path[4]);
-//	printf("cmdnode->str: %s\n", cmd2cont->str[0]);
-	// get_exe_file(data->envlist, cmd2cont->str[0]);
 }

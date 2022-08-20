@@ -6,7 +6,7 @@
 /*   By: hossong <hossong@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/14 17:27:01 by hossong           #+#    #+#             */
-/*   Updated: 2022/08/20 00:08:48 by hossong          ###   ########.fr       */
+/*   Updated: 2022/08/20 16:25:40 by hossong          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,9 +19,16 @@ void	exec_arg(t_data *data, t_list *args)
 
 	arg = ((t_cmd2 *)args->content)->str;
 	if (check_builtin(args))
-		exec_builtin(args);
-	path = get_exe_file(data->envlist, arg[0]);
+	{
+		exec_builtin(args, data);
+		exit(0);
+	}
+	if (ft_strchr(arg[0], '/'))
+			path = arg[0];
+	else
+		path = get_exe_file(data->envlist, arg[0]);
 	execve(path, arg, data->envlist);
+	ft_perror(arg[0], errno);
 	exit(1);
 }
 
@@ -60,7 +67,7 @@ void	execution(t_data *data)
 		return ;
 	is_built = check_builtin((t_list *)cmdlist->content);
 	if (data->cmd_cnt == 1 && is_built)
-		exec_builtin((t_list *)cmdlist->content);
+		exec_builtin((t_list *)cmdlist->content, data);
 	else
 		exec_process(data, cmdlist);
 	data->cmd_cnt = 0;
