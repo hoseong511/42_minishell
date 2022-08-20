@@ -6,28 +6,36 @@
 /*   By: namkim <namkim@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/19 10:54:24 by namkim            #+#    #+#             */
-/*   Updated: 2022/08/19 17:21:19 by namkim           ###   ########.fr       */
+/*   Updated: 2022/08/20 10:24:37 by namkim           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/main.h"
 
-// int	check_args(char	*target, char chr)	- 현재 안 씀
-// {
-// 	int		len;
-// 	char	*divider;
+static int	insert_env(char *arg, t_data *data)
+{
+	int		len;
+	int		idx;
+	char	*key;
 
-// 	len = get_env_len(target);
-// 	if (len < 1)
-// 		return (FALSE);
-// 	if (chr == 'e')
-// 	{
-// 		divider = ft_strchr(target, '=');
-// 		if (divider == NULL || *divider == '\0')
-// 			return (FALSE);
-// 	}
-// 	return (TRUE);
-// }
+	len = get_env_len(arg);
+	if (arg[len] == '=')
+	{
+		key = ft_strndup(arg, len);
+		idx = get_env_idx(key, data->envlist);
+		if (idx >= 0)
+		{
+			free(data->envlist[idx]);
+			data->envlist[idx] = ft_strdup(arg);	//복제해서 넣는다
+		}
+		else
+			add_env_to_envlist(arg, data);
+		free(key);
+		return (TRUE);
+	}
+	else
+		return (FALSE);
+}
 
 //expansion의 경우 원래 (space), ':', '/' 등이 구분문자로 기능, But 우리는 : / 등을 해석하지 않기 때문에 그냥 space로만 expansion 할 것임!
 //expansion의 경우 ""와 ''는 전부 shell prompt의 expansion 규칙을 따르는 듯 하다.
@@ -42,31 +50,18 @@
 void	ft_export(char **args, t_data *data)
 {
 	int		i;
-	int		len;
-	int		idx;
-	char	*key;
+	int		sign;
 
-	i = 1;
-	if (!args[1])
-		ft_env(args, data->envlist);//왜인지 알파벳 순서대로 보여준다.. declare -x 라는 포맷과 함께
+	i = 0;
+	if (ft_strncmp("cd", args[0], 3) == 0)
+		i++;
+	if (!args[i])
+		ft_env(args, data);
+	sign = FALSE;
 	while (args[i])
 	{
-		//key & value -> 문법이 맞는지 확인
-		len = get_env_len(args[i]);
-		if (args[i][len] == '=')
-		{
-			key = ft_strdnup(args[i], len);
-			idx = get_env_idx(key, data->envlist);
-			if (idx >= 0)
-			{
-				free(data->envlist[idx]);
-				data->envlist[idx] = ft_strdup(args[i]);	//복제해서 넣는다
-			}
-			else
-				add_env_to_envlist(args[i], data);
-			free(key);
-		}
-		//else : 로컬 변수를 쓴다면...
+		insert_env(args[i], data);
+		i++;
 	}
 }
 
@@ -77,9 +72,9 @@ void	ft_env(char **args, t_data *data)
 	envp = data->envlist;
 	if (args[1])
 	{
-		if (args[0][2] == 'n')
+		if (args[0][1] == 'n')
 			printf("env: %s: No such file or directory\n", args[1]);
-		if (args[0][2] == 'x')
+		if (args[0][1] == 'x')
 			printf("export: `%s': not a valid identifier\n", args[1]);
 		exit(1);
 	}
@@ -87,12 +82,12 @@ void	ft_env(char **args, t_data *data)
 		return ;
 	while (*envp)
 	{
-		if (args[0][2] == 'x')
+		if (args[0][1] == 'x')
 			printf("declare -x ");
 		printf("%s\n", *envp++);
 	}
-	if (args[0][2] == 'n')
-		printf("_=/usr/bin/%s\n", args[0]);
+	// if (args[0][1] == 'n')
+	// 	printf("_=/usr/bin/%s\n", args[0]);
 }
 
 //envp사이즈 관리할까...? 관리하는게 편할 것 같음.
@@ -105,7 +100,6 @@ void	ft_env(char **args, t_data *data)
 void	ft_unset(char **args, t_data *data)
 {
 	int		i;
-	int		e;
 	char	**envp;
 	int		idx;
 
@@ -120,7 +114,6 @@ void	ft_unset(char **args, t_data *data)
 			envp[idx] = envp[data->envlist_cnt - 1];
 			envp[data->envlist_cnt - 1] = NULL;
 			data->envlist_cnt--;
-			return ;
 		}
 		i++;
 	}
@@ -175,7 +168,7 @@ void	ft_cd(char **args, t_data *data)
 		if (!pwd)
 			ft_error("Couldn't get working directory\n");
 		path = ft_strjoin("PWD=", pwd);
-		ft_export(&path, data);
+		insert_env(path, data);
 		free(pwd);
 		free(path);
 	}
@@ -187,8 +180,9 @@ void	ft_cd(char **args, t_data *data)
 }
 
 //여기서 모든 메모리 해제를 넣어줘야 하는지...? 어차피 exit가 모두 처리할건데도?
-void	ft_exit(char **args)
+void	ft_exit(void)	//argument?
 {
+//	(void) data;
 	printf("exit\n");
 	exit(0);
 }
@@ -208,5 +202,5 @@ void	ft_echo(char **args)
 	}
 	write(1, args[i], ft_strlen(args[i]));
 	if (ft_strncmp(args[1], "-n", 3) != 0)
-		write(1, '\n', 1);
+		write(1, "\n", 1);
 }
