@@ -6,7 +6,7 @@
 /*   By: hossong <hossong@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/12 15:53:51 by namkim            #+#    #+#             */
-/*   Updated: 2022/08/17 20:26:28 by hossong          ###   ########.fr       */
+/*   Updated: 2022/08/20 16:03:45 by hossong          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,8 +96,6 @@ t_list	*lexer(t_data *data)
 		do_replace_in_token(res->content, data->envlist);
 		res = res->next;
 	}
-	print_t_cmds(data->tokenlist);
 	res = data->tokenlist;
-	// printf("how many commands: %d\n", data->cmd_cnt);
 	return (res);
 }

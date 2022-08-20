@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.h                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: namkim <namkim@student.42seoul.kr>         +#+  +:+       +#+        */
+/*   By: hossong <hossong@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/06 16:43:27 by hossong           #+#    #+#             */
-/*   Updated: 2022/08/20 14:40:23 by namkim           ###   ########.fr       */
+/*   Updated: 2022/08/20 16:02:32 by hossong          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,6 +92,9 @@ typedef struct s_data
 	int			status;
 	int			exit_status;
 	t_proc		*info;
+	int			stdin_fd;
+	int			stdout_fd;
+	int			redir;
 }	t_data;
 
 void	ft_error(char *err_msg);
@@ -150,16 +153,15 @@ void	parent_process(t_data *data, int depth);
 void	child_process(t_data *data, t_list *c_node, int depth);
 void	exec_arg(t_data *data, t_list *args);
 void	pipe_io(t_data *data, int depth, int cmd_cnt);
-
+char	*get_next_line(int fd);
 
 /* redirection*/
 void	init_pipe(t_data *data, int depth, int cnt);
-//t_list	*redirection(t_list *args);
-t_list	*redirection_left(t_list *args);
-t_list	*redirection_right(t_list *args);
 void	redirection_in(char *filepath);
 void	redirection_out(char *filepath);
 void	redirection_append(char *filepath);
+t_list	*redirection_left(t_data *data, t_list *args);
+t_list	*redirection_right(t_list *args);
 
 /*free*/
 void	free_cmdlist(t_list *cmdlist);
