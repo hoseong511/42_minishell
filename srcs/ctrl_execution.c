@@ -6,11 +6,13 @@
 /*   By: hossong <hossong@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/14 17:27:01 by hossong           #+#    #+#             */
-/*   Updated: 2022/08/20 16:25:40 by hossong          ###   ########.fr       */
+/*   Updated: 2022/08/20 21:56:38 by hossong          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/main.h"
+
+extern int	g_status;
 
 void	exec_arg(t_data *data, t_list *args)
 {
@@ -43,10 +45,14 @@ void	exec_process(t_data *data, t_list *cmdlist)
 	{
 		if (data->cmd_cnt != 1)
 			init_pipe(data, depth, data->cmd_cnt);
+		signal(SIGINT, signal_handler_c);
 		node = redirection_left(data, (t_list *)cmdlist->content);
 		data->info->pid = fork();
 		if (data->info->pid > 0)
+		{
+			signal(SIGINT, signal_handler_d);
 			parent_process(data, depth);
+		}
 		else if (data->info->pid == 0)
 			child_process(data, node, depth);
 		else

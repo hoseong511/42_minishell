@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   signal.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: namkim <namkim@student.42seoul.kr>         +#+  +:+       +#+        */
+/*   By: hossong <hossong@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/16 22:13:27 by namkim            #+#    #+#             */
-/*   Updated: 2022/08/19 15:09:26 by namkim           ###   ########.fr       */
+/*   Updated: 2022/08/20 21:58:37 by hossong          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,3 +23,37 @@ Ctrl + \ : do nothing : sigquit <- 이건 그냥 재우면 됨...!
 대체 왜? g_exit_status가 필요하지?
 자식프로세스가 부모프로세스에 오류를 전달하기 위해?
 */
+
+extern int	g_status;
+
+void	signal_handler(int signal)
+{
+	if (signal == SIGINT)
+	{
+		// rl_on_new_line();
+		//printf("\033[");
+		// printf("\n");
+		printf("mini-0.8$ \b\n");
+		g_status = 1;
+	}
+	if (rl_on_new_line() == -1)
+		exit(1);
+	rl_replace_line("", 1);
+	rl_redisplay();
+}
+
+void	signal_handler_c(int signal)
+{
+	if (signal == SIGINT)
+	{
+		printf("i am child\n");
+	}
+}
+
+void	signal_handler_d(int signal)
+{
+	if (signal == SIGINT)
+	{
+		printf("parent is back\n");
+	}
+}

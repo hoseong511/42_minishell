@@ -6,11 +6,13 @@
 /*   By: hossong <hossong@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/20 12:57:34 by namkim            #+#    #+#             */
-/*   Updated: 2022/08/20 16:07:31 by hossong          ###   ########.fr       */
+/*   Updated: 2022/08/20 20:53:38 by hossong          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/main.h"
+
+extern int	g_status;
 
 void	ft_cd(char **args, t_data *data)
 {
@@ -44,6 +46,7 @@ void	ft_cd(char **args, t_data *data)
 void	ft_exit(void)
 {
 	printf("exit\n");
+	g_status = 1;
 	exit(0);
 }
 

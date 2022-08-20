@@ -6,85 +6,74 @@
 /*   By: hossong <hossong@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/13 22:00:32 by namkim            #+#    #+#             */
-/*   Updated: 2022/08/17 20:27:47 by hossong          ###   ########.fr       */
+/*   Updated: 2022/08/20 21:13:45 by hossong          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/main.h"
 
-//이 안에 있는 모든 환경변수 변경
-//start end로 안 되면 환경변수의 개수 세기?
+extern int	g_status;
+
 void	do_expansion(char **target, char **envp, char sign)
 {
-	char	*str;
 	int		i;
 	int		len;
 	int		envs;
 
-	str = (*target);
-	envs = count_env(str, sign);
-	i = 0;
-	while (str[i] && envs)
+	envs = count_env((*target), sign);
+	i = -1;
+	while ((*target)[++i] && envs)
 	{
-		if (str[i] == '$')
+		if ((*target)[i] == '$')
 		{
 			++i;
-			len = get_env_len(str + i);
+			if ((*target)[i] == '?')
+				envp = NULL;
+			len = get_env_len((*target) + i);
 			if (len != 0)
 			{
 				replace_env(target, i, len, envp);
-				i = 0;
-				str = (*target);
+				i = -1;
 				envs--;
 			}
 		}
-		else if (sign != '\"' && str[i] == '\'')
+		else if (sign != '\"' && (*target)[i] == '\'')
 			i = get_quote_end_idx(*target, i);
-		i++;
 	}
 }
 
 void	do_replace_in_token(t_cmd *node, char **envp)
 {
 	char	*target;
-	int		i;
 	int		j;
-	t_list	*component;
+	t_list	*cmp;
 
 	target = (char *)node->str;
-	i = 0;
+	cmp = NULL;
 	j = 0;
-	component = NULL;
-	while (target[i + j])
+	while (*(target + j))
 	{
-		if (target[i + j] == '\'' || target[i + j] == '\"')
+		if (*(target + j) == '\'' || *(target + j) == '\"')
 		{
 			if (j == 0)
 			{
-				j = get_quote_end_idx(target, i);
-				make_component(&component, target + i, (j - i + 1));
-				process_quote(ft_lstlast(component), envp, target[i]);//
-				i = j + 1;
+				j = get_quote_end_idx(target, target - (char *)node->str);
+				make_component(&cmp, target, (j - (target - (char *)node->str) + 1), envp);
+				target = target + j + 1;
 			}
 			else
 			{
-				make_component(&component, target + i, j);
-				process_non_quote(ft_lstlast(component), envp);//
-				i += j;
+				make_component(&cmp, target, j, envp);
+				target += j;
 			}
 			j = 0;
 		}
 		else
 			j++;
 	}
-	if (target[i + j] == '\0' && j != 0)
-	{
-		make_component(&component, target + i, j);
-		process_non_quote(ft_lstlast(component), envp);//
-	}
-	if (component)
-		node->str = join_components(component);
-	free(target);
+	if (*(target + j) == '\0' && j != 0)
+		make_component(&cmp, target, j, envp);
+	node->str = join_components(cmp, target);
 }
 
 void	remove_quote(char **target, int startidx, int endidx)

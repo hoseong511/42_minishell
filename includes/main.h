@@ -6,7 +6,7 @@
 /*   By: hossong <hossong@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/06 16:43:27 by hossong           #+#    #+#             */
-/*   Updated: 2022/08/20 16:02:32 by hossong          ###   ########.fr       */
+/*   Updated: 2022/08/20 21:58:47 by hossong          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,12 +16,14 @@
 # include <stdio.h>
 # include <unistd.h>
 # include <readline/readline.h>
+# include <readline/history.h>
 # include <stdlib.h>
 # include <sys/wait.h>
 # include <string.h>
 # include <sys/errno.h>
 # include <sys/stat.h>
 # include <fcntl.h>
+# include <termios.h>
 
 # include "../lib/libft/libft.h"
 
@@ -42,13 +44,13 @@ typedef enum e_type
 
 typedef enum e_built
 {
-	ECHO = 1,
-	CD,
-	PWD,
-	EXPORT,
-	UNSET,
-	ENV,
-	EXIT
+	B_ECHO = 1,
+	B_CD,
+	B_PWD,
+	B_EXPORT,
+	B_UNSET,
+	B_ENV,
+	B_EXIT
 }	t_built;
 
 typedef struct s_cmd
@@ -106,6 +108,7 @@ int		is_valid_env_name(char c, int idx);
 char	**get_env(char **envp, t_data *data);
 int		get_env_len(char *target);
 void	replace_env(char **target, int start, int keysize, char **envp);
+void	do_replace(t_list *com, int *i, int *j, char *target);
 
 /* control data */
 t_data	*init_data(char **envp);
@@ -174,10 +177,9 @@ void	do_replace_in_token(t_cmd *node, char **envp);
 void	remove_quote(char **target, int startidx, int endidx);
 char	*replace_key_to_value(char *str, int start, char *keystr, char **envp);
 void	do_expansion(char **target, char **envp, char sign);
-void	make_component(t_list **lst, char *src, int size);
-char	*join_components(t_list *component);
-void	process_quote(t_list *component, char **envp, char quote);
-void	process_non_quote(t_list *component, char **envp);
+void	make_component(t_list **lst, char *src, int size, char **envp);
+char	*join_components(t_list *component, char *target);
+void	process_is_quote(t_list *component, char **envp, char quote);
 int		count_env(char *str, char chr);
 
 /* print utils */
@@ -202,5 +204,11 @@ void	ft_echo(char **args);
 int		is_envlist_full(t_data *data);
 int		add_env_to_envlist(char *env, t_data *data);
 int		get_env_idx(char *keystr, char **envp);
+
+/* signal */
+void	signal_handler(int signal);
+void	signal_handler_c(int signal);
+void	signal_handler_d(int signal);
+
 
 #endif
