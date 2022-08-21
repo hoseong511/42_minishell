@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   built_in2.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hossong <hossong@student.42seoul.kr>       +#+  +:+       +#+        */
+/*   By: namkim <namkim@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/20 12:57:34 by namkim            #+#    #+#             */
-/*   Updated: 2022/08/20 20:53:38 by hossong          ###   ########.fr       */
+/*   Updated: 2022/08/21 16:48:27 by namkim           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ void	ft_cd(char **args, t_data *data)
 		free(path);
 		pwd = getcwd(NULL, 0);
 		if (!pwd)
-			ft_error("Couldn't get working directory\n");
+			ft_error0("Couldn't get working directory\n");
 		path = ft_strjoin("PWD=", pwd);
 		insert_env(path, data);
 		free(pwd);
@@ -39,14 +39,13 @@ void	ft_cd(char **args, t_data *data)
 	else
 	{
 		printf("cd: %s: No such file or directory\n", args[1]);
-		exit(1);
+		g_status = 1;
 	}
 }
 
 void	ft_exit(void)
 {
 	printf("exit\n");
-	g_status = 1;
 	exit(0);
 }
 
