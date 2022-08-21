@@ -6,7 +6,7 @@
 /*   By: hossong <hossong@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/18 14:04:20 by namkim            #+#    #+#             */
-/*   Updated: 2022/08/21 21:24:58 by hossong          ###   ########.fr       */
+/*   Updated: 2022/08/21 23:20:42 by hossong          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,7 +105,7 @@ void	redirection_heredoc(t_data *data, char *end_of_file)
 	if (pid > 0)
 	{
 		signal(SIGINT, signal_handler_c);
-		wait(&data->info->status);
+		waitpid(pid, &data->info->status, 0);
 		if (WEXITSTATUS(data->info->status) == 1)
 		{
 			close(p_fd[1]);
