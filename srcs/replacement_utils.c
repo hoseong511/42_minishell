@@ -6,38 +6,11 @@
 /*   By: namkim <namkim@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/17 19:51:40 by namkim            #+#    #+#             */
-/*   Updated: 2022/08/17 19:52:15 by namkim           ###   ########.fr       */
+/*   Updated: 2022/08/21 12:25:52 by namkim           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/main.h"
-
-//환경변수 expansion
-//single quote / doublequote 처리
-//re_tokenize
-void	process_quote(t_list *component, char **envp, char quote)
-{
-	char	*str;
-
-	if (!component)
-		return ;
-	str = (char *)component->content;
-	if (quote == '\"')
-		do_expansion(&str, envp, quote);
-	remove_quote(&str, 0, ft_strlen(str) - 1);
-	component->content = str;
-}
-
-void	process_non_quote(t_list *component, char **envp)
-{
-	char	*str;
-
-	if (!component)
-		return ;
-	str = (char *)component->content;
-	do_expansion(&str, envp, 'a');
-	component->content = str;
-}
 
 void	make_component(t_list **lst, char *src, int size)
 {
@@ -89,4 +62,32 @@ char	*join_components(t_list *component)
 		free(temp);
 	}
 	return (res);
+}
+
+t_list	*split_words(char *target, int i, int j)
+{
+	t_list	*component;
+
+	component = NULL;
+	while (target[i + j])
+	{
+		if (target[i + j] == '\'' || target[i + j] == '\"')
+		{
+			if (j == 0)
+			{
+				j = get_quote_end_idx(target, i);
+				make_component(&component, target + i, (j - i + 1));
+				i++;
+			}
+			else
+				make_component(&component, target + i, j);
+			i += j;
+			j = 0;
+		}
+		else
+			j++;
+	}
+	if (target[i + j] == '\0' && j != 0)
+		make_component(&component, target + i, j);
+	return (component);
 }

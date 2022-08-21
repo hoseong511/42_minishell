@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   built_in2.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: namkim <namkim@student.42seoul.kr>         +#+  +:+       +#+        */
+/*   By: hossong <hossong@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/20 12:57:34 by namkim            #+#    #+#             */
-/*   Updated: 2022/08/20 12:57:59 by namkim           ###   ########.fr       */
+/*   Updated: 2022/08/20 16:07:31 by hossong          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,10 +41,8 @@ void	ft_cd(char **args, t_data *data)
 	}
 }
 
-//여기서 모든 메모리 해제를 넣어줘야 하는지...? 어차피 exit가 모두 처리할건데도?
-void	ft_exit(void)	//argument?
+void	ft_exit(void)
 {
-//	(void) data;
 	printf("exit\n");
 	exit(0);
 }

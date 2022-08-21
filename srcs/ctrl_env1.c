@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ctrl_env1.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: namkim <namkim@student.42seoul.kr>         +#+  +:+       +#+        */
+/*   By: hossong <hossong@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/08 18:20:24 by namkim            #+#    #+#             */
-/*   Updated: 2022/08/20 14:25:09 by namkim           ###   ########.fr       */
+/*   Updated: 2022/08/20 16:03:15 by hossong          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,10 +77,7 @@ char	*match_env(char *keystr, char **envlist)
 		{
 			if (envlist[i][key_len] == '=')
 			{
-				char *str = ft_strchr(envlist[i], '=');
-				printf("1. %s\n", str);
 				res = ft_strdup(ft_strchr(envlist[i], '=') + 1);
-				printf("2. %s\n", str);
 				return (res);
 			}
 		}

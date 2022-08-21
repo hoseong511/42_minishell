@@ -6,7 +6,7 @@
 /*   By: namkim <namkim@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/06 16:43:27 by hossong           #+#    #+#             */
-/*   Updated: 2022/08/20 14:40:23 by namkim           ###   ########.fr       */
+/*   Updated: 2022/08/21 12:16:59 by namkim           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,6 +92,9 @@ typedef struct s_data
 	int			status;
 	int			exit_status;
 	t_proc		*info;
+	int			stdin_fd;
+	int			stdout_fd;
+	int			redir;
 }	t_data;
 
 void	ft_error(char *err_msg);
@@ -150,16 +153,15 @@ void	parent_process(t_data *data, int depth);
 void	child_process(t_data *data, t_list *c_node, int depth);
 void	exec_arg(t_data *data, t_list *args);
 void	pipe_io(t_data *data, int depth, int cmd_cnt);
-
+char	*get_next_line(int fd);
 
 /* redirection*/
 void	init_pipe(t_data *data, int depth, int cnt);
-//t_list	*redirection(t_list *args);
-t_list	*redirection_left(t_list *args);
-t_list	*redirection_right(t_list *args);
 void	redirection_in(char *filepath);
 void	redirection_out(char *filepath);
 void	redirection_append(char *filepath);
+t_list	*redirection_left(t_data *data, t_list *args);
+t_list	*redirection_right(t_list *args);
 
 /*free*/
 void	free_cmdlist(t_list *cmdlist);
@@ -169,6 +171,8 @@ void	free_cmd(t_list *cmdlist, char *tar);
 
 /*replacement fix*/
 void	do_replace_in_token(t_cmd *node, char **envp);
+t_list	*split_words(char *target, int i, int j);
+
 void	remove_quote(char **target, int startidx, int endidx);
 char	*replace_key_to_value(char *str, int start, char *keystr, char **envp);
 void	do_expansion(char **target, char **envp, char sign);
@@ -177,6 +181,7 @@ char	*join_components(t_list *component);
 void	process_quote(t_list *component, char **envp, char quote);
 void	process_non_quote(t_list *component, char **envp);
 int		count_env(char *str, char chr);
+
 
 /* print utils */
 void	print_t_cmds2(t_list *tokenlist);

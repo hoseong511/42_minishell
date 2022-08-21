@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ctrl_process.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: namkim <namkim@student.42seoul.kr>         +#+  +:+       +#+        */
+/*   By: hossong <hossong@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/18 12:32:30 by hossong           #+#    #+#             */
-/*   Updated: 2022/08/20 08:11:54 by namkim           ###   ########.fr       */
+/*   Updated: 2022/08/20 16:11:30 by hossong          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,19 +79,15 @@ void	child_process(t_data *data, t_list *args, int depth)
 {
 	t_list	*node;
 
-	(void)depth;
-//	node = redirection_left(args);
 	pipe_io(data, depth, data->cmd_cnt);
-	node = redirection(args);
-//	node = redirection_right(args);
+	node = redirection_right(args);
 	exec_arg(data, node);
 }
 
 void	parent_process(t_data *data, int depth)
 {
-	wait(&data->info->status);
 	if (data->cmd_cnt < 2)
-		;
+		wait(&data->info->status);
 	else if (depth == 0)
 		close(data->info->pipe[0].fd[1]);
 	else if (depth != data->cmd_cnt - 1)
@@ -109,6 +105,8 @@ void	parent_process(t_data *data, int depth)
 	}
 	else
 	{
+		while (wait(&data->info->status) != -1)
+			;
 		if (depth % 2 == 0)
 			close(data->info->pipe[1].fd[0]);
 		else

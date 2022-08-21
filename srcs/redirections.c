@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirections.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: namkim <namkim@student.42seoul.kr>         +#+  +:+       +#+        */
+/*   By: hossong <hossong@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/18 14:04:20 by namkim            #+#    #+#             */
-/*   Updated: 2022/08/20 14:40:06 by namkim           ###   ########.fr       */
+/*   Updated: 2022/08/20 16:15:15 by hossong          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,92 +79,36 @@ void	redirection_append(char *filepath)
 	}
 }
 
-//일단 파일을 만든다 - 파일 이름 어떻게?
-//여기서 다시 readline해야하는 것 같은디?
-//readline으로 한 줄 한 줄 가져옴
-	//-> 그 내용을 그 때마다 한 줄 한 줄 씀!
-//EOF를 만났나?
-//만났으면 파일을 닫고, dup...
-//그런데 파일은 어떻게 삭제하지...?
-/*
-	unlink : If one or more process have the file open
-	when the last link is removed,the link is removed,
-	but the removal of the file is delayed until all references to it have been closed.
-*/
-void	redirection_heredoc(char *end_of_file)
+void	redirection_heredoc(t_data *data, char *end_of_file)
 {
-	int		fd;
+	int		p_fd[2];
 	char	*str;
+	pid_t	pid;
 
-	//왜 존재하는 파일을 열면 오류가 나는지? O_TRUNC가 있는데도?
-	fd = open(".tmp", O_RDWR | O_CREAT | O_TRUNC, 0644);
-	if (fd < 0)
-		ft_error("Heredoc open error\n");
-	str = NULL;
-	while (TRUE)
+	ft_dup2(data->stdin_fd, 0);
+	ft_dup2(data->stdout_fd, 1);
+	pipe(p_fd);
+	pid = fork();
+	while (pid == 0)
 	{
-		printf("%s\n", end_of_file);
-		str = readline("> ");	//포크 전에 redirection
+		str = readline("> ");
+		do_expansion(&str, data->envlist, '"');
 		if (ft_strncmp(str, end_of_file, ft_strlen(end_of_file) + 1) == 0)
-		{
-			free(str);
-			str = NULL;
-			break ;
-		}
-		else
-		{
-			write(fd, str, ft_strlen(str));
-			write(fd, "\n", 1);	//여기서 바로 stdin으로 쓰면 어떻게 되지...? -> stdin에 쓰는데도 stdout에 표시된다.
-			free (str);
-			str = NULL;
-		}
+			exit(0);
+		write(p_fd[1], str, ft_strlen(str));
+		write(p_fd[1], "\n", 1);
+		free (str);
 	}
-	close(fd);
-	//redirection_in(".tmp");
-	fd = open(".tmp", O_RDONLY);	// 왜 꼭 다시 닫았다 열어야하는건지
-	// if (fd < 0)
-	// 	printf("open fail\n");
-	if (dup2(fd, 0) < 0)
-		ft_perror("Dup2", errno);
-	printf("success\n");
-	unlink(".tmp");
-	close(fd);
-	// fd = open(".tmp", O_RDONLY);
-	// str = get_next_line
+	if (pid > 0)
+	{
+		waitpid(pid, NULL, 0);
+		close(p_fd[1]);
+		ft_dup2(p_fd[0], 0);
+		close(p_fd[0]);
+	}
 }
 
-//시작 지점부터 시작해서 redirection이 끝날때까지 while문
-//check redirection 종류
-//종류에 따라 unit실행
-//반환(command가 시작하는 부분)
-// t_list	*redirection(t_list *args)
-// {
-// 	t_list	*node;
-
-// 	node = args;
-// 	while (node)
-// 	{
-// 		if (((t_cmd2 *)node->content)->type < R_IN)
-// 		{
-// 			printf("out?\n");
-// 			return (node);
-// 		}
-// 		else if (((t_cmd2 *)node->content)->type == R_IN)
-// 			redirection_in(((t_cmd2 *)node->content)->str[1]);
-// 		else if (((t_cmd2 *)node->content)->type == R_OUT)
-// 			redirection_out(((t_cmd2 *)node->content)->str[1]);
-// 		else if (((t_cmd2 *)node->content)->type == R_APPD)
-// 			redirection_append(((t_cmd2 *)node->content)->str[1]);
-// 		else if (((t_cmd2 *)node->content)->type == R_HEREDOC)
-// 			redirection_heredoc(((t_cmd2 *)node->content)->str[1]);
-// 		printf("here?\n");
-// //			printf("this is HEREDOC\n");
-// 		node = node->next;
-// 	}
-// 	printf("return?\n");
-// 	return (node);
-// }
-t_list	*redirection_left(t_list *args)
+t_list	*redirection_left(t_data *data, t_list *args)
 {
 	t_list	*node;
 	t_type	node_type;
@@ -174,17 +118,14 @@ t_list	*redirection_left(t_list *args)
 	{
 		node_type = ((t_cmd2 *)node->content)->type;
 		if (node_type < R_IN || node_type == R_OUT || node_type == R_APPD)
-		{
-			printf("out?\n");
 			return (node);
-		}
 		else if (node_type == R_IN)
 			redirection_in(((t_cmd2 *)node->content)->str[1]);
 		else if (node_type == R_HEREDOC)
-			redirection_heredoc(((t_cmd2 *)node->content)->str[1]);
+			redirection_heredoc(data, ((t_cmd2 *)node->content)->str[1]);
 		node = node->next;
+		data->redir = 1;
 	}
-	printf("return?\n");
 	return (node);
 }
 
@@ -198,18 +139,12 @@ t_list	*redirection_right(t_list *args)
 	{
 		node_type = ((t_cmd2 *)node->content)->type;
 		if (node_type < R_IN)
-		{
-			printf("out?\n");
 			return (node);
-		}
-		else if (node_type == R_IN || node_type == R_HEREDOC)
-			node = node->next;
 		else if (node_type == R_OUT)
 			redirection_out(((t_cmd2 *)node->content)->str[1]);
 		else if (node_type == R_APPD)
 			redirection_append(((t_cmd2 *)node->content)->str[1]);
 		node = node->next;
 	}
-	printf("return?\n");
 	return (node);
 }

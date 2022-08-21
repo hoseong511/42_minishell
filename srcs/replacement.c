@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   replacement.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hossong <hossong@student.42seoul.kr>       +#+  +:+       +#+        */
+/*   By: namkim <namkim@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/13 22:00:32 by namkim            #+#    #+#             */
-/*   Updated: 2022/08/17 20:27:47 by hossong          ###   ########.fr       */
+/*   Updated: 2022/08/21 12:25:42 by namkim           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,49 +44,6 @@ void	do_expansion(char **target, char **envp, char sign)
 	}
 }
 
-void	do_replace_in_token(t_cmd *node, char **envp)
-{
-	char	*target;
-	int		i;
-	int		j;
-	t_list	*component;
-
-	target = (char *)node->str;
-	i = 0;
-	j = 0;
-	component = NULL;
-	while (target[i + j])
-	{
-		if (target[i + j] == '\'' || target[i + j] == '\"')
-		{
-			if (j == 0)
-			{
-				j = get_quote_end_idx(target, i);
-				make_component(&component, target + i, (j - i + 1));
-				process_quote(ft_lstlast(component), envp, target[i]);//
-				i = j + 1;
-			}
-			else
-			{
-				make_component(&component, target + i, j);
-				process_non_quote(ft_lstlast(component), envp);//
-				i += j;
-			}
-			j = 0;
-		}
-		else
-			j++;
-	}
-	if (target[i + j] == '\0' && j != 0)
-	{
-		make_component(&component, target + i, j);
-		process_non_quote(ft_lstlast(component), envp);//
-	}
-	if (component)
-		node->str = join_components(component);
-	free(target);
-}
-
 void	remove_quote(char **target, int startidx, int endidx)
 {
 	char	*str;
@@ -96,4 +53,22 @@ void	remove_quote(char **target, int startidx, int endidx)
 	dst = str + (startidx);
 	str = ft_memmove(dst, dst + 1, ft_strlen(dst + 1) - 1);
 	str[endidx - 1] = '\0';
+}
+
+void	do_replace_in_token(t_cmd *cmdnode, char **envp)
+{
+	t_list	*comp;
+	t_list	*node;
+	char	*target;
+
+	target = (char *)cmdnode->str;
+	comp = split_words(target, 0, 0);
+	node = comp;
+	while (node)
+	{
+		do_expansion((char **)&(node->content), envp, (char)(node->content));
+		node = node->next;
+	}
+	cmdnode->str = join_components(comp);
+	free(target);
 }
