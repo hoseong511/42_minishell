@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.h                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: namkim <namkim@student.42seoul.kr>         +#+  +:+       +#+        */
+/*   By: hossong <hossong@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/06 16:43:27 by hossong           #+#    #+#             */
-/*   Updated: 2022/08/21 12:16:59 by namkim           ###   ########.fr       */
+/*   Updated: 2022/08/21 20:15:07 by hossong          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,17 +16,21 @@
 # include <stdio.h>
 # include <unistd.h>
 # include <readline/readline.h>
+# include <readline/history.h>
 # include <stdlib.h>
 # include <sys/wait.h>
 # include <string.h>
 # include <sys/errno.h>
 # include <sys/stat.h>
 # include <fcntl.h>
+# include <termios.h>
 
 # include "../lib/libft/libft.h"
 
 # define TRUE 1
 # define FALSE 0
+
+extern int	g_status;
 
 typedef enum e_type
 {
@@ -42,13 +46,13 @@ typedef enum e_type
 
 typedef enum e_built
 {
-	ECHO = 1,
-	CD,
-	PWD,
-	EXPORT,
-	UNSET,
-	ENV,
-	EXIT
+	B_ECHO = 1,
+	B_CD,
+	B_PWD,
+	B_EXPORT,
+	B_UNSET,
+	B_ENV,
+	B_EXIT
 }	t_built;
 
 typedef struct s_cmd
@@ -83,22 +87,26 @@ typedef struct s_proc
 
 typedef struct s_data
 {
-	char		**envlist;
-	int			envlist_size;
-	int			envlist_cnt;
-	t_list		*tokenlist;
-	t_list		*cmdlist;
-	int			cmd_cnt;
-	int			status;
-	int			exit_status;
-	t_proc		*info;
-	int			stdin_fd;
-	int			stdout_fd;
-	int			redir;
+	char				**envlist;
+	int					envlist_size;
+	int					envlist_cnt;
+	t_list				*tokenlist;
+	t_list				*cmdlist;
+	int					cmd_cnt;
+	int					status;
+	int					exit_status;
+	t_proc				*info;
+	int					stdin_fd;
+	int					stdout_fd;
+	int					redir;
+	struct termios		set;
+	struct termios		save;
 }	t_data;
 
+void	ft_error0(char *err_msg);
 void	ft_error(char *err_msg);
 void	ft_error2(char *arg, char *err_msg);
+void	ft_error3(char *arg, char *err_msg, int errcode);
 void	ft_perror(char *err_msg, int err);
 void	ft_dup2(int fd1, int fd2);
 char	*match_env(char *keystr, char **envlist);
@@ -106,6 +114,8 @@ int		is_valid_env_name(char c, int idx);
 char	**get_env(char **envp, t_data *data);
 int		get_env_len(char *target);
 void	replace_env(char **target, int start, int keysize, char **envp);
+void	do_replace(t_list *com, int *i, int *j, char *target);
+void	set_termattr(struct termios term);
 
 /* control data */
 t_data	*init_data(char **envp);
@@ -178,10 +188,7 @@ char	*replace_key_to_value(char *str, int start, char *keystr, char **envp);
 void	do_expansion(char **target, char **envp, char sign);
 void	make_component(t_list **lst, char *src, int size);
 char	*join_components(t_list *component);
-void	process_quote(t_list *component, char **envp, char quote);
-void	process_non_quote(t_list *component, char **envp);
 int		count_env(char *str, char chr);
-
 
 /* print utils */
 void	print_t_cmds2(t_list *tokenlist);
@@ -205,5 +212,10 @@ void	ft_echo(char **args);
 int		is_envlist_full(t_data *data);
 int		add_env_to_envlist(char *env, t_data *data);
 int		get_env_idx(char *keystr, char **envp);
+
+/* signal */
+void	signal_handler(int signal);
+void	signal_handler_c(int signal);
+void	signal_handler_d(int signal);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: namkim <namkim@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/19 13:40:01 by namkim            #+#    #+#             */
-/*   Updated: 2022/08/19 17:21:37 by namkim           ###   ########.fr       */
+/*   Updated: 2022/08/21 16:06:00 by namkim           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,19 +38,18 @@ int	add_env_to_envlist(char *env, t_data *data)
 		data->envlist = new_envlist;
 		data->envlist_size += 10;
 	}
-	data->envlist[data->envlist_cnt] = ft_strdup(env);//복제해서 넣는다
+	data->envlist[data->envlist_cnt] = ft_strdup(env);
 	(data->envlist_cnt)++;
 	return (TRUE);
 }
 
-//만약 존재하면 idx return, 존재하지 않으면 -1
 int	get_env_idx(char *keystr, char **envp)
 {
 	int	idx;
 	int	key_len;
 
 	idx = 0;
-	if (!envp)
+	if (!envp || !keystr)
 		return (-1);
 	key_len = ft_strlen(keystr);
 	while (envp[idx])

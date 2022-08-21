@@ -6,11 +6,13 @@
 /*   By: hossong <hossong@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/18 12:32:30 by hossong           #+#    #+#             */
-/*   Updated: 2022/08/20 16:11:30 by hossong          ###   ########.fr       */
+/*   Updated: 2022/08/21 21:46:35 by hossong          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "main.h"
+
+extern int	g_status;
 
 t_proc	*init_proc_info(void)
 {
@@ -35,19 +37,19 @@ t_built	check_builtin(t_list *args)
 	{
 		arg = (t_cmd2 *)args->content;
 		if (ft_strncmp(arg->str[0], "echo", 5) == 0)
-			ret = ECHO;
+			ret = B_ECHO;
 		else if (ft_strncmp(arg->str[0], "cd", 3) == 0)
-			ret = CD;
+			ret = B_CD;
 		else if (ft_strncmp(arg->str[0], "pwd", 4) == 0)
-			ret = PWD;
+			ret = B_PWD;
 		else if (ft_strncmp(arg->str[0], "export", 7) == 0)
-			ret = EXPORT;
+			ret = B_EXPORT;
 		else if (ft_strncmp(arg->str[0], "unset", 6) == 0)
-			ret = UNSET;
+			ret = B_UNSET;
 		else if (ft_strncmp(arg->str[0], "env", 4) == 0)
-			ret = ENV;
+			ret = B_ENV;
 		else if (ft_strncmp(arg->str[0], "exit", 5) == 0)
-			ret = EXIT;
+			ret = B_EXIT;
 	}
 	return (ret);
 }
@@ -59,19 +61,19 @@ void	exec_builtin(t_list *args, t_data *data)
 	builtin = check_builtin(args);
 	if (!builtin)
 		return ;
-	else if (builtin == ECHO)
+	else if (builtin == B_ECHO)
 		ft_echo(((t_cmd2 *)args->content)->str);
-	else if (builtin == CD)
+	else if (builtin == B_CD)
 		ft_cd(((t_cmd2 *)args->content)->str, data);
-	else if (builtin == PWD)
+	else if (builtin == B_PWD)
 		ft_pwd(((t_cmd2 *)args->content)->str);
-	else if (builtin == EXPORT)
+	else if (builtin == B_EXPORT)
 		ft_export(((t_cmd2 *)args->content)->str, data);
-	else if (builtin == UNSET)
+	else if (builtin == B_UNSET)
 		ft_unset(((t_cmd2 *)args->content)->str, data);
-	else if (builtin == ENV)
+	else if (builtin == B_ENV)
 		ft_env(((t_cmd2 *)args->content)->str, data);
-	else if (builtin == EXIT)
+	else if (builtin == B_EXIT)
 		ft_exit();
 }
 
@@ -79,14 +81,17 @@ void	child_process(t_data *data, t_list *args, int depth)
 {
 	t_list	*node;
 
+	set_termattr(data->save);
+	// signal(SIGINT, signal_handler_d);
+	node = redirection_left(data, args);
 	pipe_io(data, depth, data->cmd_cnt);
-	node = redirection_right(args);
+	node = redirection_right(node);
 	exec_arg(data, node);
 }
 
 void	parent_process(t_data *data, int depth)
 {
-	if (data->cmd_cnt < 2)
+	if (data->cmd_cnt == 1)
 		wait(&data->info->status);
 	else if (depth == 0)
 		close(data->info->pipe[0].fd[1]);
@@ -112,5 +117,8 @@ void	parent_process(t_data *data, int depth)
 		else
 			close(data->info->pipe[0].fd[0]);
 	}
-	data->exit_status = WEXITSTATUS(data->info->status);
+	if (WIFSIGNALED(data->info->status))
+		g_status = 130;
+	else
+		g_status = WEXITSTATUS(data->info->status);
 }
