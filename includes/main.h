@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.h                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hossong <hossong@student.42seoul.kr>       +#+  +:+       +#+        */
+/*   By: namkim <namkim@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/06 16:43:27 by hossong           #+#    #+#             */
-/*   Updated: 2022/08/20 16:02:32 by hossong          ###   ########.fr       */
+/*   Updated: 2022/08/21 12:16:59 by namkim           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -171,6 +171,8 @@ void	free_cmd(t_list *cmdlist, char *tar);
 
 /*replacement fix*/
 void	do_replace_in_token(t_cmd *node, char **envp);
+t_list	*split_words(char *target, int i, int j);
+
 void	remove_quote(char **target, int startidx, int endidx);
 char	*replace_key_to_value(char *str, int start, char *keystr, char **envp);
 void	do_expansion(char **target, char **envp, char sign);
@@ -179,6 +181,7 @@ char	*join_components(t_list *component);
 void	process_quote(t_list *component, char **envp, char quote);
 void	process_non_quote(t_list *component, char **envp);
 int		count_env(char *str, char chr);
+
 
 /* print utils */
 void	print_t_cmds2(t_list *tokenlist);

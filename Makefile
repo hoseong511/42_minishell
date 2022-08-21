@@ -3,15 +3,15 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: hossong <hossong@student.42seoul.kr>       +#+  +:+       +#+         #
+#    By: namkim <namkim@student.42seoul.kr>         +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/08/07 14:34:58 by hossong           #+#    #+#              #
-#    Updated: 2022/08/20 16:00:51 by hossong          ###   ########.fr        #
+#    Updated: 2022/08/21 12:11:49 by namkim           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME	=	minishell
-CFLAGS 	=	-Wall -Wextra -Werror #-fsanitize=address
+CFLAGS 	=	-Wall -Wextra -Werror -g3#-fsanitize=address
 
 LIB		=	 -lreadline -L ./lib/libft -lft
 LIBFT	=	lib/libft/libft.a
