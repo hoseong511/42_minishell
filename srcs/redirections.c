@@ -6,7 +6,7 @@
 /*   By: hossong <hossong@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/18 14:04:20 by namkim            #+#    #+#             */
-/*   Updated: 2022/08/21 23:20:42 by hossong          ###   ########.fr       */
+/*   Updated: 2022/08/22 02:06:53 by hossong          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,14 +81,12 @@ void	redirection_append(char *filepath)
 	}
 }
 
-void	redirection_heredoc(t_data *data, char *end_of_file)
+void	redirection_heredoc(t_data *data, char *end_of_file, int idx)
 {
 	int		p_fd[2];
 	char	*str;
 	pid_t	pid;
 
-	ft_dup2(data->stdin_fd, 0);
-	ft_dup2(data->stdout_fd, 1);
 	pipe(p_fd);
 	pid = fork();
 	while (pid == 0)
@@ -116,7 +114,7 @@ void	redirection_heredoc(t_data *data, char *end_of_file)
 		else
 		{
 			close(p_fd[1]);
-			ft_dup2(p_fd[0], 0);
+			data->heredoc[idx] = dup(p_fd[0]);
 			close(p_fd[0]);
 		}
 	}
@@ -126,6 +124,7 @@ t_list	*redirection_left(t_data *data, t_list *args)
 {
 	t_list	*node;
 	t_type	node_type;
+	int		idx;
 
 	node = args;
 	while (node)
@@ -136,9 +135,12 @@ t_list	*redirection_left(t_data *data, t_list *args)
 		else if (node_type == R_IN)
 			redirection_in(((t_cmd2 *)node->content)->str[1]);
 		else if (node_type == R_HEREDOC)
-			redirection_heredoc(data, ((t_cmd2 *)node->content)->str[1]);
-		if (g_status == 1)
-			return (NULL);
+		{
+			idx = 0;
+			while (data->heredoc[idx] == -1)
+				idx++;
+			ft_dup2(data->heredoc[idx], 0);
+		}
 		node = node->next;
 		data->redir = 1;
 	}

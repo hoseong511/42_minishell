@@ -6,7 +6,7 @@
 /*   By: hossong <hossong@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/18 12:32:30 by hossong           #+#    #+#             */
-/*   Updated: 2022/08/21 23:27:09 by hossong          ###   ########.fr       */
+/*   Updated: 2022/08/22 02:07:37 by hossong          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,10 +81,11 @@ void	child_process(t_data *data, t_list *args, int depth)
 {
 	t_list	*node;
 
-	//set_termattr(data->save);
-	// signal(SIGINT, signal_handler_d);
+	set_termattr(data->save);
+	//signal(SIGINT, signal_handler_c);
+	node = redirection_left(data, args);
 	pipe_io(data, depth, data->cmd_cnt);
-	node = redirection_right(args);
+	node = redirection_right(node);
 	exec_arg(data, node);
 }
 

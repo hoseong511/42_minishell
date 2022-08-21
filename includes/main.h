@@ -6,7 +6,7 @@
 /*   By: hossong <hossong@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/06 16:43:27 by hossong           #+#    #+#             */
-/*   Updated: 2022/08/21 20:15:07 by hossong          ###   ########.fr       */
+/*   Updated: 2022/08/22 02:11:09 by hossong          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,6 +101,7 @@ typedef struct s_data
 	int					redir;
 	struct termios		set;
 	struct termios		save;
+	int					*heredoc;
 }	t_data;
 
 void	ft_error0(char *err_msg);
@@ -170,6 +171,7 @@ void	init_pipe(t_data *data, int depth, int cnt);
 void	redirection_in(char *filepath);
 void	redirection_out(char *filepath);
 void	redirection_append(char *filepath);
+void	redirection_heredoc(t_data *data, char *end_of_file, int idx);
 t_list	*redirection_left(t_data *data, t_list *args);
 t_list	*redirection_right(t_list *args);
 
@@ -217,5 +219,6 @@ int		get_env_idx(char *keystr, char **envp);
 void	signal_handler(int signal);
 void	signal_handler_c(int signal);
 void	signal_handler_d(int signal);
+void	heredoc(t_data *data);
 
 #endif
