@@ -6,7 +6,7 @@
 /*   By: hossong <hossong@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/06 16:43:27 by hossong           #+#    #+#             */
-/*   Updated: 2022/08/20 21:58:47 by hossong          ###   ########.fr       */
+/*   Updated: 2022/08/21 19:50:17 by hossong          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,6 +97,8 @@ typedef struct s_data
 	int			stdin_fd;
 	int			stdout_fd;
 	int			redir;
+	struct termios		set;
+	struct termios		save;
 }	t_data;
 
 void	ft_error(char *err_msg);
@@ -109,6 +111,7 @@ char	**get_env(char **envp, t_data *data);
 int		get_env_len(char *target);
 void	replace_env(char **target, int start, int keysize, char **envp);
 void	do_replace(t_list *com, int *i, int *j, char *target);
+void	set_termattr(struct termios term);
 
 /* control data */
 t_data	*init_data(char **envp);
@@ -208,7 +211,5 @@ int		get_env_idx(char *keystr, char **envp);
 /* signal */
 void	signal_handler(int signal);
 void	signal_handler_c(int signal);
-void	signal_handler_d(int signal);
-
 
 #endif

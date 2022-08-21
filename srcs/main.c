@@ -6,7 +6,7 @@
 /*   By: hossong <hossong@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/06 16:42:28 by hossong           #+#    #+#             */
-/*   Updated: 2022/08/20 21:58:49 by hossong          ###   ########.fr       */
+/*   Updated: 2022/08/21 19:50:03 by hossong          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,24 +14,38 @@
 
 int	g_status;
 
+static	void	def_termattr(t_data *data)
+{
+	if (tcgetattr(STDIN_FILENO, &data->set) != 0)
+		ft_perror("tcgetattr", errno);
+	data->save = data->set;
+	data->set.c_lflag &= ~(ECHOCTL);
+	if (tcsetattr(STDIN_FILENO, TCSANOW, &data->set) != 0)
+		ft_perror("tcsetattr", errno);
+}
+
+void	set_termattr(struct termios term)
+{
+	if (tcsetattr(STDIN_FILENO, TCSANOW, &term) != 0)
+		ft_perror("tcsetattr", errno);
+}
+
 int	main(int argc, char **argv, char **envp)
 {
-	struct termios		term;
 	char				*str;
 	t_data				*data;
 
-	tcgetattr(STDIN_FILENO, &term);
-	term.c_lflag &= ~(ECHOCTL);
-	tcsetattr(STDIN_FILENO, TCSANOW, &term);
-	signal(SIGINT, signal_handler);
-	signal(SIGQUIT, SIG_IGN);
 	(void) argv;
 	if (argc != 1)
 		ft_error("Too much argument!\n");
 	printf("==minishell==\n");
 	data = init_data(envp);
+	def_termattr(data);
 	while (1)
 	{
+		set_termattr(data->set);
+		signal(SIGINT, signal_handler);
+		signal(SIGQUIT, SIG_IGN);
 		str = readline("mini-0.8$ ");
 		if (!str)
 		{

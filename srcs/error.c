@@ -6,7 +6,7 @@
 /*   By: hossong <hossong@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/09 17:26:17 by hossong           #+#    #+#             */
-/*   Updated: 2022/08/20 16:27:30 by hossong          ###   ########.fr       */
+/*   Updated: 2022/08/21 19:40:23 by hossong          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,5 +37,5 @@ void	ft_perror(char *err_msg, int err)
 void	ft_dup2(int fd1, int fd2)
 {
 	if (dup2(fd1, fd2) == -1)
-		ft_perror("dup2: ", errno);
+		ft_perror("dup2", errno);
 }
