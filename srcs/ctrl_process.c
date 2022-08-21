@@ -6,7 +6,7 @@
 /*   By: hossong <hossong@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/18 12:32:30 by hossong           #+#    #+#             */
-/*   Updated: 2022/08/21 19:48:28 by hossong          ###   ########.fr       */
+/*   Updated: 2022/08/21 20:02:28 by hossong          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,6 +82,7 @@ void	child_process(t_data *data, t_list *args, int depth)
 	t_list	*node;
 
 	set_termattr(data->save);
+	// signal(SIGINT, signal_handler_d);
 	pipe_io(data, depth, data->cmd_cnt);
 	node = redirection_right(args);
 	exec_arg(data, node);
@@ -115,5 +116,8 @@ void	parent_process(t_data *data, int depth)
 		else
 			close(data->info->pipe[0].fd[0]);
 	}
-	g_status = WEXITSTATUS(data->info->status);
+	if (WIFSIGNALED(data->info->status))
+		g_status = 130;
+	else
+		g_status = WEXITSTATUS(data->info->status);
 }

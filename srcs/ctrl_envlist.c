@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ctrl_envlist.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hossong <hossong@student.42seoul.kr>       +#+  +:+       +#+        */
+/*   By: namkim <namkim@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/19 13:40:01 by namkim            #+#    #+#             */
-/*   Updated: 2022/08/20 18:20:24 by hossong          ###   ########.fr       */
+/*   Updated: 2022/08/21 16:06:00 by namkim           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ int	get_env_idx(char *keystr, char **envp)
 	int	key_len;
 
 	idx = 0;
-	if (!envp)
+	if (!envp || !keystr)
 		return (-1);
 	key_len = ft_strlen(keystr);
 	while (envp[idx])

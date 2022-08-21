@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hossong <hossong@student.42seoul.kr>       +#+  +:+       +#+        */
+/*   By: namkim <namkim@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/16 20:09:37 by namkim            #+#    #+#             */
-/*   Updated: 2022/08/19 01:30:09 by hossong          ###   ########.fr       */
+/*   Updated: 2022/08/21 15:47:36 by namkim           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,9 +92,9 @@ char	*get_exe_file(char	**envp, char *cmd)
 		i++;
 	}
 	if (sign == -1)
-		ft_error2(cmd, ": Permission Denied\n");
+		ft_error3(cmd, ": Permission Denied\n", 126);
 	if (sign == -2)
-		ft_error2(cmd, ": command not found\n");
+		ft_error3(cmd, ": command not found\n", 127);
 	exit(1);
 	return (addr);
 }

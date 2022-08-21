@@ -6,7 +6,7 @@
 /*   By: hossong <hossong@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/06 16:42:28 by hossong           #+#    #+#             */
-/*   Updated: 2022/08/21 19:50:03 by hossong          ###   ########.fr       */
+/*   Updated: 2022/08/21 19:59:16 by hossong          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,8 +49,8 @@ int	main(int argc, char **argv, char **envp)
 		str = readline("mini-0.8$ ");
 		if (!str)
 		{
-			printf("\033[1A"); // 커서를 위로 한 줄 올린다.
-			printf("\033[10C"); // 커서를 10만큼 앞으로 전진시킨다.
+			printf("\033[1A");
+			printf("\033[10C");
 			ft_exit();
 		}
 		if (*str)

@@ -6,7 +6,7 @@
 /*   By: hossong <hossong@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/06 16:43:27 by hossong           #+#    #+#             */
-/*   Updated: 2022/08/21 19:50:17 by hossong          ###   ########.fr       */
+/*   Updated: 2022/08/21 20:03:24 by hossong          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,8 @@
 
 # define TRUE 1
 # define FALSE 0
+
+extern int	g_status;
 
 typedef enum e_type
 {
@@ -85,24 +87,26 @@ typedef struct s_proc
 
 typedef struct s_data
 {
-	char		**envlist;
-	int			envlist_size;
-	int			envlist_cnt;
-	t_list		*tokenlist;
-	t_list		*cmdlist;
-	int			cmd_cnt;
-	int			status;
-	int			exit_status;
-	t_proc		*info;
-	int			stdin_fd;
-	int			stdout_fd;
-	int			redir;
+	char				**envlist;
+	int					envlist_size;
+	int					envlist_cnt;
+	t_list				*tokenlist;
+	t_list				*cmdlist;
+	int					cmd_cnt;
+	int					status;
+	int					exit_status;
+	t_proc				*info;
+	int					stdin_fd;
+	int					stdout_fd;
+	int					redir;
 	struct termios		set;
 	struct termios		save;
 }	t_data;
 
+void	ft_error0(char *err_msg);
 void	ft_error(char *err_msg);
 void	ft_error2(char *arg, char *err_msg);
+void	ft_error3(char *arg, char *err_msg, int errcode);
 void	ft_perror(char *err_msg, int err);
 void	ft_dup2(int fd1, int fd2);
 char	*match_env(char *keystr, char **envlist);
@@ -211,5 +215,6 @@ int		get_env_idx(char *keystr, char **envp);
 /* signal */
 void	signal_handler(int signal);
 void	signal_handler_c(int signal);
+void	signal_handler_d(int signal);
 
 #endif
