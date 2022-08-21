@@ -6,7 +6,7 @@
 /*   By: hossong <hossong@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/06 16:43:27 by hossong           #+#    #+#             */
-/*   Updated: 2022/08/21 20:03:24 by hossong          ###   ########.fr       */
+/*   Updated: 2022/08/21 20:15:07 by hossong          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -181,12 +181,13 @@ void	free_cmd(t_list *cmdlist, char *tar);
 
 /*replacement fix*/
 void	do_replace_in_token(t_cmd *node, char **envp);
+t_list	*split_words(char *target, int i, int j);
+
 void	remove_quote(char **target, int startidx, int endidx);
 char	*replace_key_to_value(char *str, int start, char *keystr, char **envp);
 void	do_expansion(char **target, char **envp, char sign);
-void	make_component(t_list **lst, char *src, int size, char **envp);
-char	*join_components(t_list *component, char *target);
-void	process_is_quote(t_list *component, char **envp, char quote);
+void	make_component(t_list **lst, char *src, int size);
+char	*join_components(t_list *component);
 int		count_env(char *str, char chr);
 
 /* print utils */

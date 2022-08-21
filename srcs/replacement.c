@@ -6,7 +6,7 @@
 /*   By: hossong <hossong@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/13 22:00:32 by namkim            #+#    #+#             */
-/*   Updated: 2022/08/20 21:13:45 by hossong          ###   ########.fr       */
+/*   Updated: 2022/08/21 20:14:47 by hossong          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,40 +42,6 @@ void	do_expansion(char **target, char **envp, char sign)
 	}
 }
 
-void	do_replace_in_token(t_cmd *node, char **envp)
-{
-	char	*target;
-	int		j;
-	t_list	*cmp;
-
-	target = (char *)node->str;
-	cmp = NULL;
-	j = 0;
-	while (*(target + j))
-	{
-		if (*(target + j) == '\'' || *(target + j) == '\"')
-		{
-			if (j == 0)
-			{
-				j = get_quote_end_idx(target, target - (char *)node->str);
-				make_component(&cmp, target, (j - (target - (char *)node->str) + 1), envp);
-				target = target + j + 1;
-			}
-			else
-			{
-				make_component(&cmp, target, j, envp);
-				target += j;
-			}
-			j = 0;
-		}
-		else
-			j++;
-	}
-	if (*(target + j) == '\0' && j != 0)
-		make_component(&cmp, target, j, envp);
-	node->str = join_components(cmp, target);
-}
-
 void	remove_quote(char **target, int startidx, int endidx)
 {
 	char	*str;
@@ -85,4 +51,22 @@ void	remove_quote(char **target, int startidx, int endidx)
 	dst = str + (startidx);
 	str = ft_memmove(dst, dst + 1, ft_strlen(dst + 1) - 1);
 	str[endidx - 1] = '\0';
+}
+
+void	do_replace_in_token(t_cmd *cmdnode, char **envp)
+{
+	t_list	*comp;
+	t_list	*node;
+	char	*target;
+
+	target = (char *)cmdnode->str;
+	comp = split_words(target, 0, 0);
+	node = comp;
+	while (node)
+	{
+		do_expansion((char **)&(node->content), envp, (char)(node->content));
+		node = node->next;
+	}
+	cmdnode->str = join_components(comp);
+	free(target);
 }
