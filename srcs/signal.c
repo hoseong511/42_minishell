@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   signal.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hossong <hossong@student.42seoul.kr>       +#+  +:+       +#+        */
+/*   By: namkim <namkim@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/16 22:13:27 by namkim            #+#    #+#             */
-/*   Updated: 2022/08/20 21:58:37 by hossong          ###   ########.fr       */
+/*   Updated: 2022/08/21 17:40:50 by namkim           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ void	signal_handler_c(int signal)
 {
 	if (signal == SIGINT)
 	{
-		printf("i am child\n");
+
 	}
 }
 
@@ -54,6 +54,22 @@ void	signal_handler_d(int signal)
 {
 	if (signal == SIGINT)
 	{
-		printf("parent is back\n");
+		//g_status = 130; // <- 이걸 받을 수가 없다....
+		printf("exit 55\n");
+		exit(55);
 	}
+}
+
+void	signal_handler_d2(int signo)
+{
+	if (signo == SIGINT)
+	{
+		g_status = 1; // <- 이걸 받을 수가 없다....
+		printf("parent is back!\n");
+		printf("mini-0.8$ \b\n");
+		rl_on_new_line();
+		rl_replace_line("", 1);
+		rl_redisplay();
+	}
+	signal(SIGINT, signal_handler);	//안 되네 ㄸㄹㄹ
 }

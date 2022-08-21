@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ctrl_process.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hossong <hossong@student.42seoul.kr>       +#+  +:+       +#+        */
+/*   By: namkim <namkim@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/18 12:32:30 by hossong           #+#    #+#             */
-/*   Updated: 2022/08/20 21:47:47 by hossong          ###   ########.fr       */
+/*   Updated: 2022/08/21 17:22:20 by namkim           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,7 @@ void	child_process(t_data *data, t_list *args, int depth)
 {
 	t_list	*node;
 
-//	signal(SIGINT, signal_handler_c);
+	signal(SIGINT, signal_handler_d);
 	pipe_io(data, depth, data->cmd_cnt);
 	node = redirection_right(args);
 	exec_arg(data, node);
@@ -115,5 +115,8 @@ void	parent_process(t_data *data, int depth)
 		else
 			close(data->info->pipe[0].fd[0]);
 	}
-	data->exit_status = WEXITSTATUS(data->info->status);
+	if (WIFSIGNALED(data->info->status))
+		g_status = 130;
+	else
+		g_status = WEXITSTATUS(data->info->status);
 }

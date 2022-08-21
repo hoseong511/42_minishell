@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hossong <hossong@student.42seoul.kr>       +#+  +:+       +#+        */
+/*   By: namkim <namkim@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/06 16:42:28 by hossong           #+#    #+#             */
-/*   Updated: 2022/08/20 21:58:49 by hossong          ###   ########.fr       */
+/*   Updated: 2022/08/21 16:03:22 by namkim           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,7 @@ int	main(int argc, char **argv, char **envp)
 	tcgetattr(STDIN_FILENO, &term);
 	term.c_lflag &= ~(ECHOCTL);
 	tcsetattr(STDIN_FILENO, TCSANOW, &term);
-	signal(SIGINT, signal_handler);
-	signal(SIGQUIT, SIG_IGN);
+	g_status = 0;
 	(void) argv;
 	if (argc != 1)
 		ft_error("Too much argument!\n");
@@ -32,6 +31,8 @@ int	main(int argc, char **argv, char **envp)
 	data = init_data(envp);
 	while (1)
 	{
+		signal(SIGINT, signal_handler);
+		signal(SIGQUIT, SIG_IGN);
 		str = readline("mini-0.8$ ");
 		if (!str)
 		{

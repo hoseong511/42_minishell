@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ctrl_execution.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hossong <hossong@student.42seoul.kr>       +#+  +:+       +#+        */
+/*   By: namkim <namkim@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/14 17:27:01 by hossong           #+#    #+#             */
-/*   Updated: 2022/08/20 21:56:38 by hossong          ###   ########.fr       */
+/*   Updated: 2022/08/21 18:07:43 by namkim           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,9 +29,9 @@ void	exec_arg(t_data *data, t_list *args)
 			path = arg[0];
 	else
 		path = get_exe_file(data->envlist, arg[0]);
+	//signal(SIGINT, SIG_IGN);
 	execve(path, arg, data->envlist);
-	ft_perror(arg[0], errno);
-	exit(1);
+	exit(130);
 }
 
 void	exec_process(t_data *data, t_list *cmdlist)
@@ -45,12 +45,13 @@ void	exec_process(t_data *data, t_list *cmdlist)
 	{
 		if (data->cmd_cnt != 1)
 			init_pipe(data, depth, data->cmd_cnt);
-		signal(SIGINT, signal_handler_c);
 		node = redirection_left(data, (t_list *)cmdlist->content);
+		if (!node)
+			return ;
 		data->info->pid = fork();
 		if (data->info->pid > 0)
 		{
-			signal(SIGINT, signal_handler_d);
+			signal(SIGINT, signal_handler_c);
 			parent_process(data, depth);
 		}
 		else if (data->info->pid == 0)
@@ -77,6 +78,8 @@ void	execution(t_data *data)
 	else
 		exec_process(data, cmdlist);
 	data->cmd_cnt = 0;
+	if (g_status > 0)
+		return ;
 	ft_dup2(data->stdin_fd, 0);
 	ft_dup2(data->stdout_fd, 1);
 }

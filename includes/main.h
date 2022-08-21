@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.h                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hossong <hossong@student.42seoul.kr>       +#+  +:+       +#+        */
+/*   By: namkim <namkim@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/06 16:43:27 by hossong           #+#    #+#             */
-/*   Updated: 2022/08/20 21:58:47 by hossong          ###   ########.fr       */
+/*   Updated: 2022/08/21 16:48:56 by namkim           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,8 +99,10 @@ typedef struct s_data
 	int			redir;
 }	t_data;
 
+void	ft_error0(char *err_msg);
 void	ft_error(char *err_msg);
 void	ft_error2(char *arg, char *err_msg);
+void	ft_error3(char *arg, char *err_msg, int errcode);
 void	ft_perror(char *err_msg, int err);
 void	ft_dup2(int fd1, int fd2);
 char	*match_env(char *keystr, char **envlist);
@@ -209,6 +211,7 @@ int		get_env_idx(char *keystr, char **envp);
 void	signal_handler(int signal);
 void	signal_handler_c(int signal);
 void	signal_handler_d(int signal);
+void	signal_handler_d2(int signal);
 
 
 #endif
