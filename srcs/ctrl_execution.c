@@ -6,7 +6,7 @@
 /*   By: hossong <hossong@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/14 17:27:01 by hossong           #+#    #+#             */
-/*   Updated: 2022/08/22 02:09:40 by hossong          ###   ########.fr       */
+/*   Updated: 2022/08/22 03:30:01 by hossong          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,8 @@ void	exec_arg(t_data *data, t_list *args)
 	char	**arg;
 	char	*path;
 
+	if (!args)
+		exit(0);
 	arg = ((t_cmd2 *)args->content)->str;
 	if (check_builtin(args))
 	{
@@ -58,7 +60,8 @@ void	exec_process(t_data *data, t_list *cmdlist)
 	int		depth;
 
 	data->info = init_proc_info();
-	heredoc(data);
+	if (heredoc(data) == -1)
+		return ;
 	depth = 0;
 	while (cmdlist && depth < data->cmd_cnt)
 	{
@@ -81,8 +84,7 @@ void	exec_process(t_data *data, t_list *cmdlist)
 	}
 }
 
-
-void	heredoc(t_data *data)
+int	heredoc(t_data *data)
 {
 	t_list	*cmdlist;
 	t_list	*arglist;
@@ -104,7 +106,7 @@ void	heredoc(t_data *data)
 		cmdlist = cmdlist->next;
 	}
 	if (!idx)
-		return ;
+		return (0);
 	data->heredoc = (int *)malloc(sizeof(int) * (idx + 1));
 	if (!data->heredoc)
 		ft_perror("Malloc", errno);
@@ -120,12 +122,15 @@ void	heredoc(t_data *data)
 			if (arg->type == R_HEREDOC)
 			{
 				redirection_heredoc(data, arg->str[1], idx);
+				if (g_status == 1)
+					return (-1);
 				idx++;
 			}
 			arglist = arglist->next;
 		}
 		cmdlist = cmdlist->next;
 	}
+	return (0);
 }
 
 void	execution(t_data *data)
@@ -142,6 +147,4 @@ void	execution(t_data *data)
 	else
 		exec_process(data, cmdlist);
 	data->cmd_cnt = 0;
-	ft_dup2(data->stdin_fd, 0);
-	ft_dup2(data->stdout_fd, 1);
 }

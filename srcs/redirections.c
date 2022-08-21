@@ -6,7 +6,7 @@
 /*   By: hossong <hossong@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/18 14:04:20 by namkim            #+#    #+#             */
-/*   Updated: 2022/08/22 02:06:53 by hossong          ###   ########.fr       */
+/*   Updated: 2022/08/22 03:33:09 by hossong          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,6 @@ void	redirection_in(char *filepath)
 
 	if (!filepath)
 		ft_error("Syntax Error\n");
-	printf("filepath : %s\n", filepath);
 	fd = open(filepath, O_RDONLY);
 	if (fd < 0)
 	{
@@ -140,6 +139,8 @@ t_list	*redirection_left(t_data *data, t_list *args)
 			while (data->heredoc[idx] == -1)
 				idx++;
 			ft_dup2(data->heredoc[idx], 0);
+			close(data->heredoc[idx]);
+			data->heredoc[idx] = -1;
 		}
 		node = node->next;
 		data->redir = 1;
