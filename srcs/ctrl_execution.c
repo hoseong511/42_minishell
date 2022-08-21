@@ -6,7 +6,7 @@
 /*   By: hossong <hossong@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/14 17:27:01 by hossong           #+#    #+#             */
-/*   Updated: 2022/08/21 21:27:00 by hossong          ###   ########.fr       */
+/*   Updated: 2022/08/21 23:06:39 by hossong          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,7 @@ void	exec_arg(t_data *data, t_list *args)
 void	exec_process(t_data *data, t_list *cmdlist)
 {
 	int		depth;
+	t_list	*node;
 
 	data->info = init_proc_info();
 	depth = 0;
@@ -44,6 +45,7 @@ void	exec_process(t_data *data, t_list *cmdlist)
 	{
 		if (data->cmd_cnt != 1)
 			init_pipe(data, depth, data->cmd_cnt);
+		node = redirection_left(data, (t_list *)cmdlist->content);
 		data->info->pid = fork();
 		if (data->info->pid > 0)
 		{
@@ -51,7 +53,7 @@ void	exec_process(t_data *data, t_list *cmdlist)
 			parent_process(data, depth);
 		}
 		else if (data->info->pid == 0)
-			child_process(data, (t_list *)cmdlist->content, depth);
+			child_process(data, node, depth);
 		else
 			ft_perror("fork error", errno);
 		cmdlist = cmdlist->next;
@@ -74,4 +76,6 @@ void	execution(t_data *data)
 	else
 		exec_process(data, cmdlist);
 	data->cmd_cnt = 0;
+	ft_dup2(data->stdin_fd, 0);
+	ft_dup2(data->stdout_fd, 1);
 }
