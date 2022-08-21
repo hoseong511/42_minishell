@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirections.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: namkim <namkim@student.42seoul.kr>         +#+  +:+       +#+        */
+/*   By: hossong <hossong@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/18 14:04:20 by namkim            #+#    #+#             */
-/*   Updated: 2022/08/21 19:36:08 by namkim           ###   ########.fr       */
+/*   Updated: 2022/08/21 21:24:58 by hossong          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,8 +87,8 @@ void	redirection_heredoc(t_data *data, char *end_of_file)
 	char	*str;
 	pid_t	pid;
 
-	// ft_dup2(data->stdin_fd, 0);
-	// ft_dup2(data->stdout_fd, 1);
+	ft_dup2(data->stdin_fd, 0);
+	ft_dup2(data->stdout_fd, 1);
 	pipe(p_fd);
 	pid = fork();
 	while (pid == 0)
@@ -106,16 +106,12 @@ void	redirection_heredoc(t_data *data, char *end_of_file)
 	{
 		signal(SIGINT, signal_handler_c);
 		wait(&data->info->status);
-		int	signaled;
-		signaled = WEXITSTATUS(data->info->status);
-		printf("signaled: %d\n", signaled);
-		if (signaled == 55)
+		if (WEXITSTATUS(data->info->status) == 1)
 		{
 			close(p_fd[1]);
 			close(p_fd[0]);
 			g_status = WEXITSTATUS(data->info->status);
 			signal(SIGINT, signal_handler);
-			printf("g_status : %d\n", g_status);
 		}
 		else
 		{
@@ -141,7 +137,7 @@ t_list	*redirection_left(t_data *data, t_list *args)
 			redirection_in(((t_cmd2 *)node->content)->str[1]);
 		else if (node_type == R_HEREDOC)
 			redirection_heredoc(data, ((t_cmd2 *)node->content)->str[1]);
-		if (g_status == 55)
+		if (g_status == 1)
 			return (NULL);
 		node = node->next;
 		data->redir = 1;

@@ -6,7 +6,7 @@
 /*   By: hossong <hossong@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/16 22:13:27 by namkim            #+#    #+#             */
-/*   Updated: 2022/08/21 20:01:16 by hossong          ###   ########.fr       */
+/*   Updated: 2022/08/21 20:51:21 by hossong          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,8 +36,5 @@ void	signal_handler_c(int signal)
 void	signal_handler_d(int signal)
 {
 	if (signal == SIGINT)
-	{
-		printf("exit 55\n");
-		exit(55);
-	}
+		exit(1);
 }

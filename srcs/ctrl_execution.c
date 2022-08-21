@@ -6,7 +6,7 @@
 /*   By: hossong <hossong@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/14 17:27:01 by hossong           #+#    #+#             */
-/*   Updated: 2022/08/21 20:04:02 by hossong          ###   ########.fr       */
+/*   Updated: 2022/08/21 21:27:00 by hossong          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,25 +29,21 @@ void	exec_arg(t_data *data, t_list *args)
 		path = arg[0];
 	else
 		path = get_exe_file(data->envlist, arg[0]);
-	//signal(SIGINT, SIG_IGN);
 	execve(path, arg, data->envlist);
-	exit(130);
+	ft_perror(arg[0], errno);
 }
 
 void	exec_process(t_data *data, t_list *cmdlist)
 {
-	t_list	*node;
 	int		depth;
 
 	data->info = init_proc_info();
 	depth = 0;
+	//
 	while (cmdlist && depth < data->cmd_cnt)
 	{
 		if (data->cmd_cnt != 1)
 			init_pipe(data, depth, data->cmd_cnt);
-		node = redirection_left(data, (t_list *)cmdlist->content);
-		if (!node)
-			return ;
 		data->info->pid = fork();
 		if (data->info->pid > 0)
 		{
@@ -55,7 +51,7 @@ void	exec_process(t_data *data, t_list *cmdlist)
 			parent_process(data, depth);
 		}
 		else if (data->info->pid == 0)
-			child_process(data, node, depth);
+			child_process(data, (t_list *)cmdlist->content, depth);
 		else
 			ft_perror("fork error", errno);
 		cmdlist = cmdlist->next;
@@ -78,8 +74,4 @@ void	execution(t_data *data)
 	else
 		exec_process(data, cmdlist);
 	data->cmd_cnt = 0;
-	if (g_status > 0)
-		return ;
-	ft_dup2(data->stdin_fd, 0);
-	ft_dup2(data->stdout_fd, 1);
 }
