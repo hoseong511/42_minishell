@@ -6,7 +6,7 @@
 /*   By: namkim <namkim@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/20 12:57:34 by namkim            #+#    #+#             */
-/*   Updated: 2022/08/21 16:48:27 by namkim           ###   ########.fr       */
+/*   Updated: 2022/08/22 14:59:20 by namkim           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,55 +14,66 @@
 
 extern int	g_status;
 
+static void	update_pwd(char *keyform, char *value, t_data *data)
+{
+	char	*env;
+
+	if (!keyform)
+		return ;
+	// if (ft_strncmp("PWD=", keyform, ft_strlen("PWD=") + 1) == 0)
+	// {
+	// 	env = match_env("PWD", data->envlist);
+	// 	if (!env)
+	// 		return ;
+	// }
+	env = ft_strjoin(keyform, value);
+	if (!env)
+		ft_error2("pwd", ": Malloc error\n");
+	insert_env(env, data);
+	free(env);
+}
+
+char	*ft_getpwd(void)
+{
+	char	*pwd;
+
+	pwd = getcwd(NULL, 0);
+	if (!pwd)
+		ft_error0("Couldn't get working directory\n");
+	return (pwd);
+}
+
+static void	ft_cd_error(char *arg)
+{
+	printf("cd: %s: No such file or directory\n", arg);
+	g_status = 1;
+}
+
 void	ft_cd(char **args, t_data *data)
 {
 	char	*path;
 	char	*pwd;
-	int		sign;
+	int		home;
 
+	pwd = ft_getpwd();
+	home = FALSE;
 	if (!args[1])
+	{
 		path = match_env("HOME", data->envlist);
+		home = TRUE;
+	}
 	else
 		path = args[1];
-	sign = chdir(path);
-	if (sign == 0)
+	if (chdir(path) == 0)
 	{
-		free(path);
-		pwd = getcwd(NULL, 0);
-		if (!pwd)
-			ft_error0("Couldn't get working directory\n");
-		path = ft_strjoin("PWD=", pwd);
-		insert_env(path, data);
+		update_pwd("OLDPWD=", pwd, data);
 		free(pwd);
-		free(path);
+		pwd = ft_getpwd();
+		update_pwd("PWD=", pwd, data);
+		free(pwd);
 	}
 	else
-	{
-		printf("cd: %s: No such file or directory\n", args[1]);
-		g_status = 1;
-	}
-}
-
-void	ft_exit(void)
-{
-	printf("exit\n");
-	exit(0);
-}
-
-void	ft_echo(char **args)
-{
-	int	i;
-
-	i = 1;
-	if (ft_strncmp(args[i], "-n", 3) == 0)
-		i++;
-	while (args[i + 1])
-	{
-		write(1, args[i], ft_strlen(args[i]));
-		write(1, " ", 1);
-		i++;
-	}
-	write(1, args[i], ft_strlen(args[i]));
-	if (ft_strncmp(args[1], "-n", 3) != 0)
-		write(1, "\n", 1);
+		ft_cd_error(path);
+	if (home == TRUE)
+		free(path);
 }

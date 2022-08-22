@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   built_in1.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hossong <hossong@student.42seoul.kr>       +#+  +:+       +#+        */
+/*   By: namkim <namkim@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/19 10:54:24 by namkim            #+#    #+#             */
-/*   Updated: 2022/08/21 20:03:13 by hossong          ###   ########.fr       */
+/*   Updated: 2022/08/22 09:59:04 by namkim           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,8 +68,6 @@ void	ft_env(char **args, t_data *data)
 	{
 		if (args[0][1] == 'n')
 			printf("env: %s: Unnecessary Argument\n", args[1]);
-		// if (args[0][1] == 'x')
-		// 	printf("export: `%s': not a valid identifier\n", args[1]);
 		g_status = 1;
 		return ;
 	}

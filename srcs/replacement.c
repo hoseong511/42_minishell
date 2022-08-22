@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   replacement.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hossong <hossong@student.42seoul.kr>       +#+  +:+       +#+        */
+/*   By: namkim <namkim@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/13 22:00:32 by namkim            #+#    #+#             */
-/*   Updated: 2022/08/21 20:14:47 by hossong          ###   ########.fr       */
+/*   Updated: 2022/08/22 11:20:51 by namkim           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,13 +58,15 @@ void	do_replace_in_token(t_cmd *cmdnode, char **envp)
 	t_list	*comp;
 	t_list	*node;
 	char	*target;
+	char	first;
 
 	target = (char *)cmdnode->str;
 	comp = split_words(target, 0, 0);
 	node = comp;
 	while (node)
 	{
-		do_expansion((char **)&(node->content), envp, (char)(node->content));
+		first = ((char *)node->content)[0];
+		do_expansion((char **)&(node->content), envp, first);
 		node = node->next;
 	}
 	cmdnode->str = join_components(comp);

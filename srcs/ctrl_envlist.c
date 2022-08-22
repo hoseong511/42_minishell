@@ -6,7 +6,7 @@
 /*   By: namkim <namkim@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/19 13:40:01 by namkim            #+#    #+#             */
-/*   Updated: 2022/08/21 16:06:00 by namkim           ###   ########.fr       */
+/*   Updated: 2022/08/22 12:47:25 by namkim           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ int	add_env_to_envlist(char *env, t_data *data)
 	if (is_envlist_full(data))
 	{
 		new_envlist = \
-				ft_calloc(data->envlist_size + 10, sizeof(char *));
+				ft_calloc((data->envlist_size + 10 + 1), sizeof(char *));
 		if (!new_envlist)
 			ft_error("Malloc error while add env\n");
 		ft_memcpy(new_envlist, data->envlist, \

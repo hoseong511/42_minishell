@@ -6,7 +6,7 @@
 /*   By: hossong <hossong@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/06 16:42:28 by hossong           #+#    #+#             */
-/*   Updated: 2022/08/22 11:45:22 by hossong          ###   ########.fr       */
+/*   Updated: 2022/08/22 15:21:05 by hossong          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ int	main(int argc, char **argv, char **envp)
 		{
 			printf("\033[1A");
 			printf("\033[10C");
-			ft_exit();
+			ft_exit(NULL);
 		}
 		if (*str)
 			add_history(str);

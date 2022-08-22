@@ -6,7 +6,7 @@
 /*   By: hossong <hossong@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/06 16:43:27 by hossong           #+#    #+#             */
-/*   Updated: 2022/08/22 11:35:56 by hossong          ###   ########.fr       */
+/*   Updated: 2022/08/22 15:20:28 by hossong          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -178,10 +178,13 @@ int		heredoc(t_data *data);
 void	close_heredoc(t_data *data, t_list *arglist);
 
 /*free*/
+// void	free_cmdlist(t_list *cmdlist);
+// void	free_tokenlist(t_data *data);
+// void	free_data(t_data *data);
+// void	free_cmd(t_list *cmdlist, char *tar);
+void	free_envlist(t_data *data);
+void	free_tokenlist(t_list *tokenlist);
 void	free_cmdlist(t_list *cmdlist);
-void	free_tokenlist(t_data *data);
-void	free_data(t_data *data);
-void	free_cmd(t_list *cmdlist, char *tar);
 
 /*replacement fix*/
 void	do_replace_in_token(t_cmd *node, char **envp);
@@ -209,7 +212,7 @@ void	ft_unset(char **args, t_data *data);
 void	ft_pwd(char **args);
 void	ft_cd(char **args, t_data *data);
 //void	ft_exit(char **args);
-void	ft_exit(void);
+void	ft_exit(char **args);
 void	ft_echo(char **args);
 
 /* control_env_array */
