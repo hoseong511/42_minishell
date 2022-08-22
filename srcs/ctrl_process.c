@@ -6,7 +6,7 @@
 /*   By: hossong <hossong@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/18 12:32:30 by hossong           #+#    #+#             */
-/*   Updated: 2022/08/23 01:00:13 by hossong          ###   ########.fr       */
+/*   Updated: 2022/08/23 02:40:08 by hossong          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,14 +53,14 @@ void	parent_process(t_data *data, int depth)
 			close(data->info->pipe[1].fd[0]);
 		else
 			close(data->info->pipe[0].fd[0]);
+		if (WIFSIGNALED(data->info->status))
+		{
+			g_status = 130;
+			close_heredoc(data, NULL);
+		}
+		else
+			g_status = WEXITSTATUS(data->info->status);
 	}
-	if (WIFSIGNALED(data->info->status))
-	{
-		g_status = 130;
-		close_heredoc(data, NULL);
-	}
-	else
-		g_status = WEXITSTATUS(data->info->status);
 }
 
 void	exec_process(t_data *data, t_list *cmdlist)

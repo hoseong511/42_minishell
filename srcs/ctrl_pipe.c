@@ -6,7 +6,7 @@
 /*   By: hossong <hossong@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/18 13:38:07 by hossong           #+#    #+#             */
-/*   Updated: 2022/08/22 20:39:10 by hossong          ###   ########.fr       */
+/*   Updated: 2022/08/23 02:39:43 by hossong          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,10 +16,13 @@ void	init_pipe(t_data *data, int depth, int cnt)
 {
 	if (cnt < 2)
 		return ;
-	if (depth % 2 == 0 && pipe(data->info->pipe[0].fd) != 0)
-		ft_perror("pipe", errno);
-	else if (cnt > 2 && (depth % 2 && pipe(data->info->pipe[1].fd) != 0))
-		ft_perror("pipe", errno);
+	if (depth != cnt - 1)
+	{
+		if (depth % 2 == 0 && pipe(data->info->pipe[0].fd) != 0)
+			ft_perror("pipe", errno);
+		else if (depth % 2 && pipe(data->info->pipe[1].fd) != 0)
+			ft_perror("pipe", errno);
+	}
 }
 
 void	close_pipe(t_data *data, int depth)
