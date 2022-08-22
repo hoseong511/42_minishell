@@ -6,7 +6,7 @@
 /*   By: hossong <hossong@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/14 17:27:01 by hossong           #+#    #+#             */
-/*   Updated: 2022/08/22 11:03:35 by hossong          ###   ########.fr       */
+/*   Updated: 2022/08/22 11:40:51 by hossong          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,14 @@ void	close_heredoc(t_data *data, t_list *arglist)
 	t_cmd2	*arg;
 	int		i;
 
+	if (data->heredoc && arglist == NULL)
+	{
+		i = 0;
+		while (data->heredoc[i] == -1)
+			i++;
+		close(data->heredoc[i]);
+		data->heredoc[i] = -1;
+	}
 	while (arglist)
 	{
 		arg = (t_cmd2 *)arglist->content;
@@ -61,7 +69,10 @@ void	exec_process(t_data *data, t_list *cmdlist)
 
 	data->info = init_proc_info();
 	if (heredoc(data) == -1)
+	{
+		close_heredoc(data, NULL);
 		return ;
+	}
 	depth = 0;
 	while (cmdlist && depth < data->cmd_cnt)
 	{
@@ -165,4 +176,6 @@ void	execution(t_data *data)
 	else
 		exec_process(data, cmdlist);
 	data->cmd_cnt = 0;
+	ft_dup2(data->stdin_fd, 0);
+	ft_dup2(data->stdout_fd, 1);
 }

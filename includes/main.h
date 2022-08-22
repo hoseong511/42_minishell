@@ -6,7 +6,7 @@
 /*   By: hossong <hossong@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/06 16:43:27 by hossong           #+#    #+#             */
-/*   Updated: 2022/08/22 03:27:04 by hossong          ###   ########.fr       */
+/*   Updated: 2022/08/22 11:35:56 by hossong          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -175,6 +175,7 @@ void	redirection_heredoc(t_data *data, char *end_of_file, int idx);
 t_list	*redirection_left(t_data *data, t_list *args);
 t_list	*redirection_right(t_list *args);
 int		heredoc(t_data *data);
+void	close_heredoc(t_data *data, t_list *arglist);
 
 /*free*/
 void	free_cmdlist(t_list *cmdlist);

@@ -6,7 +6,7 @@
 /*   By: hossong <hossong@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/18 12:32:30 by hossong           #+#    #+#             */
-/*   Updated: 2022/08/22 03:31:18 by hossong          ###   ########.fr       */
+/*   Updated: 2022/08/22 11:35:33 by hossong          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,7 +118,10 @@ void	parent_process(t_data *data, int depth)
 			close(data->info->pipe[0].fd[0]);
 	}
 	if (WIFSIGNALED(data->info->status))
+	{
 		g_status = 130;
+		close_heredoc(data, NULL);
+	}
 	else
 		g_status = WEXITSTATUS(data->info->status);
 }
