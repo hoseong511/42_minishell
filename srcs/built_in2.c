@@ -6,7 +6,7 @@
 /*   By: namkim <namkim@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/20 12:57:34 by namkim            #+#    #+#             */
-/*   Updated: 2022/08/22 10:25:24 by namkim           ###   ########.fr       */
+/*   Updated: 2022/08/22 12:42:02 by namkim           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,33 +14,59 @@
 
 extern int	g_status;
 
+static void	update_pwd(char *keyform, char *value, t_data *data)
+{
+	char	*env;
+
+	if (!keyform)
+		return ;
+	// if (ft_strncmp("PWD=", keyform, ft_strlen("PWD=") + 1) == 0)
+	// {
+	// 	env = match_env("PWD", data->envlist);
+	// 	if (!env)
+	// 		return ;
+	// }
+	env = ft_strjoin(keyform, value);
+	if (!env)
+		ft_error2("pwd", ": Malloc error\n");
+	insert_env(env, data);
+	free(env);
+}
+
+char	*ft_getpwd(void)
+{
+	char	*pwd;
+
+	pwd = getcwd(NULL, 0);
+	if (!pwd)
+		ft_error0("Couldn't get working directory\n");
+	return (pwd);
+}
+
 void	ft_cd(char **args, t_data *data)
 {
 	char	*path;
 	char	*pwd;
-	int		sign;
 
+	pwd = ft_getpwd();
 	if (!args[1])
 		path = match_env("HOME", data->envlist);
 	else
 		path = args[1];
-	sign = chdir(path);
-	if (sign == 0)
+	if (chdir(path) == 0)
 	{
-		free(path);
-		pwd = getcwd(NULL, 0);
-		if (!pwd)
-			ft_error0("Couldn't get working directory\n");
-		path = ft_strjoin("PWD=", pwd);
-		insert_env(path, data);
+		update_pwd("OLDPWD=", pwd, data);
 		free(pwd);
-		free(path);
+		pwd = ft_getpwd();
+		update_pwd("PWD=", pwd, data);
+		free(pwd);
 	}
 	else
 	{
 		printf("cd: %s: No such file or directory\n", args[1]);
 		g_status = 1;
 	}
+	free(path);//
 }
 
 static int	check_exit_args(char *arg)
