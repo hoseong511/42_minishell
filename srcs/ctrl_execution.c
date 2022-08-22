@@ -6,13 +6,11 @@
 /*   By: hossong <hossong@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/14 17:27:01 by hossong           #+#    #+#             */
-/*   Updated: 2022/08/22 11:40:51 by hossong          ###   ########.fr       */
+/*   Updated: 2022/08/22 17:15:13 by hossong          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/main.h"
-
-extern int	g_status;
 
 void	exec_arg(t_data *data, t_list *args)
 {
@@ -176,6 +174,4 @@ void	execution(t_data *data)
 	else
 		exec_process(data, cmdlist);
 	data->cmd_cnt = 0;
-	ft_dup2(data->stdin_fd, 0);
-	ft_dup2(data->stdout_fd, 1);
 }

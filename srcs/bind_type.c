@@ -6,13 +6,13 @@
 /*   By: hossong <hossong@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/12 15:52:26 by hossong           #+#    #+#             */
-/*   Updated: 2022/08/19 19:59:30 by hossong          ###   ########.fr       */
+/*   Updated: 2022/08/22 16:30:57 by hossong          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/main.h"
 
-t_list	*relocate(t_list *tokenlist)
+t_list	*relocate(t_list **tokenlist)
 {
 	t_type	type;
 	t_list	*des;
@@ -24,23 +24,23 @@ t_list	*relocate(t_list *tokenlist)
 	tmp = NULL;
 	src_in = NULL;
 	src_out = NULL;
-	while (tokenlist)
+	while ((*tokenlist))
 	{
-		type = ((t_cmd *)tokenlist->content)->type;
+		type = ((t_cmd *)(*tokenlist)->content)->type;
 		if (type == R_IN || type == R_HEREDOC)
-			append_ab(&src_in, pop(&tokenlist), pop(&tokenlist));
+			append_ab(&src_in, pop(tokenlist), pop(tokenlist));
 		else if (type == R_OUT || type == R_APPD)
-			append_ab(&src_out, pop(&tokenlist), pop(&tokenlist));
+			append_ab(&src_out, pop(tokenlist), pop(tokenlist));
 		else if (type == PIPE)
 		{
 			insert_src(&des, &src_out, &tmp);
 			insert_src(&des, &src_in, &tmp);
-			tmp = pop(&tokenlist);
+			tmp = pop(tokenlist);
 			ft_lstadd_back(&des, tmp);
 		}
 		else
-			ft_lstadd_back(&des, pop(&tokenlist));
-		if (!tokenlist)
+			ft_lstadd_back(&des, pop(tokenlist));
+		if (!(*tokenlist))
 		{
 			insert_src(&des, &src_out, &tmp);
 			insert_src(&des, &src_in, &tmp);
@@ -120,7 +120,8 @@ t_list	*bind(t_list *cmdlist)
 		if (type == PIPE)
 		{
 			bind_cmd(&bind, &tmp);
-			free_cmd(cmdlist, "t_cmd");
+			free(((t_cmd *)cmdlist->content)->str);
+			free(cmdlist->content);
 			free(pop(&cmdlist));
 		}
 		else
