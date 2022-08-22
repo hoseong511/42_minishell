@@ -6,7 +6,7 @@
 /*   By: namkim <namkim@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/20 12:57:34 by namkim            #+#    #+#             */
-/*   Updated: 2022/08/21 16:48:27 by namkim           ###   ########.fr       */
+/*   Updated: 2022/08/22 10:25:24 by namkim           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,10 +43,42 @@ void	ft_cd(char **args, t_data *data)
 	}
 }
 
-void	ft_exit(void)
+static int	check_exit_args(char *arg)
 {
+	int	i;
+
+	i = 0;
+	if (arg[i] == '+' || arg[i] == '-')
+		i++;
+	while (ft_isdigit(arg[i]) == TRUE)
+		i++;
+	if (arg[i] == '\0')
+		return (TRUE);
+	else
+		return (FALSE);
+}
+
+void	ft_exit(char **args)
+{
+	int	errcode;
+	int	i;
+
+	errcode = 0;
+	i = 1;
 	printf("exit\n");
-	exit(0);
+	if (!args)
+		exit(errcode);
+	while (args[i])
+	{
+		if (check_exit_args(args[i]) == FALSE)
+			ft_error3("exit", ": numeric argument required\n", 255);
+		i++;
+	}
+	if (i > 2)
+		ft_error2("exit", ": too many arguments\n");
+	else if (i == 2)
+		errcode = ft_atoi(args[1]);
+	exit(errcode);
 }
 
 void	ft_echo(char **args)

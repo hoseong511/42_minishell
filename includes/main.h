@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.h                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hossong <hossong@student.42seoul.kr>       +#+  +:+       +#+        */
+/*   By: namkim <namkim@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/06 16:43:27 by hossong           #+#    #+#             */
-/*   Updated: 2022/08/21 20:15:07 by hossong          ###   ########.fr       */
+/*   Updated: 2022/08/22 10:02:19 by namkim           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -205,7 +205,7 @@ void	ft_unset(char **args, t_data *data);
 void	ft_pwd(char **args);
 void	ft_cd(char **args, t_data *data);
 //void	ft_exit(char **args);
-void	ft_exit(void);
+void	ft_exit(char **args);
 void	ft_echo(char **args);
 
 /* control_env_array */
