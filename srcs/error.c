@@ -6,13 +6,11 @@
 /*   By: hossong <hossong@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/09 17:26:17 by hossong           #+#    #+#             */
-/*   Updated: 2022/08/22 17:18:44 by hossong          ###   ########.fr       */
+/*   Updated: 2022/08/22 19:38:22 by hossong          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/main.h"
-
-extern int	g_status;
 
 void	ft_error0(char *err_msg)
 {

@@ -6,13 +6,11 @@
 /*   By: hossong <hossong@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/18 12:32:30 by hossong           #+#    #+#             */
-/*   Updated: 2022/08/22 17:41:06 by hossong          ###   ########.fr       */
+/*   Updated: 2022/08/22 19:42:38 by hossong          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "main.h"
-
-extern int	g_status;
 
 t_proc	*init_proc_info(void)
 {

@@ -3,16 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   built_in1.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: namkim <namkim@student.42seoul.kr>         +#+  +:+       +#+        */
+/*   By: hossong <hossong@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/19 10:54:24 by namkim            #+#    #+#             */
-/*   Updated: 2022/08/22 09:59:04 by namkim           ###   ########.fr       */
+/*   Updated: 2022/08/22 19:37:48 by hossong          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/main.h"
-
-extern int	g_status;
 
 int	insert_env(char *arg, t_data *data)
 {
@@ -44,12 +42,10 @@ int	insert_env(char *arg, t_data *data)
 void	ft_export(char **args, t_data *data)
 {
 	int		i;
-	int		sign;
 
 	i = 1;
 	if (!args[i])
 		ft_env(args, data);
-	sign = FALSE;
 	while (args[i])
 	{
 		insert_env(args[i], data);

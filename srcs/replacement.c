@@ -3,16 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   replacement.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: namkim <namkim@student.42seoul.kr>         +#+  +:+       +#+        */
+/*   By: hossong <hossong@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/13 22:00:32 by namkim            #+#    #+#             */
-/*   Updated: 2022/08/22 11:20:51 by namkim           ###   ########.fr       */
+/*   Updated: 2022/08/22 19:38:17 by hossong          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/main.h"
-
-extern int	g_status;
 
 void	do_expansion(char **target, char **envp, char sign)
 {

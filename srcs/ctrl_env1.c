@@ -6,13 +6,11 @@
 /*   By: hossong <hossong@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/08 18:20:24 by namkim            #+#    #+#             */
-/*   Updated: 2022/08/20 17:17:05 by hossong          ###   ########.fr       */
+/*   Updated: 2022/08/22 19:38:25 by hossong          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/main.h"
-
-extern int	g_status;
 
 int	is_valid_env_name(char c, int idx)
 {

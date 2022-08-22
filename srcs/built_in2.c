@@ -3,16 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   built_in2.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: namkim <namkim@student.42seoul.kr>         +#+  +:+       +#+        */
+/*   By: hossong <hossong@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/20 12:57:34 by namkim            #+#    #+#             */
-/*   Updated: 2022/08/22 14:59:20 by namkim           ###   ########.fr       */
+/*   Updated: 2022/08/22 19:38:28 by hossong          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/main.h"
-
-extern int	g_status;
 
 static void	update_pwd(char *keyform, char *value, t_data *data)
 {
