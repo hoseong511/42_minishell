@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ctrl_process.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hossong <hossong@student.42seoul.kr>       +#+  +:+       +#+        */
+/*   By: namkim <namkim@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/18 12:32:30 by hossong           #+#    #+#             */
-/*   Updated: 2022/08/21 21:46:35 by hossong          ###   ########.fr       */
+/*   Updated: 2022/08/22 10:03:09 by namkim           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,7 @@ void	exec_builtin(t_list *args, t_data *data)
 	else if (builtin == B_ENV)
 		ft_env(((t_cmd2 *)args->content)->str, data);
 	else if (builtin == B_EXIT)
-		ft_exit();
+		ft_exit(((t_cmd2 *)args->content)->str);
 }
 
 void	child_process(t_data *data, t_list *args, int depth)

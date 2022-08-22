@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.h                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hossong <hossong@student.42seoul.kr>       +#+  +:+       +#+        */
+/*   By: namkim <namkim@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/06 16:43:27 by hossong           #+#    #+#             */
-/*   Updated: 2022/08/21 20:15:07 by hossong          ###   ########.fr       */
+/*   Updated: 2022/08/22 15:00:44 by namkim           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -174,10 +174,13 @@ t_list	*redirection_left(t_data *data, t_list *args);
 t_list	*redirection_right(t_list *args);
 
 /*free*/
+// void	free_cmdlist(t_list *cmdlist);
+// void	free_tokenlist(t_data *data);
+// void	free_data(t_data *data);
+// void	free_cmd(t_list *cmdlist, char *tar);
+void	free_envlist(t_data *data);
+void	free_tokenlist(t_list *tokenlist);
 void	free_cmdlist(t_list *cmdlist);
-void	free_tokenlist(t_data *data);
-void	free_data(t_data *data);
-void	free_cmd(t_list *cmdlist, char *tar);
 
 /*replacement fix*/
 void	do_replace_in_token(t_cmd *node, char **envp);
@@ -205,7 +208,7 @@ void	ft_unset(char **args, t_data *data);
 void	ft_pwd(char **args);
 void	ft_cd(char **args, t_data *data);
 //void	ft_exit(char **args);
-void	ft_exit(void);
+void	ft_exit(char **args);
 void	ft_echo(char **args);
 
 /* control_env_array */

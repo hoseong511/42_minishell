@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hossong <hossong@student.42seoul.kr>       +#+  +:+       +#+        */
+/*   By: namkim <namkim@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/06 16:42:28 by hossong           #+#    #+#             */
-/*   Updated: 2022/08/21 19:59:16 by hossong          ###   ########.fr       */
+/*   Updated: 2022/08/22 10:20:46 by namkim           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ int	main(int argc, char **argv, char **envp)
 		{
 			printf("\033[1A");
 			printf("\033[10C");
-			ft_exit();
+			ft_exit(NULL);
 		}
 		if (*str)
 			add_history(str);
