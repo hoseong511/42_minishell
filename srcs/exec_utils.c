@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: namkim <namkim@student.42seoul.kr>         +#+  +:+       +#+        */
+/*   By: hossong <hossong@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/16 20:09:37 by namkim            #+#    #+#             */
-/*   Updated: 2022/08/21 15:47:36 by namkim           ###   ########.fr       */
+/*   Updated: 2022/08/22 17:36:22 by hossong          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,8 @@ char	**get_path(char **envlist)
 
 	path_value = match_env("PATH", envlist);
 	res = ft_split(path_value, ':');
-	free(path_value);
+	if (path_value)
+		free(path_value);
 	return (res);
 }
 
@@ -81,7 +82,7 @@ char	*get_exe_file(char	**envp, char *cmd)
 	i = 0;
 	addr = NULL;
 	path = get_path(envp);
-	while (path[i])
+	while (path && path[i])
 	{
 		addr = get_exe_format(path[i], cmd);
 		sign = is_valid_exe_file(addr);
@@ -95,6 +96,6 @@ char	*get_exe_file(char	**envp, char *cmd)
 		ft_error3(cmd, ": Permission Denied\n", 126);
 	if (sign == -2)
 		ft_error3(cmd, ": command not found\n", 127);
-	exit(1);
+	addr = cmd;
 	return (addr);
 }

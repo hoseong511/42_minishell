@@ -6,13 +6,11 @@
 /*   By: hossong <hossong@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/18 14:04:20 by namkim            #+#    #+#             */
-/*   Updated: 2022/08/22 11:05:44 by hossong          ###   ########.fr       */
+/*   Updated: 2022/08/22 19:38:20 by hossong          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/main.h"
-
-extern int	g_status;
 
 void	redirection_in(char *filepath)
 {

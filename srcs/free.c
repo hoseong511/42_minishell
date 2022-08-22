@@ -3,21 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   free.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: namkim <namkim@student.42seoul.kr>         +#+  +:+       +#+        */
+/*   By: hossong <hossong@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/22 12:45:35 by namkim            #+#    #+#             */
-/*   Updated: 2022/08/22 15:01:59 by namkim           ###   ########.fr       */
+/*   Updated: 2022/08/22 19:35:04 by hossong          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/main.h"
-
-/* free목록
-1. envlist
-2. tokenlist
-3. cmdlist
-4. t_proc *info	// free필요? pipe?
-*/
 
 void	free_envlist(t_data *data)
 {
@@ -35,46 +28,44 @@ void	free_envlist(t_data *data)
 	data->envlist_size = 0;
 }
 
-static void	free_cmd(void *cmdcontent)
+void	free_arglist(t_list *arglist)
 {
-	char	*str;
-
-	str = ((t_cmd *)cmdcontent)->str;
-	free(str);
-	str = NULL;
-	free(cmdcontent);	//가능하겠지...?
-}
-
-static void	free_cmd2(void *cmd2content)
-{
+	t_list	*tmp;
 	char	**strs;
 
-	strs = ((t_cmd2 *)cmd2content)->str;
-	while (*strs)
+	while (arglist)
 	{
-		free(*strs);
-		*strs = NULL;
-		strs++;
+		strs = ((t_cmd2 *)arglist->content)->str;
+		while (*strs)
+		{
+			free(*strs);
+			strs++;
+		}
+		free(((t_cmd2 *)arglist->content)->str);
+		tmp = arglist->next;
+		free(arglist->content);
+		free(arglist);
+		arglist = tmp;
 	}
-	free(cmd2content);
-}
-
-void	free_tokenlist(t_list *tokenlist)
-{
-	t_list	*node;
-	char	*str;
-
-	node = tokenlist;
-	ft_lstclear(&tokenlist, free_cmd);	//libft 확인할 것
 }
 
 void	free_cmdlist(t_list *cmdlist)
 {
-	t_list	*node;
-	char	*str;
+	t_list	*tmp;
 
-	node = cmdlist;
-	ft_lstclear(&cmdlist, free_cmd2);
+	while (cmdlist)
+	{
+		free_arglist((t_list *)cmdlist->content);
+		tmp = cmdlist->next;
+		free(cmdlist);
+		cmdlist = tmp;
+	}
 }
 
-//t_proc, 다른 stat들 initialize 필요
+void	free_process(t_data *data)
+{
+	if (data->info)
+		free(data->info);
+	if (data->heredoc)
+		free(data->heredoc);
+}

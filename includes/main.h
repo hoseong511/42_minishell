@@ -6,7 +6,7 @@
 /*   By: hossong <hossong@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/06 16:43:27 by hossong           #+#    #+#             */
-/*   Updated: 2022/08/22 15:20:28 by hossong          ###   ########.fr       */
+/*   Updated: 2022/08/22 16:19:53 by hossong          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,6 +87,8 @@ typedef struct s_proc
 
 typedef struct s_data
 {
+	struct termios		set;
+	struct termios		save;
 	char				**envlist;
 	int					envlist_size;
 	int					envlist_cnt;
@@ -94,13 +96,8 @@ typedef struct s_data
 	t_list				*cmdlist;
 	int					cmd_cnt;
 	int					status;
-	int					exit_status;
 	t_proc				*info;
-	int					stdin_fd;
-	int					stdout_fd;
 	int					redir;
-	struct termios		set;
-	struct termios		save;
 	int					*heredoc;
 }	t_data;
 
@@ -117,6 +114,7 @@ int		get_env_len(char *target);
 void	replace_env(char **target, int start, int keysize, char **envp);
 void	do_replace(t_list *com, int *i, int *j, char *target);
 void	set_termattr(struct termios term);
+void	re_initialize(t_data *data);
 
 /* control data */
 t_data	*init_data(char **envp);
@@ -142,7 +140,7 @@ void	add_cmd2(t_list **lst, char **str, t_type type);
 t_type	get_cmd_type(char *str);
 t_list	*lexer(t_data *data);
 t_list	*tokenizer(char *str);
-t_list	*relocate(t_list *tokenlist);
+t_list	*relocate(t_list **tokenlist);
 t_list	*bind(t_list *cmdlist);
 void	insert(t_list **a, t_list *b);
 t_list	*pop(t_list **list);
@@ -185,6 +183,7 @@ void	close_heredoc(t_data *data, t_list *arglist);
 void	free_envlist(t_data *data);
 void	free_tokenlist(t_list *tokenlist);
 void	free_cmdlist(t_list *cmdlist);
+void	free_process(t_data *data);
 
 /*replacement fix*/
 void	do_replace_in_token(t_cmd *node, char **envp);

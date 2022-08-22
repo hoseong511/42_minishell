@@ -6,13 +6,11 @@
 /*   By: hossong <hossong@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/09 17:26:17 by hossong           #+#    #+#             */
-/*   Updated: 2022/08/22 02:08:29 by hossong          ###   ########.fr       */
+/*   Updated: 2022/08/22 19:38:22 by hossong          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/main.h"
-
-extern int	g_status;
 
 void	ft_error0(char *err_msg)
 {
@@ -43,11 +41,18 @@ void	ft_error3(char *arg, char *err_msg, int errcode)
 
 void	ft_perror(char *err_msg, int err)
 {
+	int	code;
+
+	code = 1;
+	write(2, "mini", 4);
+	write(2, ": ", 2);
 	write(2, err_msg, ft_strlen(err_msg));
-	write(2, " : ", 3);
+	write(2, ": ", 2);
 	write(2, strerror(err), ft_strlen(strerror(err)));
 	write(2, "\n", 1);
-	exit(1);
+	if (err == ENOENT)
+		code = 127;
+	exit(code);
 }
 
 void	ft_dup2(int fd1, int fd2)
