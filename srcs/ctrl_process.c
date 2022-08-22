@@ -6,7 +6,7 @@
 /*   By: hossong <hossong@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/18 12:32:30 by hossong           #+#    #+#             */
-/*   Updated: 2022/08/22 21:51:36 by hossong          ###   ########.fr       */
+/*   Updated: 2022/08/23 01:00:13 by hossong          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@ void	child_process(t_data *data, t_list *args, int depth)
 	t_list	*node;
 
 	set_termattr(data->save);
+	signal(SIGINT, signal_handler_d);
 	pipe_in(data, depth, data->cmd_cnt);
 	node = redirection_left(data, args);
 	pipe_out(data, depth, data->cmd_cnt);
@@ -83,7 +84,7 @@ void	exec_process(t_data *data, t_list *cmdlist)
 		else if (data->info->pid == 0)
 			child_process(data, (t_list *)cmdlist->content, depth);
 		else
-			ft_perror("fork error", errno);
+			ft_perror("fork", errno);
 		close_heredoc(data, (t_list *)cmdlist->content);
 		cmdlist = cmdlist->next;
 		depth++;

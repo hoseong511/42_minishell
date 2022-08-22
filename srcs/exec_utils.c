@@ -6,25 +6,12 @@
 /*   By: hossong <hossong@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/16 20:09:37 by namkim            #+#    #+#             */
-/*   Updated: 2022/08/22 17:36:22 by hossong          ###   ########.fr       */
+/*   Updated: 2022/08/23 02:16:00 by hossong          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/main.h"
 
-//PATH 구조체 필요?
-/* 실행 */
-/*
-	0. implemented 된 명령어인가? -> 해당 함수 호출
-	1. PATH -> value호출 -> : 기준으로 split -> 경로를 돌면서 명령어가 존재하는지 점검 -> 존재 시 실행경로 확보
-	2. 실행경로 확보시 -> execve로 실행
-	3. 실행 성공 ->
-		3-2. 실행 실패 ->
-	..4. 다음 명령 실행
-		0-3 실행
-	5. 사용된 모든 구조체 free (token, cmd, path(?))
-	6. 다시 prompt 띄우기
-*/
 char	**get_path(char **envlist)
 {
 	char	**res;
@@ -71,7 +58,6 @@ static int	is_valid_exe_file(char *addr)
 	return (-2);
 }
 
-//get_filepath로 이름 바꾸기
 char	*get_exe_file(char	**envp, char *cmd)
 {
 	char	*addr;

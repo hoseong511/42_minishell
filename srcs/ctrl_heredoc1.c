@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ctrl_heredoc.c                                     :+:      :+:    :+:   */
+/*   ctrl_heredoc1.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hossong <hossong@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/22 21:34:31 by hossong           #+#    #+#             */
-/*   Updated: 2022/08/22 21:57:37 by hossong          ###   ########.fr       */
+/*   Updated: 2022/08/23 01:58:27 by hossong          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,21 +14,21 @@
 
 void	close_heredoc(t_data *data, t_list *arglist)
 {
-	t_cmd2	*arg;
 	int		i;
 
-	if (data->heredoc && arglist == NULL)
+	i = 0;
+	while (data->heredoc && arglist == NULL)
 	{
-		i = 0;
 		while (data->heredoc[i] == -1)
 			i++;
+		if (data->heredoc[i] == -2)
+			return ;
 		close(data->heredoc[i]);
 		data->heredoc[i] = -1;
 	}
 	while (arglist)
 	{
-		arg = (t_cmd2 *)arglist->content;
-		if (arg->type == R_HEREDOC)
+		if (((t_cmd2 *)arglist->content)->type == R_HEREDOC)
 		{
 			i = 0;
 			while (data->heredoc[i] == -1)
@@ -79,8 +79,7 @@ int	set_heredoc(t_data *data, t_list *cmdlist)
 			arg = (t_cmd2 *)arglist->content;
 			if (arg->type == R_HEREDOC)
 			{
-				redirection_heredoc(data, arg->str[1], i);
-				if (g_status == 1)
+				if (redirection_heredoc(data, arg->str[1], i) == -1)
 					return (-1);
 				i++;
 			}
@@ -105,43 +104,4 @@ int	heredoc(t_data *data)
 	if (set_heredoc(data, data->cmdlist) == -1)
 		return (-1);
 	return (0);
-}
-
-void	redirection_heredoc(t_data *data, char *end_of_file, int idx)
-{
-	int		p_fd[2];
-	char	*str;
-	pid_t	pid;
-
-	pipe(p_fd);
-	pid = fork();
-	while (pid == 0)
-	{
-		signal(SIGINT, signal_handler_d);
-		str = readline("> ");
-		do_expansion(&str, data->envlist, '"');
-		if (ft_strncmp(str, end_of_file, ft_strlen(end_of_file) + 1) == 0)
-			exit(0);
-		write(p_fd[1], str, ft_strlen(str));
-		write(p_fd[1], "\n", 1);
-		free (str);
-	}
-	if (pid > 0)
-	{
-		signal(SIGINT, signal_handler_c);
-		waitpid(pid, &data->info->status, 0);
-		if (WEXITSTATUS(data->info->status) == 1)
-		{
-			close(p_fd[1]);
-			close(p_fd[0]);
-			g_status = WEXITSTATUS(data->info->status);
-			signal(SIGINT, signal_handler);
-		}
-		else
-		{
-			close(p_fd[1]);
-			data->heredoc[idx] = dup(p_fd[0]);
-			close(p_fd[0]);
-		}
-	}
 }
