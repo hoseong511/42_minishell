@@ -6,7 +6,7 @@
 /*   By: hossong <hossong@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/13 22:00:32 by namkim            #+#    #+#             */
-/*   Updated: 2022/08/22 19:38:17 by hossong          ###   ########.fr       */
+/*   Updated: 2022/08/22 20:11:36 by hossong          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,9 @@ void	do_replace_in_token(t_cmd *cmdnode, char **envp)
 	{
 		first = ((char *)node->content)[0];
 		do_expansion((char **)&(node->content), envp, first);
+		if (first == '\"' || first == '\'')
+			remove_quote((char **)&(node->content), 0, \
+							ft_strlen((char *)node->content) - 1);
 		node = node->next;
 	}
 	cmdnode->str = join_components(comp);

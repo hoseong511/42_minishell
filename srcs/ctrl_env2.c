@@ -6,7 +6,7 @@
 /*   By: hossong <hossong@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/12 15:46:57 by namkim            #+#    #+#             */
-/*   Updated: 2022/08/20 18:32:13 by hossong          ###   ########.fr       */
+/*   Updated: 2022/08/22 20:19:22 by hossong          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,9 +38,9 @@ void	replace_env(char **target, int start, int keysize, char **envp)
 		if (!keystr)
 			ft_error("Malloc error\n");
 		*target = replace_key_to_value(str, start, keystr, envp);
-		free(str);
 		free(keystr);
 	}
+	free(str);
 }
 
 int	count_env(char *str, char chr)
