@@ -6,7 +6,7 @@
 /*   By: namkim <namkim@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/06 16:43:27 by hossong           #+#    #+#             */
-/*   Updated: 2022/08/22 10:02:19 by namkim           ###   ########.fr       */
+/*   Updated: 2022/08/22 15:00:44 by namkim           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -174,10 +174,13 @@ t_list	*redirection_left(t_data *data, t_list *args);
 t_list	*redirection_right(t_list *args);
 
 /*free*/
+// void	free_cmdlist(t_list *cmdlist);
+// void	free_tokenlist(t_data *data);
+// void	free_data(t_data *data);
+// void	free_cmd(t_list *cmdlist, char *tar);
+void	free_envlist(t_data *data);
+void	free_tokenlist(t_list *tokenlist);
 void	free_cmdlist(t_list *cmdlist);
-void	free_tokenlist(t_data *data);
-void	free_data(t_data *data);
-void	free_cmd(t_list *cmdlist, char *tar);
 
 /*replacement fix*/
 void	do_replace_in_token(t_cmd *node, char **envp);
