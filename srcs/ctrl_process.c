@@ -6,11 +6,11 @@
 /*   By: hossong <hossong@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/18 12:32:30 by hossong           #+#    #+#             */
-/*   Updated: 2022/08/22 19:42:38 by hossong          ###   ########.fr       */
+/*   Updated: 2022/08/22 21:51:36 by hossong          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "main.h"
+#include "../includes/main.h"
 
 t_proc	*init_proc_info(void)
 {
@@ -23,90 +23,28 @@ t_proc	*init_proc_info(void)
 	return (new);
 }
 
-t_built	check_builtin(t_list *args)
-{
-	t_cmd2	*arg;
-	int		ret;
-
-	ret = 0;
-	while (args && ((t_cmd2 *)args->content)->type != ARGS)
-		args = args->next;
-	if (args)
-	{
-		arg = (t_cmd2 *)args->content;
-		if (ft_strncmp(arg->str[0], "echo", 5) == 0)
-			ret = B_ECHO;
-		else if (ft_strncmp(arg->str[0], "cd", 3) == 0)
-			ret = B_CD;
-		else if (ft_strncmp(arg->str[0], "pwd", 4) == 0)
-			ret = B_PWD;
-		else if (ft_strncmp(arg->str[0], "export", 7) == 0)
-			ret = B_EXPORT;
-		else if (ft_strncmp(arg->str[0], "unset", 6) == 0)
-			ret = B_UNSET;
-		else if (ft_strncmp(arg->str[0], "env", 4) == 0)
-			ret = B_ENV;
-		else if (ft_strncmp(arg->str[0], "exit", 5) == 0)
-			ret = B_EXIT;
-	}
-	return (ret);
-}
-
-void	exec_builtin(t_list *args, t_data *data)
-{
-	t_built	builtin;
-
-	builtin = check_builtin(args);
-	if (!builtin)
-		return ;
-	else if (builtin == B_ECHO)
-		ft_echo(((t_cmd2 *)args->content)->str);
-	else if (builtin == B_CD)
-		ft_cd(((t_cmd2 *)args->content)->str, data);
-	else if (builtin == B_PWD)
-		ft_pwd(((t_cmd2 *)args->content)->str);
-	else if (builtin == B_EXPORT)
-		ft_export(((t_cmd2 *)args->content)->str, data);
-	else if (builtin == B_UNSET)
-		ft_unset(((t_cmd2 *)args->content)->str, data);
-	else if (builtin == B_ENV)
-		ft_env(((t_cmd2 *)args->content)->str, data);
-	else if (builtin == B_EXIT)
-		ft_exit(((t_cmd2 *)args->content)->str);
-}
-
 void	child_process(t_data *data, t_list *args, int depth)
 {
 	t_list	*node;
 
 	set_termattr(data->save);
-	//signal(SIGINT, signal_handler_c);
+	pipe_in(data, depth, data->cmd_cnt);
 	node = redirection_left(data, args);
-	pipe_io(data, depth, data->cmd_cnt);
+	pipe_out(data, depth, data->cmd_cnt);
 	node = redirection_right(node);
 	exec_arg(data, node);
 }
 
 void	parent_process(t_data *data, int depth)
 {
+	signal(SIGINT, signal_handler_c);
 	if (data->cmd_cnt == 1)
 		wait(&data->info->status);
 	else if (depth == 0)
 		close(data->info->pipe[0].fd[1]);
 	else if (depth != data->cmd_cnt - 1)
-	{
-		if (depth % 2 == 0)
-		{
-			close(data->info->pipe[1].fd[0]);
-			close(data->info->pipe[0].fd[1]);
-		}
-		else
-		{
-			close(data->info->pipe[0].fd[0]);
-			close(data->info->pipe[1].fd[1]);
-		}
-	}
-	else
+		close_pipe(data, depth);
+	else if (depth == data->cmd_cnt - 1)
 	{
 		while (wait(&data->info->status) != -1)
 			;
@@ -122,4 +60,32 @@ void	parent_process(t_data *data, int depth)
 	}
 	else
 		g_status = WEXITSTATUS(data->info->status);
+}
+
+void	exec_process(t_data *data, t_list *cmdlist)
+{
+	int		depth;
+
+	data->info = init_proc_info();
+	if (heredoc(data) == -1)
+	{
+		close_heredoc(data, NULL);
+		return ;
+	}
+	depth = 0;
+	while (cmdlist && depth < data->cmd_cnt)
+	{
+		if (data->cmd_cnt != 1)
+			init_pipe(data, depth, data->cmd_cnt);
+		data->info->pid = fork();
+		if (data->info->pid > 0)
+			parent_process(data, depth);
+		else if (data->info->pid == 0)
+			child_process(data, (t_list *)cmdlist->content, depth);
+		else
+			ft_perror("fork error", errno);
+		close_heredoc(data, (t_list *)cmdlist->content);
+		cmdlist = cmdlist->next;
+		depth++;
+	}
 }

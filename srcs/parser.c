@@ -6,7 +6,7 @@
 /*   By: hossong <hossong@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/12 15:53:51 by namkim            #+#    #+#             */
-/*   Updated: 2022/08/20 16:03:45 by hossong          ###   ########.fr       */
+/*   Updated: 2022/08/22 21:28:25 by hossong          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,12 +74,6 @@ static void	put_type(t_data *data)
 	}
 }
 
-//or lexer
-//syntax_check
-/* 검사해야 하는 부분
-1. Redirection Args 있는지
-2. Pipe가 제일 첫 인자로 들어오는지(Error)
-3. Pipe가 연속되는지(pip 뒤에 하나 이상의 arg가 있는지 (redirection만으로 구성 가능?)) */
 t_list	*lexer(t_data *data)
 {
 	t_list	*res;

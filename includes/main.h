@@ -6,7 +6,7 @@
 /*   By: hossong <hossong@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/06 16:43:27 by hossong           #+#    #+#             */
-/*   Updated: 2022/08/22 16:19:53 by hossong          ###   ########.fr       */
+/*   Updated: 2022/08/22 21:54:41 by hossong          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,8 +97,9 @@ typedef struct s_data
 	int					cmd_cnt;
 	int					status;
 	t_proc				*info;
-	int					redir;
 	int					*heredoc;
+	int					fd_stdin;
+	int					fd_stdout;
 }	t_data;
 
 void	ft_error0(char *err_msg);
@@ -131,9 +132,6 @@ int		add_end_token(t_list **lst, char *str);
 int		get_quote_end_idx(char *str, int i);
 int		add_quote_idx(char *str);
 
-/* token utils */
-void	print_t_cmds(t_list *tokenlist);
-
 /* parser */
 void	add_cmd(t_list **lst, char *str, t_type type);
 void	add_cmd2(t_list **lst, char **str, t_type type);
@@ -161,8 +159,9 @@ void	exec_process(t_data *data, t_list *cmdlist);
 void	parent_process(t_data *data, int depth);
 void	child_process(t_data *data, t_list *c_node, int depth);
 void	exec_arg(t_data *data, t_list *args);
-void	pipe_io(t_data *data, int depth, int cmd_cnt);
-char	*get_next_line(int fd);
+void	pipe_in(t_data *data, int depth, int cmd_cnt);
+void	pipe_out(t_data *data, int depth, int cmd_cnt);
+void	close_pipe(t_data *data, int depth);
 
 /* redirection*/
 void	init_pipe(t_data *data, int depth, int cnt);
@@ -176,10 +175,6 @@ int		heredoc(t_data *data);
 void	close_heredoc(t_data *data, t_list *arglist);
 
 /*free*/
-// void	free_cmdlist(t_list *cmdlist);
-// void	free_tokenlist(t_data *data);
-// void	free_data(t_data *data);
-// void	free_cmd(t_list *cmdlist, char *tar);
 void	free_envlist(t_data *data);
 void	free_tokenlist(t_list *tokenlist);
 void	free_cmdlist(t_list *cmdlist);
@@ -196,9 +191,6 @@ void	make_component(t_list **lst, char *src, int size);
 char	*join_components(t_list *component);
 int		count_env(char *str, char chr);
 
-/* print utils */
-void	print_t_cmds2(t_list *tokenlist);
-
 /* execution utils */
 char	**get_path(char **envlist);
 char	*get_exe_file(char	**path, char *cmd);
@@ -210,7 +202,6 @@ void	ft_env(char **args, t_data *data);
 void	ft_unset(char **args, t_data *data);
 void	ft_pwd(char **args);
 void	ft_cd(char **args, t_data *data);
-//void	ft_exit(char **args);
 void	ft_exit(char **args);
 void	ft_echo(char **args);
 

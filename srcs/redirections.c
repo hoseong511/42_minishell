@@ -6,7 +6,7 @@
 /*   By: hossong <hossong@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/18 14:04:20 by namkim            #+#    #+#             */
-/*   Updated: 2022/08/22 19:38:20 by hossong          ###   ########.fr       */
+/*   Updated: 2022/08/22 21:57:25 by hossong          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,45 +78,6 @@ void	redirection_append(char *filepath)
 	}
 }
 
-void	redirection_heredoc(t_data *data, char *end_of_file, int idx)
-{
-	int		p_fd[2];
-	char	*str;
-	pid_t	pid;
-
-	pipe(p_fd);
-	pid = fork();
-	while (pid == 0)
-	{
-		signal(SIGINT, signal_handler_d);
-		str = readline("> ");
-		do_expansion(&str, data->envlist, '"');
-		if (ft_strncmp(str, end_of_file, ft_strlen(end_of_file) + 1) == 0)
-			exit(0);
-		write(p_fd[1], str, ft_strlen(str));
-		write(p_fd[1], "\n", 1);
-		free (str);
-	}
-	if (pid > 0)
-	{
-		signal(SIGINT, signal_handler_c);
-		waitpid(pid, &data->info->status, 0);
-		if (WEXITSTATUS(data->info->status) == 1)
-		{
-			close(p_fd[1]);
-			close(p_fd[0]);
-			g_status = WEXITSTATUS(data->info->status);
-			signal(SIGINT, signal_handler);
-		}
-		else
-		{
-			close(p_fd[1]);
-			data->heredoc[idx] = dup(p_fd[0]);
-			close(p_fd[0]);
-		}
-	}
-}
-
 t_list	*redirection_left(t_data *data, t_list *args)
 {
 	t_list	*node;
@@ -141,7 +102,6 @@ t_list	*redirection_left(t_data *data, t_list *args)
 			data->heredoc[idx] = -1;
 		}
 		node = node->next;
-		data->redir = 1;
 	}
 	return (node);
 }

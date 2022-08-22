@@ -6,7 +6,7 @@
 /*   By: hossong <hossong@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/06 16:42:28 by hossong           #+#    #+#             */
-/*   Updated: 2022/08/22 16:18:34 by hossong          ###   ########.fr       */
+/*   Updated: 2022/08/22 21:47:33 by hossong          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,15 +56,9 @@ int	main(int argc, char **argv, char **envp)
 		if (*str)
 			add_history(str);
 		load_data(data, str);
-		if (data->status == FALSE)
-		{
-			data->status = TRUE;
-			continue ;
-		}
 		execution(data);
 		free(str);
 		re_initialize(data);
 	}
-	//free_data(data);
 	return (0);
 }

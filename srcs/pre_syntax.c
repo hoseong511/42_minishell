@@ -3,17 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   pre_syntax.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: namkim <namkim@student.42seoul.kr>         +#+  +:+       +#+        */
+/*   By: hossong <hossong@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/13 14:52:14 by hossong           #+#    #+#             */
-/*   Updated: 2022/08/18 17:50:22 by namkim           ###   ########.fr       */
+/*   Updated: 2022/08/22 21:34:00 by hossong          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/main.h"
 
-//1. 포함되지 말아야할 문자가 있는지 '\'
-//2. 닫히지 않은 quote가 있는지
 static void	pop_quote(t_list **quote)
 {
 	t_list	*temp;
@@ -31,7 +29,7 @@ int	check_quote(char *str)
 	i = -1;
 	quote = NULL;
 	if (!str)
-		return (FALSE); //여기서 ctrl + D 처리한다
+		return (FALSE);
 	while (str[++i])
 	{
 		if (str[i] == '\'' || str[i] == '\"')

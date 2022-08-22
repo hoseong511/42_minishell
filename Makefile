@@ -6,7 +6,7 @@
 #    By: hossong <hossong@student.42seoul.kr>       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/08/07 14:34:58 by hossong           #+#    #+#              #
-#    Updated: 2022/08/22 17:37:55 by hossong          ###   ########.fr        #
+#    Updated: 2022/08/22 21:45:56 by hossong          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,10 +19,11 @@ LIBFT	=	lib/libft/libft.a
 INCLUDE = -I$(HOME)/.brew/opt/readline/include -I./includes
 SRCS_DIR = srcs/
 SRCS_FILES = main.c pre_syntax.c error.c init.c parser.c tokenizer.c utils.c \
-			ctrl_list.c bind_type.c replacement.c ctrl_free.c ctrl_execution.c \
+			ctrl_list.c type_bind.c replacement.c ctrl_free.c ctrl_execution.c \
 			exec_utils.c ctrl_env1.c ctrl_env2.c ctrl_env1.c ctrl_env2.c \
 			replacement_utils.c ctrl_process.c redirections.c ctrl_pipe.c \
-			ctrl_envlist.c built_in1.c built_in2.c built_in3.c signal.c free.c
+			ctrl_envlist.c built_in1.c built_in2.c built_in3.c signal.c free.c \
+			type_relocate.c ctrl_heredoc.c
 
 SRCS	=	$(addprefix $(SRCS_DIR), $(SRCS_FILES))
 OBJS	=	$(SRCS:.c=.o)
