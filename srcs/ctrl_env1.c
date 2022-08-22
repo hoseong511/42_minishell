@@ -6,11 +6,13 @@
 /*   By: hossong <hossong@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/08 18:20:24 by namkim            #+#    #+#             */
-/*   Updated: 2022/08/20 16:03:15 by hossong          ###   ########.fr       */
+/*   Updated: 2022/08/20 17:17:05 by hossong          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/main.h"
+
+extern int	g_status;
 
 int	is_valid_env_name(char c, int idx)
 {
@@ -28,21 +30,30 @@ int	is_valid_env_name(char c, int idx)
 	return (FALSE);
 }
 
-char	**get_env(char **envp, t_data *data)
+char	**make_envlist(char **envp, t_data *data)
 {
 	int		list_size;
-	int		i;
 	char	**res;
 
 	list_size = 0;
-	if (!envp || !(*envp))
-		return (NULL);
+	res = NULL;
 	while (envp[list_size])
 		list_size++;
-	i = 0;
 	res = (char **)malloc(sizeof(char *) * (list_size + 1));
+	if (!res)
+		ft_perror("Malloc", errno);
 	data->envlist_size = list_size;
-	while (i < list_size)
+	return (res);
+}
+
+char	**get_env(char **envp, t_data *data)
+{
+	int		i;
+	char	**res;
+
+	i = 0;
+	res = make_envlist(envp, data);
+	while (i < data->envlist_size)
 	{
 		res[i] = ft_strdup(envp[i]);
 		if (!res[i])
@@ -55,6 +66,7 @@ char	**get_env(char **envp, t_data *data)
 		i++;
 	}
 	res[i] = NULL;
+	data->envlist_cnt = data->envlist_size;
 	return (res);
 }
 
@@ -107,7 +119,10 @@ char	*replace_key_to_value(char *str, int start, char *keystr, char **envp)
 	{
 		prev = ft_strndup(str, var - str - 1);
 		next = ft_strdup(var + ft_strlen(keystr));
-		var = match_env(keystr, envp);
+		if (*keystr == '?')
+			var = ft_itoa(g_status);
+		else
+			var = match_env(keystr, envp);
 		if (var)
 		{
 			res = ft_strjoin(prev, var);

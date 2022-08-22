@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ctrl_env2.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: namkim <namkim@student.42seoul.kr>         +#+  +:+       +#+        */
+/*   By: hossong <hossong@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/12 15:46:57 by namkim            #+#    #+#             */
-/*   Updated: 2022/08/17 19:53:26 by namkim           ###   ########.fr       */
+/*   Updated: 2022/08/20 18:32:13 by hossong          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,8 @@ int	get_env_len(char *target)
 	int	i;
 
 	i = 0;
+	if (target[0] == '?')
+		return (1);
 	while (is_valid_env_name(target[i], i) == TRUE)
 		i++;
 	return (i);
@@ -28,12 +30,17 @@ void	replace_env(char **target, int start, int keysize, char **envp)
 	char	*keystr;
 
 	str = *target;
-	keystr = ft_strndup(str + start, keysize);
-	if (!keystr)
-		ft_error("Malloc error\n");
-	*target = replace_key_to_value(str, start, keystr, envp);
-	free(str);
-	free(keystr);
+	if (envp == NULL)
+		*target = replace_key_to_value(str, start, "?", NULL);
+	else
+	{
+		keystr = ft_strndup(str + start, keysize);
+		if (!keystr)
+			ft_error("Malloc error\n");
+		*target = replace_key_to_value(str, start, keystr, envp);
+		free(str);
+		free(keystr);
+	}
 }
 
 int	count_env(char *str, char chr)

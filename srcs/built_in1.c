@@ -3,14 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   built_in1.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hossong <hossong@student.42seoul.kr>       +#+  +:+       +#+        */
+/*   By: namkim <namkim@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/19 10:54:24 by namkim            #+#    #+#             */
-/*   Updated: 2022/08/20 16:08:18 by hossong          ###   ########.fr       */
+/*   Updated: 2022/08/22 09:59:04 by namkim           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/main.h"
+
+extern int	g_status;
 
 int	insert_env(char *arg, t_data *data)
 {
@@ -19,6 +21,8 @@ int	insert_env(char *arg, t_data *data)
 	char	*key;
 
 	len = get_env_len(arg);
+	if (len == 0)
+		g_status = 1;
 	if (arg[len] == '=')
 	{
 		key = ft_strndup(arg, len);
@@ -49,6 +53,8 @@ void	ft_export(char **args, t_data *data)
 	while (args[i])
 	{
 		insert_env(args[i], data);
+		if (g_status == 1)
+			return ;
 		i++;
 	}
 }
@@ -61,10 +67,9 @@ void	ft_env(char **args, t_data *data)
 	if (args[1])
 	{
 		if (args[0][1] == 'n')
-			printf("env: %s: No such file or directory\n", args[1]);
-		if (args[0][1] == 'x')
-			printf("export: `%s': not a valid identifier\n", args[1]);
-		exit(1);
+			printf("env: %s: Unnecessary Argument\n", args[1]);
+		g_status = 1;
+		return ;
 	}
 	if (!envp)
 		return ;
@@ -108,9 +113,11 @@ void	ft_pwd(char **args)
 	{
 		res = getcwd(NULL, 0);
 		if (!res)
-			ft_error("Couldn't get working directory\n");
+		{
+			printf("Couldn't get working directory\n");
+			g_status = 1;
+		}
 		printf("%s\n", res);
 		free(res);
 	}
-
 }

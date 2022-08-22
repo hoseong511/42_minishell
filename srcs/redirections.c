@@ -6,11 +6,13 @@
 /*   By: hossong <hossong@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/18 14:04:20 by namkim            #+#    #+#             */
-/*   Updated: 2022/08/20 16:15:15 by hossong          ###   ########.fr       */
+/*   Updated: 2022/08/21 21:24:58 by hossong          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/main.h"
+
+extern int	g_status;
 
 void	redirection_in(char *filepath)
 {
@@ -91,6 +93,7 @@ void	redirection_heredoc(t_data *data, char *end_of_file)
 	pid = fork();
 	while (pid == 0)
 	{
+		signal(SIGINT, signal_handler_d);
 		str = readline("> ");
 		do_expansion(&str, data->envlist, '"');
 		if (ft_strncmp(str, end_of_file, ft_strlen(end_of_file) + 1) == 0)
@@ -101,10 +104,21 @@ void	redirection_heredoc(t_data *data, char *end_of_file)
 	}
 	if (pid > 0)
 	{
-		waitpid(pid, NULL, 0);
-		close(p_fd[1]);
-		ft_dup2(p_fd[0], 0);
-		close(p_fd[0]);
+		signal(SIGINT, signal_handler_c);
+		wait(&data->info->status);
+		if (WEXITSTATUS(data->info->status) == 1)
+		{
+			close(p_fd[1]);
+			close(p_fd[0]);
+			g_status = WEXITSTATUS(data->info->status);
+			signal(SIGINT, signal_handler);
+		}
+		else
+		{
+			close(p_fd[1]);
+			ft_dup2(p_fd[0], 0);
+			close(p_fd[0]);
+		}
 	}
 }
 
@@ -123,6 +137,8 @@ t_list	*redirection_left(t_data *data, t_list *args)
 			redirection_in(((t_cmd2 *)node->content)->str[1]);
 		else if (node_type == R_HEREDOC)
 			redirection_heredoc(data, ((t_cmd2 *)node->content)->str[1]);
+		if (g_status == 1)
+			return (NULL);
 		node = node->next;
 		data->redir = 1;
 	}
