@@ -6,7 +6,7 @@
 /*   By: hossong <hossong@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/09 17:19:24 by hossong           #+#    #+#             */
-/*   Updated: 2022/08/21 20:29:40 by hossong          ###   ########.fr       */
+/*   Updated: 2022/08/22 03:53:01 by hossong          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ int	get_quote_end_idx(char *str, int i)
 	while (str[i + j] && str[i + j] != q)
 		j++;
 	if (str[i + j] != q)
-		ft_error("unclosed quotes2\n");
+		printf("unclosed quotes2\n"); //ft_error("unclosed quotes2\n");
 	return (i + j);
 }
 

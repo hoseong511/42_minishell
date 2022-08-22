@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: namkim <namkim@student.42seoul.kr>         +#+  +:+       +#+        */
+/*   By: hossong <hossong@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/06 16:42:28 by hossong           #+#    #+#             */
-/*   Updated: 2022/08/22 10:20:46 by namkim           ###   ########.fr       */
+/*   Updated: 2022/08/22 15:21:05 by hossong          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,10 @@ int	main(int argc, char **argv, char **envp)
 			add_history(str);
 		load_data(data, str);
 		if (data->status == FALSE)
+		{
+			data->status = TRUE;
 			continue ;
+		}
 		execution(data);
 		// free
 		free(str);
