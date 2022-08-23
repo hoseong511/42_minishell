@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   signal.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hossong <hossong@student.42seoul.kr>       +#+  +:+       +#+        */
+/*   By: namkim <namkim@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/16 22:13:27 by namkim            #+#    #+#             */
-/*   Updated: 2022/08/22 19:38:13 by hossong          ###   ########.fr       */
+/*   Updated: 2022/08/23 14:09:20 by namkim           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ void	signal_handler(int signal)
 {
 	if (signal == SIGINT)
 	{
-		printf("mini-0.8$ \b\n");
+		printf("mini-0.8$ \n");
 		g_status = 1;
 	}
 	if (rl_on_new_line() == -1)
