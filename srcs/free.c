@@ -6,7 +6,7 @@
 /*   By: hossong <hossong@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/22 12:45:35 by namkim            #+#    #+#             */
-/*   Updated: 2022/08/22 19:35:04 by hossong          ###   ########.fr       */
+/*   Updated: 2022/08/23 11:24:44 by hossong          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,8 @@ void	free_cmdlist(t_list *cmdlist)
 
 void	free_process(t_data *data)
 {
+	if (data->info->pid)
+		free(data->info->pid);
 	if (data->info)
 		free(data->info);
 	if (data->heredoc)
