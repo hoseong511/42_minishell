@@ -6,12 +6,12 @@
 #    By: hossong <hossong@student.42seoul.kr>       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/08/07 14:34:58 by hossong           #+#    #+#              #
-#    Updated: 2022/08/23 02:40:52 by hossong          ###   ########.fr        #
+#    Updated: 2022/08/23 11:42:39 by hossong          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME	=	minishell
-CFLAGS 	=	-Wall -Wextra -Werror -g3 #-fsanitize=address
+CFLAGS 	=	-Wall -Wextra -Werror -fsanitize=address
 
 LIB		=	-L$(HOME)/.brew/opt/readline/lib -lreadline -L ./lib/libft -lft
 LIBFT	=	lib/libft/libft.a

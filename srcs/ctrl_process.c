@@ -6,7 +6,7 @@
 /*   By: hossong <hossong@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/18 12:32:30 by hossong           #+#    #+#             */
-/*   Updated: 2022/08/23 11:19:04 by hossong          ###   ########.fr       */
+/*   Updated: 2022/08/23 11:35:22 by hossong          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,8 +69,10 @@ void	parent_process(t_data *data, int depth)
 			close(data->info->pipe[0].fd[0]);
 		i = -1;
 		while (++i < data->cmd_cnt)
+		{
 			waitpid(data->info->pid[i], &data->info->status, 0);
-		if_signaled(data);
+			printf("pid[%d]: %d, status : %d\n", i, data->info->pid[i], WIFSIGNALED(data->info->status));
+		}
 	}
 	if_signaled(data);
 }
