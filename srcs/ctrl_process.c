@@ -6,7 +6,7 @@
 /*   By: hossong <hossong@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/18 12:32:30 by hossong           #+#    #+#             */
-/*   Updated: 2022/08/23 11:12:43 by hossong          ###   ########.fr       */
+/*   Updated: 2022/08/23 11:19:04 by hossong          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,8 +70,6 @@ void	parent_process(t_data *data, int depth)
 		i = -1;
 		while (++i < data->cmd_cnt)
 			waitpid(data->info->pid[i], &data->info->status, 0);
-		if (errno == ECHILD)
-			ft_perror("wait", errno);
 		if_signaled(data);
 	}
 	if_signaled(data);
