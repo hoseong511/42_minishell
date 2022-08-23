@@ -6,7 +6,7 @@
 /*   By: hossong <hossong@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/06 16:43:27 by hossong           #+#    #+#             */
-/*   Updated: 2022/08/23 01:59:22 by hossong          ###   ########.fr       */
+/*   Updated: 2022/08/23 11:07:13 by hossong          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,7 @@ typedef struct s_pipe
 
 typedef struct s_proc
 {
-	pid_t	pid;
+	pid_t	*pid;
 	int		status;
 	t_pipe	pipe[2];
 }	t_proc;
@@ -151,7 +151,7 @@ void	check_pipe_syntax(t_data *data);
 void	check_redirection_syntax(t_data *data);
 
 /* excute */
-t_proc	*init_proc_info(void);
+t_proc	*init_proc_info(t_data *data);
 void	execution(t_data *data);
 t_built	check_builtin(t_list *args);
 void	exec_builtin(t_list *args, t_data *data);

@@ -6,21 +6,35 @@
 /*   By: hossong <hossong@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/18 12:32:30 by hossong           #+#    #+#             */
-/*   Updated: 2022/08/23 02:40:08 by hossong          ###   ########.fr       */
+/*   Updated: 2022/08/23 11:12:43 by hossong          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/main.h"
 
-t_proc	*init_proc_info(void)
+t_proc	*init_proc_info(t_data *data)
 {
 	t_proc	*new;
 
 	new = (t_proc *)malloc(sizeof(t_proc));
 	if (!new)
-		ft_error("ERROR: Malloc Error\n");
+		ft_perror("Malloc", errno);
 	ft_memset(new, 0, sizeof(t_proc));
+	new->pid = malloc(sizeof(pid_t) * data->cmd_cnt);
+	if (!new->pid)
+		ft_perror("Malloc", errno);
 	return (new);
+}
+
+static void	if_signaled(t_data *data)
+{
+	if (WIFSIGNALED(data->info->status))
+	{
+		g_status = 130;
+		close_heredoc(data, NULL);
+	}
+	else
+		g_status = WEXITSTATUS(data->info->status);
 }
 
 void	child_process(t_data *data, t_list *args, int depth)
@@ -38,6 +52,8 @@ void	child_process(t_data *data, t_list *args, int depth)
 
 void	parent_process(t_data *data, int depth)
 {
+	int	i;
+
 	signal(SIGINT, signal_handler_c);
 	if (data->cmd_cnt == 1)
 		wait(&data->info->status);
@@ -47,27 +63,25 @@ void	parent_process(t_data *data, int depth)
 		close_pipe(data, depth);
 	else if (depth == data->cmd_cnt - 1)
 	{
-		while (wait(&data->info->status) != -1)
-			;
 		if (depth % 2 == 0)
 			close(data->info->pipe[1].fd[0]);
 		else
 			close(data->info->pipe[0].fd[0]);
-		if (WIFSIGNALED(data->info->status))
-		{
-			g_status = 130;
-			close_heredoc(data, NULL);
-		}
-		else
-			g_status = WEXITSTATUS(data->info->status);
+		i = -1;
+		while (++i < data->cmd_cnt)
+			waitpid(data->info->pid[i], &data->info->status, 0);
+		if (errno == ECHILD)
+			ft_perror("wait", errno);
+		if_signaled(data);
 	}
+	if_signaled(data);
 }
 
 void	exec_process(t_data *data, t_list *cmdlist)
 {
 	int		depth;
 
-	data->info = init_proc_info();
+	data->info = init_proc_info(data);
 	if (heredoc(data) == -1)
 	{
 		close_heredoc(data, NULL);
@@ -78,10 +92,10 @@ void	exec_process(t_data *data, t_list *cmdlist)
 	{
 		if (data->cmd_cnt != 1)
 			init_pipe(data, depth, data->cmd_cnt);
-		data->info->pid = fork();
-		if (data->info->pid > 0)
+		data->info->pid[depth] = fork();
+		if (data->info->pid[depth] > 0)
 			parent_process(data, depth);
-		else if (data->info->pid == 0)
+		else if (data->info->pid[depth] == 0)
 			child_process(data, (t_list *)cmdlist->content, depth);
 		else
 			ft_perror("fork", errno);
