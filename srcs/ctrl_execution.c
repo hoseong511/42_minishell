@@ -6,7 +6,7 @@
 /*   By: hossong <hossong@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/14 17:27:01 by hossong           #+#    #+#             */
-/*   Updated: 2022/08/23 15:35:20 by hossong          ###   ########.fr       */
+/*   Updated: 2022/08/23 19:09:04 by hossong          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,13 +89,18 @@ void	execution(t_data *data)
 {
 	t_list	*cmdlist;
 	t_built	is_built;
+	t_list	*node;
 
 	cmdlist = data->cmdlist;
 	if (!cmdlist)
 		return ;
 	is_built = check_builtin((t_list *)cmdlist->content);
 	if (data->cmd_cnt == 1 && is_built)
-		exec_builtin((t_list *)cmdlist->content, data);
+	{
+		node = redirection_left(data, (t_list *)cmdlist->content);
+		node = redirection_right(node);
+		exec_builtin(node, data);
+	}
 	else
 		exec_process(data, cmdlist);
 	data->cmd_cnt = 0;
