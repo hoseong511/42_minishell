@@ -6,7 +6,7 @@
 /*   By: hossong <hossong@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/14 17:27:01 by hossong           #+#    #+#             */
-/*   Updated: 2022/08/23 02:48:13 by hossong          ###   ########.fr       */
+/*   Updated: 2022/08/23 15:35:20 by hossong          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ void	exec_builtin(t_list *args, t_data *data)
 	else if (builtin == B_ENV)
 		ft_env(((t_cmd2 *)args->content)->str, data);
 	else if (builtin == B_EXIT)
-		ft_exit(((t_cmd2 *)args->content)->str);
+		ft_exit(((t_cmd2 *)args->content)->str, data);
 }
 
 void	exec_arg(t_data *data, t_list *args)

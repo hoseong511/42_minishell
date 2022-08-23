@@ -6,11 +6,25 @@
 /*   By: hossong <hossong@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/13 22:00:32 by namkim            #+#    #+#             */
-/*   Updated: 2022/08/22 20:11:36 by hossong          ###   ########.fr       */
+/*   Updated: 2022/08/23 14:42:48 by hossong          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/main.h"
+
+int	get_quote_end_idx(char *str, int i)
+{
+	int		j;
+	char	q;
+
+	q = str[i];
+	j = 1;
+	while (str[i + j] && str[i + j] != q)
+		j++;
+	if (str[i + j] != q)
+		printf("unclosed quotes\n");
+	return (i + j);
+}
 
 void	do_expansion(char **target, char **envp, char sign)
 {
@@ -73,3 +87,4 @@ void	do_replace_in_token(t_cmd *cmdnode, char **envp)
 	cmdnode->str = join_components(comp);
 	free(target);
 }
+

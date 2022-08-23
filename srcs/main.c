@@ -6,7 +6,7 @@
 /*   By: hossong <hossong@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/06 16:42:28 by hossong           #+#    #+#             */
-/*   Updated: 2022/08/23 12:02:51 by hossong          ###   ########.fr       */
+/*   Updated: 2022/08/23 15:36:15 by hossong          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,20 @@ void	set_termattr(struct termios term)
 		ft_perror("tcsetattr", errno);
 }
 
+static void	set_initial_status(t_data *data)
+{
+	set_termattr(data->set);
+	signal(SIGINT, signal_handler);
+	signal(SIGQUIT, SIG_IGN);
+}
+
+static void	eof(t_data *data)
+{
+	printf("\033[1A");
+	printf("\033[10C");
+	ft_exit(NULL, data);
+}
+
 int	main(int argc, char **argv, char **envp)
 {
 	char				*str;
@@ -38,22 +52,14 @@ int	main(int argc, char **argv, char **envp)
 	(void) argv;
 	if (argc != 1)
 		ft_error("Too much argument!\n");
-	printf("==minishell==\n");
 	data = init_data(envp);
 	def_termattr(data);
 	while (1)
 	{
-		set_termattr(data->set);
-		signal(SIGINT, signal_handler);
-		signal(SIGQUIT, SIG_IGN);
-		str = readline("mini-0.8$ ");
+		set_initial_status(data);
+		str = readline("mini-1.0$ ");
 		if (!str)
-		{
-			set_termattr(data->save);
-			printf("\033[1A");
-			printf("\033[10C");
-			ft_exit(NULL);
-		}
+			eof(data);
 		if (*str)
 			add_history(str);
 		load_data(data, str);

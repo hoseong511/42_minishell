@@ -6,7 +6,7 @@
 /*   By: hossong <hossong@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/18 14:04:20 by namkim            #+#    #+#             */
-/*   Updated: 2022/08/22 21:57:25 by hossong          ###   ########.fr       */
+/*   Updated: 2022/08/23 15:14:35 by hossong          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,10 +25,9 @@ void	redirection_in(char *filepath)
 	{
 		sign = stat(filepath, &sb);
 		if (sign == 0)
-			printf("%s: %s\n", filepath, "Permission Denied");
+			ft_error3(filepath, " : Permission Denied\n", 1);
 		else
-			printf("%s: %s\n", filepath, strerror(errno));
-		exit(1);
+			ft_perror(filepath, errno);
 	}
 	else
 	{
@@ -46,10 +45,7 @@ void	redirection_out(char *filepath)
 		ft_error("Syntax Error\n");
 	fd = open(filepath, O_RDWR | O_CREAT | O_TRUNC, 0644);
 	if (fd < 0)
-	{
-		printf("%s: %s\n", filepath, "Permission Denied");
-		exit(1);
-	}
+		ft_error3(filepath, " : Permission Denied\n", 1);
 	else
 	{
 		if (dup2(fd, 1) < 0)
@@ -66,10 +62,7 @@ void	redirection_append(char *filepath)
 		ft_error("Syntax Error\n");
 	fd = open(filepath, O_RDWR | O_CREAT | O_APPEND, 0644);
 	if (fd < 0)
-	{
-		printf("%s: %s\n", filepath, "Permission Denied");
-		exit(1);
-	}
+		ft_error3(filepath, " : Permission Denied\n", 1);
 	else
 	{
 		if (dup2(fd, 1) < 0)

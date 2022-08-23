@@ -6,7 +6,7 @@
 /*   By: hossong <hossong@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/12 15:46:57 by namkim            #+#    #+#             */
-/*   Updated: 2022/08/23 09:59:22 by hossong          ###   ########.fr       */
+/*   Updated: 2022/08/23 14:36:13 by hossong          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,11 +24,11 @@ t_data	*init_data(char **envp)
 	res->tokenlist = NULL;
 	res->cmdlist = NULL;
 	res->cmd_cnt = 0;
-	res->status = TRUE;
-	res->heredoc = 0;
+	res->heredoc = NULL;
 	res->fd_stdin = dup(0);
 	res->fd_stdout = dup(1);
 	g_status = 0;
+	printf("==minishell==\n");
 	return (res);
 }
 
@@ -39,9 +39,8 @@ void	re_initialize(t_data *data)
 	data->cmdlist = NULL;
 	data->tokenlist = NULL;
 	data->cmd_cnt = 0;
-	data->status = TRUE;
 	data->info = NULL;
-	data->heredoc = 0;
+	data->heredoc = NULL;
 }
 
 void	load_data(t_data *data, char *str)

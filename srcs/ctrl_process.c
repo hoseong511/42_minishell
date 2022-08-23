@@ -6,7 +6,7 @@
 /*   By: hossong <hossong@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/18 12:32:30 by hossong           #+#    #+#             */
-/*   Updated: 2022/08/23 11:35:22 by hossong          ###   ########.fr       */
+/*   Updated: 2022/08/23 14:50:22 by hossong          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ t_proc	*init_proc_info(t_data *data)
 	if (!new)
 		ft_perror("Malloc", errno);
 	ft_memset(new, 0, sizeof(t_proc));
-	new->pid = malloc(sizeof(pid_t) * data->cmd_cnt);
+	new->pid = (pid_t *)malloc(sizeof(pid_t) * data->cmd_cnt);
 	if (!new->pid)
 		ft_perror("Malloc", errno);
 	return (new);
@@ -42,7 +42,7 @@ void	child_process(t_data *data, t_list *args, int depth)
 	t_list	*node;
 
 	set_termattr(data->save);
-	signal(SIGINT, signal_handler_d);
+	signal(SIGINT, signal_handler_e);
 	pipe_in(data, depth, data->cmd_cnt);
 	node = redirection_left(data, args);
 	pipe_out(data, depth, data->cmd_cnt);

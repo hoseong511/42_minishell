@@ -6,7 +6,7 @@
 /*   By: hossong <hossong@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/22 21:34:31 by hossong           #+#    #+#             */
-/*   Updated: 2022/08/23 01:58:27 by hossong          ###   ########.fr       */
+/*   Updated: 2022/08/23 15:19:09 by hossong          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,6 +100,7 @@ int	heredoc(t_data *data)
 	data->heredoc = (int *)malloc(sizeof(int) * (cnt + 1));
 	if (!data->heredoc)
 		ft_perror("Malloc", errno);
+	ft_memset(data->heredoc, 0, sizeof(int *));
 	data->heredoc[cnt] = -2;
 	if (set_heredoc(data, data->cmdlist) == -1)
 		return (-1);

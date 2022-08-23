@@ -6,7 +6,7 @@
 /*   By: hossong <hossong@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/23 00:19:19 by hossong           #+#    #+#             */
-/*   Updated: 2022/08/23 02:09:18 by hossong          ###   ########.fr       */
+/*   Updated: 2022/08/23 14:50:54 by hossong          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ static void	child_heredoc(t_data *data, char *end_of_file, int p_fd[])
 
 	while (1)
 	{
-		signal(SIGINT, signal_handler_d);
+		signal(SIGINT, signal_handler_e);
 		str = readline("> ");
 		do_expansion(&str, data->envlist, '"');
 		if (ft_strncmp(str, end_of_file, ft_strlen(end_of_file) + 1) == 0)

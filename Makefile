@@ -6,19 +6,19 @@
 #    By: hossong <hossong@student.42seoul.kr>       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/08/07 14:34:58 by hossong           #+#    #+#              #
-#    Updated: 2022/08/23 11:42:39 by hossong          ###   ########.fr        #
+#    Updated: 2022/08/23 15:52:07 by hossong          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME	=	minishell
-CFLAGS 	=	-Wall -Wextra -Werror -fsanitize=address
+CFLAGS 	=	-Wall -Wextra -Werror -g3
 
 LIB		=	-L$(HOME)/.brew/opt/readline/lib -lreadline -L ./lib/libft -lft
 LIBFT	=	lib/libft/libft.a
 
 INCLUDE = -I$(HOME)/.brew/opt/readline/include -I./includes
 SRCS_DIR = srcs/
-SRCS_FILES = main.c pre_syntax.c error.c init.c parser.c tokenizer.c utils.c \
+SRCS_FILES = main.c syntax.c error.c init.c parser.c tokenizer.c utils.c \
 			ctrl_list.c type_bind.c replacement.c ctrl_execution.c \
 			exec_utils.c ctrl_env1.c ctrl_env2.c ctrl_env1.c ctrl_env2.c \
 			replacement_utils.c ctrl_process.c redirections.c ctrl_pipe.c \

@@ -6,28 +6,14 @@
 /*   By: hossong <hossong@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/09 17:26:17 by hossong           #+#    #+#             */
-/*   Updated: 2022/08/23 01:03:54 by hossong          ###   ########.fr       */
+/*   Updated: 2022/08/23 14:34:19 by hossong          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/main.h"
 
-void	ft_error0(char *err_msg)
-{
-	write(2, err_msg, ft_strlen(err_msg));
-	g_status = 1;
-	return ;
-}
-
 void	ft_error(char *err_msg)
 {
-	write(2, err_msg, ft_strlen(err_msg));
-	exit(1);
-}
-
-void	ft_error2(char *arg, char *err_msg)
-{
-	write(2, arg, ft_strlen(arg));
 	write(2, err_msg, ft_strlen(err_msg));
 	exit(1);
 }

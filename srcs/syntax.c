@@ -6,49 +6,11 @@
 /*   By: hossong <hossong@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/13 14:52:14 by hossong           #+#    #+#             */
-/*   Updated: 2022/08/22 21:34:00 by hossong          ###   ########.fr       */
+/*   Updated: 2022/08/23 14:47:19 by hossong          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/main.h"
-
-static void	pop_quote(t_list **quote)
-{
-	t_list	*temp;
-
-	temp = *quote;
-	*quote = (*quote)->next;
-	free(temp);
-}
-
-int	check_quote(char *str)
-{
-	int		i;
-	t_list	*quote;
-
-	i = -1;
-	quote = NULL;
-	if (!str)
-		return (FALSE);
-	while (str[++i])
-	{
-		if (str[i] == '\'' || str[i] == '\"')
-		{
-			if (!quote)
-				quote = ft_lstnew(&str[i]);
-			else if (quote && (*(char *)(quote->content)) != str[i])
-				ft_lstadd_front(&quote, ft_lstnew(&str[i]));
-			else
-				pop_quote(&quote);
-		}
-	}
-	if (quote)
-	{
-		free(quote);
-		return (FALSE);
-	}
-	return (TRUE);
-}
 
 void	check_pipe_syntax(t_data *data)
 {

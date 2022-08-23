@@ -6,7 +6,7 @@
 /*   By: hossong <hossong@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/06 16:43:27 by hossong           #+#    #+#             */
-/*   Updated: 2022/08/23 11:07:13 by hossong          ###   ########.fr       */
+/*   Updated: 2022/08/23 15:37:36 by hossong          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,6 @@
 # include <sys/stat.h>
 # include <fcntl.h>
 # include <termios.h>
-
 # include "../lib/libft/libft.h"
 
 # define TRUE 1
@@ -67,12 +66,6 @@ typedef struct s_cmd2
 	t_type	type;
 }	t_cmd2;
 
-typedef struct s_env
-{
-	char	*key;
-	char	*value;
-}	t_env;
-
 typedef struct s_pipe
 {
 	int	fd[2];
@@ -95,49 +88,39 @@ typedef struct s_data
 	t_list				*tokenlist;
 	t_list				*cmdlist;
 	int					cmd_cnt;
-	int					status;
 	t_proc				*info;
 	int					*heredoc;
 	int					fd_stdin;
 	int					fd_stdout;
 }	t_data;
 
-void	ft_error0(char *err_msg);
 void	ft_error(char *err_msg);
-void	ft_error2(char *arg, char *err_msg);
 void	ft_error3(char *arg, char *err_msg, int errcode);
 void	ft_perror(char *err_msg, int err);
 void	ft_dup2(int fd1, int fd2);
+
 char	*match_env(char *keystr, char **envlist);
 int		is_valid_env_name(char c, int idx);
 char	**get_env(char **envp, t_data *data);
 int		get_env_len(char *target);
 void	replace_env(char **target, int start, int keysize, char **envp);
 void	do_replace(t_list *com, int *i, int *j, char *target);
-void	set_termattr(struct termios term);
-void	re_initialize(t_data *data);
 
 /* control data */
 t_data	*init_data(char **envp);
 void	load_data(t_data *data, char *str);
-
-/* replacement */
-void	replace_quote(t_list *target, char quote, t_list *data);
-void	replacement(char **str, t_list *data);
+void	re_initialize(t_data *data);
+void	set_termattr(struct termios term);
 
 /* tokenizer */
 void	add_token(t_list **lst, char *str, size_t len);
-int		check_redir(t_list **lst, char *str);
-int		add_end_token(t_list **lst, char *str);
 int		get_quote_end_idx(char *str, int i);
-int		add_quote_idx(char *str);
+t_list	*tokenizer(char *str);
 
 /* parser */
-void	add_cmd(t_list **lst, char *str, t_type type);
 void	add_cmd2(t_list **lst, char **str, t_type type);
 t_type	get_cmd_type(char *str);
 t_list	*lexer(t_data *data);
-t_list	*tokenizer(char *str);
 t_list	*relocate(t_list **tokenlist);
 t_list	*bind(t_list *cmdlist);
 void	insert(t_list **a, t_list *b);
@@ -146,7 +129,6 @@ void	append_ab(t_list **lst, t_list *a, t_list *b);
 void	insert_src(t_list **des, t_list **src, t_list **tmp);
 
 /* syntax */
-int		check_quote(char *str);
 void	check_pipe_syntax(t_data *data);
 void	check_redirection_syntax(t_data *data);
 
@@ -202,8 +184,9 @@ void	ft_env(char **args, t_data *data);
 void	ft_unset(char **args, t_data *data);
 void	ft_pwd(char **args);
 void	ft_cd(char **args, t_data *data);
-void	ft_exit(char **args);
+void	ft_exit(char **args, t_data *data);
 void	ft_echo(char **args);
+void	ft_built_in_error(char *arg1, char *arg2, char *errmsg);
 
 /* control_env_array */
 int		is_envlist_full(t_data *data);
@@ -213,6 +196,6 @@ int		get_env_idx(char *keystr, char **envp);
 /* signal */
 void	signal_handler(int signal);
 void	signal_handler_c(int signal);
-void	signal_handler_d(int signal);
+void	signal_handler_e(int signal);
 
 #endif

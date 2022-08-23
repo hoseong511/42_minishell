@@ -6,11 +6,23 @@
 /*   By: hossong <hossong@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/22 14:59:12 by namkim            #+#    #+#             */
-/*   Updated: 2022/08/23 02:03:17 by hossong          ###   ########.fr       */
+/*   Updated: 2022/08/23 15:34:44 by hossong          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/main.h"
+
+void	ft_built_in_error(char *arg1, char *arg2, char *errmsg)
+{
+	write(2, "mini\n", 4);
+	write(2, ": ", 2);
+	write(2, arg1, ft_strlen(arg1));
+	write(2, ": ", 2);
+	write(2, arg2, ft_strlen(arg2));
+	write(2, " : ", 3);
+	write(2, errmsg, ft_strlen(errmsg));
+	g_status = 1;
+}
 
 static int	check_exit_args(char *arg)
 {
@@ -27,7 +39,7 @@ static int	check_exit_args(char *arg)
 		return (FALSE);
 }
 
-void	ft_exit(char **args)
+void	ft_exit(char **args, t_data *data)
 {
 	int	errcode;
 	int	i;
@@ -44,9 +56,10 @@ void	ft_exit(char **args)
 		i++;
 	}
 	if (i > 2)
-		ft_error2("exit", ": too many arguments\n");
+		ft_error3("exit", ": too many arguments\n", 1);
 	else if (i == 2)
 		errcode = ft_atoi(args[1]);
+	set_termattr(data->save);
 	exit(errcode);
 }
 
@@ -66,4 +79,5 @@ void	ft_echo(char **args)
 	write(1, args[i], ft_strlen(args[i]));
 	if (ft_strncmp(args[1], "-n", 3) != 0)
 		write(1, "\n", 1);
+	g_status = 0;
 }
