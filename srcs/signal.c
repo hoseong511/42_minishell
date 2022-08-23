@@ -6,7 +6,7 @@
 /*   By: hossong <hossong@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/16 22:13:27 by namkim            #+#    #+#             */
-/*   Updated: 2022/08/23 09:51:46 by hossong          ###   ########.fr       */
+/*   Updated: 2022/08/23 12:07:16 by hossong          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,12 +28,7 @@ void	signal_handler(int signal)
 void	signal_handler_c(int signal)
 {
 	if (signal == SIGINT)
-	{
-		//printf("\033[1A");
-		//printf("\033[10C");
 		printf("\n");
-	}
-		//;
 }
 
 void	signal_handler_d(int signal)

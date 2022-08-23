@@ -6,7 +6,7 @@
 /*   By: hossong <hossong@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/06 16:42:28 by hossong           #+#    #+#             */
-/*   Updated: 2022/08/23 00:44:04 by hossong          ###   ########.fr       */
+/*   Updated: 2022/08/23 12:02:51 by hossong          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,7 @@ int	main(int argc, char **argv, char **envp)
 		str = readline("mini-0.8$ ");
 		if (!str)
 		{
+			set_termattr(data->save);
 			printf("\033[1A");
 			printf("\033[10C");
 			ft_exit(NULL);
