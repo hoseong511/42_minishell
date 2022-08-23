@@ -6,7 +6,7 @@
 /*   By: namkim <namkim@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/06 16:43:27 by hossong           #+#    #+#             */
-/*   Updated: 2022/08/23 08:46:22 by namkim           ###   ########.fr       */
+/*   Updated: 2022/08/23 13:44:33 by namkim           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -208,6 +208,7 @@ void	ft_pwd(char **args);
 void	ft_cd(char **args, t_data *data);
 void	ft_exit(char **args);
 void	ft_echo(char **args);
+void	ft_built_in_error(char *arg1, char *arg2, char *errmsg);
 
 /* control_env_array */
 int		is_envlist_full(t_data *data);

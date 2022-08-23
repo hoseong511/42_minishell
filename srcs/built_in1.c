@@ -6,7 +6,7 @@
 /*   By: namkim <namkim@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/19 10:54:24 by namkim            #+#    #+#             */
-/*   Updated: 2022/08/22 20:55:23 by namkim           ###   ########.fr       */
+/*   Updated: 2022/08/23 13:44:15 by namkim           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ int	insert_env(char *arg, t_data *data)
 
 	len = get_env_len(arg);
 	if (len == 0)
-		g_status = 1;
+		ft_built_in_error("export", arg, "not a valid identifier\n");
 	if (arg[len] == '=')
 	{
 		key = ft_strndup(arg, len);

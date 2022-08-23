@@ -6,11 +6,23 @@
 /*   By: namkim <namkim@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/22 14:59:12 by namkim            #+#    #+#             */
-/*   Updated: 2022/08/22 20:59:44 by namkim           ###   ########.fr       */
+/*   Updated: 2022/08/23 13:45:34 by namkim           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/main.h"
+
+void	ft_built_in_error(char *arg1, char *arg2, char *errmsg)
+{
+	write(2, "mini\n", 4);
+	write(2, ": ", 2);
+	write(2, arg1, ft_strlen(arg1));
+	write(2, ": ", 2);
+	write(2, arg2, ft_strlen(arg2));
+	write(2, " : ", 3);
+	write(2, errmsg, ft_strlen(errmsg));
+	g_status = 1;
+}
 
 static int	check_exit_args(char *arg)
 {

@@ -6,7 +6,7 @@
 /*   By: namkim <namkim@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/20 12:57:34 by namkim            #+#    #+#             */
-/*   Updated: 2022/08/22 21:15:24 by namkim           ###   ########.fr       */
+/*   Updated: 2022/08/23 13:36:29 by namkim           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,10 +69,10 @@ void	ft_cd(char **args, t_data *data)
 		update_pwd("OLDPWD=", &pwd, data);
 		pwd = ft_getpwd();
 		update_pwd("PWD=", &pwd, data);
+		g_status = 0;
 	}
 	else
 		ft_cd_error(path);
 	if (home == TRUE)
 		free(path);
-	g_status = 0;
 }

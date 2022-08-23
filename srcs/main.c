@@ -6,7 +6,7 @@
 /*   By: namkim <namkim@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/06 16:42:28 by hossong           #+#    #+#             */
-/*   Updated: 2022/08/22 21:58:14 by namkim           ###   ########.fr       */
+/*   Updated: 2022/08/23 13:34:19 by namkim           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,7 @@ int	main(int argc, char **argv, char **envp)
 			add_history(str);
 		load_data(data, str);
 		execution(data);
+		printf("g_status : %d\n", g_status);
 		free(str);
 		re_initialize(data);
 	}
