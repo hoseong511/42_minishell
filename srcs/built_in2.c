@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   built_in2.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: namkim <namkim@student.42seoul.kr>         +#+  +:+       +#+        */
+/*   By: hossong <hossong@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/20 12:57:34 by namkim            #+#    #+#             */
-/*   Updated: 2022/08/23 13:36:29 by namkim           ###   ########.fr       */
+/*   Updated: 2022/08/23 14:32:57 by hossong          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ static void	update_pwd(char *keyform, char **value, t_data *data)
 		return ;
 	env = ft_strjoin(keyform, *value);
 	if (!env)
-		ft_error2("pwd", ": Malloc error\n");
+		ft_error3("pwd", ": Malloc error\n", 1);
 	insert_env(env, data);
 	free(env);
 	free(*value);
