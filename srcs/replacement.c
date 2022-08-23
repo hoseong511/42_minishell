@@ -6,7 +6,7 @@
 /*   By: hossong <hossong@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/13 22:00:32 by namkim            #+#    #+#             */
-/*   Updated: 2022/08/23 14:42:48 by hossong          ###   ########.fr       */
+/*   Updated: 2022/08/23 16:09:34 by hossong          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,4 +87,3 @@ void	do_replace_in_token(t_cmd *cmdnode, char **envp)
 	cmdnode->str = join_components(comp);
 	free(target);
 }
-

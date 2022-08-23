@@ -6,7 +6,7 @@
 /*   By: hossong <hossong@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/20 12:57:34 by namkim            #+#    #+#             */
-/*   Updated: 2022/08/23 14:32:57 by hossong          ###   ########.fr       */
+/*   Updated: 2022/08/23 16:23:58 by hossong          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,9 +43,13 @@ char	*ft_getpwd(void)
 	return (pwd);
 }
 
-static void	ft_cd_error(char *arg)
+static void	ft_cd_error(char *arg, char **pwd)
 {
-	printf("cd: %s: No such file or directory\n", arg);
+	free(*pwd);
+	write(2, "cd: ", 4);
+	write(2, arg, ft_strlen(arg));
+	write(2, " : No such file or directory\n", \
+				ft_strlen(" : No such file or directory\n"));
 	g_status = 1;
 }
 
@@ -72,7 +76,7 @@ void	ft_cd(char **args, t_data *data)
 		g_status = 0;
 	}
 	else
-		ft_cd_error(path);
+		ft_cd_error(path, &pwd);
 	if (home == TRUE)
 		free(path);
 }
