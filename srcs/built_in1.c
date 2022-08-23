@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   built_in1.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hossong <hossong@student.42seoul.kr>       +#+  +:+       +#+        */
+/*   By: namkim <namkim@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/19 10:54:24 by namkim            #+#    #+#             */
-/*   Updated: 2022/08/22 19:37:48 by hossong          ###   ########.fr       */
+/*   Updated: 2022/08/22 20:55:23 by namkim           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,7 @@ void	ft_export(char **args, t_data *data)
 			return ;
 		i++;
 	}
+	g_status = 0;
 }
 
 void	ft_env(char **args, t_data *data)
@@ -75,6 +76,7 @@ void	ft_env(char **args, t_data *data)
 			printf("declare -x ");
 		printf("%s\n", *envp++);
 	}
+	g_status = 0;
 }
 
 void	ft_unset(char **args, t_data *data)
@@ -97,6 +99,7 @@ void	ft_unset(char **args, t_data *data)
 		}
 		i++;
 	}
+	g_status = 0;
 }
 
 void	ft_pwd(char **args)
@@ -116,4 +119,5 @@ void	ft_pwd(char **args)
 		printf("%s\n", res);
 		free(res);
 	}
+	g_status = 0;
 }

@@ -6,7 +6,7 @@
 /*   By: namkim <namkim@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/22 14:59:12 by namkim            #+#    #+#             */
-/*   Updated: 2022/08/22 14:59:30 by namkim           ###   ########.fr       */
+/*   Updated: 2022/08/22 20:59:44 by namkim           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,4 +66,5 @@ void	ft_echo(char **args)
 	write(1, args[i], ft_strlen(args[i]));
 	if (ft_strncmp(args[1], "-n", 3) != 0)
 		write(1, "\n", 1);
+	g_status = 0;
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ctrl_env1.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hossong <hossong@student.42seoul.kr>       +#+  +:+       +#+        */
+/*   By: namkim <namkim@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/08 18:20:24 by namkim            #+#    #+#             */
-/*   Updated: 2022/08/22 19:38:25 by hossong          ###   ########.fr       */
+/*   Updated: 2022/08/22 21:04:54 by namkim           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,41 +96,31 @@ char	*match_env(char *keystr, char **envlist)
 	return (NULL);
 }
 
-static void	free_double_string(char *str1, char *str2)
+int	count_env(char *str, char chr)
 {
-	if (str1)
-		free (str1);
-	if (str2)
-		free (str2);
-}
+	int		i;
+	int		len;
+	int		res;
+	int		slen;
 
-char	*replace_key_to_value(char *str, int start, char *keystr, char **envp)
-{
-	char	*var;
-	char	*prev;
-	char	*next;
-	char	*res;
-
-	res = NULL;
-	var = ft_strnstr(str + start, keystr, ft_strlen(str));
-	if (var)
+	res = 0;
+	i = 0;
+	slen = ft_strlen(str);
+	while (i < slen && str[i])
 	{
-		prev = ft_strndup(str, var - str - 1);
-		next = ft_strdup(var + ft_strlen(keystr));
-		if (*keystr == '?')
-			var = ft_itoa(g_status);
-		else
-			var = match_env(keystr, envp);
-		if (var)
+		if (str[i] == '$')
 		{
-			res = ft_strjoin(prev, var);
-			free_double_string(prev, var);
-			prev = res;
-			res = ft_strjoin(prev, next);
+			i++;
+			len = get_env_len(str + i);
+			if (len != 0)
+			{
+				res++;
+				i += len - 1;
+			}
 		}
-		else
-			res = ft_strjoin(prev, next);
-		free_double_string(prev, next);
+		else if (chr != '\"' && str[i] == '\'')
+			i = get_quote_end_idx(str, i);
+		i++;
 	}
 	return (res);
 }

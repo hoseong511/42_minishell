@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hossong <hossong@student.42seoul.kr>       +#+  +:+       +#+        */
+/*   By: namkim <namkim@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/12 15:46:57 by namkim            #+#    #+#             */
-/*   Updated: 2022/08/22 17:17:58 by hossong          ###   ########.fr       */
+/*   Updated: 2022/08/22 21:30:41 by namkim           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@ t_data	*init_data(char **envp)
 	res->heredoc = 0;
 	res->redir = 0;
 	g_status = 0;
+	printf("==minishell==\n");
 	return (res);
 }
 
@@ -47,10 +48,7 @@ void	load_data(t_data *data, char *str)
 {
 	data->tokenlist = tokenizer(str);
 	if (!data->tokenlist)
-	{
-		data->status = FALSE;
 		return ;
-	}
 	data->tokenlist = lexer(data);
 	data->cmdlist = relocate(&data->tokenlist);
 	data->cmdlist = bind(data->cmdlist);

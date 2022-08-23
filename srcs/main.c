@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hossong <hossong@student.42seoul.kr>       +#+  +:+       +#+        */
+/*   By: namkim <namkim@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/06 16:42:28 by hossong           #+#    #+#             */
-/*   Updated: 2022/08/22 16:18:34 by hossong          ###   ########.fr       */
+/*   Updated: 2022/08/22 21:58:14 by namkim           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,20 @@ void	set_termattr(struct termios term)
 		ft_perror("tcsetattr", errno);
 }
 
+static void	set_initial_status(t_data *data)
+{
+	set_termattr(data->set);
+	signal(SIGINT, signal_handler);
+	signal(SIGQUIT, SIG_IGN);
+}
+
+static void	eof(void)
+{
+	printf("\033[1A");
+	printf("\033[10C");
+	ft_exit(NULL);
+}
+
 int	main(int argc, char **argv, char **envp)
 {
 	char				*str;
@@ -38,33 +52,20 @@ int	main(int argc, char **argv, char **envp)
 	(void) argv;
 	if (argc != 1)
 		ft_error("Too much argument!\n");
-	printf("==minishell==\n");
 	data = init_data(envp);
 	def_termattr(data);
 	while (1)
 	{
-		set_termattr(data->set);
-		signal(SIGINT, signal_handler);
-		signal(SIGQUIT, SIG_IGN);
+		set_initial_status(data);
 		str = readline("mini-0.8$ ");
 		if (!str)
-		{
-			printf("\033[1A");
-			printf("\033[10C");
-			ft_exit(NULL);
-		}
+			eof();
 		if (*str)
 			add_history(str);
 		load_data(data, str);
-		if (data->status == FALSE)
-		{
-			data->status = TRUE;
-			continue ;
-		}
 		execution(data);
 		free(str);
 		re_initialize(data);
 	}
-	//free_data(data);
 	return (0);
 }
