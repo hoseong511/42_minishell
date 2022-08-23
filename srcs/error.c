@@ -3,21 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   error.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hossong <hossong@student.42seoul.kr>       +#+  +:+       +#+        */
+/*   By: namkim <namkim@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/09 17:26:17 by hossong           #+#    #+#             */
-/*   Updated: 2022/08/22 19:38:22 by hossong          ###   ########.fr       */
+/*   Updated: 2022/08/22 21:06:30 by namkim           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/main.h"
-
-void	ft_error0(char *err_msg)
-{
-	write(2, err_msg, ft_strlen(err_msg));
-	g_status = 1;
-	return ;
-}
 
 void	ft_error(char *err_msg)
 {

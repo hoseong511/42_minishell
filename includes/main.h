@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.h                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hossong <hossong@student.42seoul.kr>       +#+  +:+       +#+        */
+/*   By: namkim <namkim@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/06 16:43:27 by hossong           #+#    #+#             */
-/*   Updated: 2022/08/22 16:19:53 by hossong          ###   ########.fr       */
+/*   Updated: 2022/08/23 13:44:33 by namkim           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -176,10 +176,6 @@ int		heredoc(t_data *data);
 void	close_heredoc(t_data *data, t_list *arglist);
 
 /*free*/
-// void	free_cmdlist(t_list *cmdlist);
-// void	free_tokenlist(t_data *data);
-// void	free_data(t_data *data);
-// void	free_cmd(t_list *cmdlist, char *tar);
 void	free_envlist(t_data *data);
 void	free_tokenlist(t_list *tokenlist);
 void	free_cmdlist(t_list *cmdlist);
@@ -210,9 +206,9 @@ void	ft_env(char **args, t_data *data);
 void	ft_unset(char **args, t_data *data);
 void	ft_pwd(char **args);
 void	ft_cd(char **args, t_data *data);
-//void	ft_exit(char **args);
 void	ft_exit(char **args);
 void	ft_echo(char **args);
+void	ft_built_in_error(char *arg1, char *arg2, char *errmsg);
 
 /* control_env_array */
 int		is_envlist_full(t_data *data);
