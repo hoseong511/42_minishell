@@ -6,40 +6,40 @@
 /*   By: namkim <namkim@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/20 12:57:34 by namkim            #+#    #+#             */
-/*   Updated: 2022/08/22 14:59:20 by namkim           ###   ########.fr       */
+/*   Updated: 2022/08/23 13:36:29 by namkim           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/main.h"
 
-extern int	g_status;
-
-static void	update_pwd(char *keyform, char *value, t_data *data)
+static void	update_pwd(char *keyform, char **value, t_data *data)
 {
 	char	*env;
 
 	if (!keyform)
 		return ;
-	// if (ft_strncmp("PWD=", keyform, ft_strlen("PWD=") + 1) == 0)
-	// {
-	// 	env = match_env("PWD", data->envlist);
-	// 	if (!env)
-	// 		return ;
-	// }
-	env = ft_strjoin(keyform, value);
+	env = ft_strjoin(keyform, *value);
 	if (!env)
 		ft_error2("pwd", ": Malloc error\n");
 	insert_env(env, data);
 	free(env);
+	free(*value);
 }
 
 char	*ft_getpwd(void)
 {
 	char	*pwd;
+	char	*err_msg;
 
 	pwd = getcwd(NULL, 0);
 	if (!pwd)
-		ft_error0("Couldn't get working directory\n");
+	{
+		err_msg = "Couldn't get working directory\n";
+		write(2, err_msg, ft_strlen(err_msg));
+		g_status = 1;
+		return (NULL);
+	}
+	g_status = 0;
 	return (pwd);
 }
 
@@ -66,11 +66,10 @@ void	ft_cd(char **args, t_data *data)
 		path = args[1];
 	if (chdir(path) == 0)
 	{
-		update_pwd("OLDPWD=", pwd, data);
-		free(pwd);
+		update_pwd("OLDPWD=", &pwd, data);
 		pwd = ft_getpwd();
-		update_pwd("PWD=", pwd, data);
-		free(pwd);
+		update_pwd("PWD=", &pwd, data);
+		g_status = 0;
 	}
 	else
 		ft_cd_error(path);

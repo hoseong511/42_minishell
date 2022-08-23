@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokenizer.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hossong <hossong@student.42seoul.kr>       +#+  +:+       +#+        */
+/*   By: namkim <namkim@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/09 17:19:24 by hossong           #+#    #+#             */
-/*   Updated: 2022/08/21 20:29:40 by hossong          ###   ########.fr       */
+/*   Updated: 2022/08/22 21:19:25 by namkim           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ int	add_quote_idx(char *str)
 	while (str[j] && str[j] != q)
 		j++;
 	if (str[j] != q)
-		ft_error("unclosed quotes1\n");
+		ft_error("unclosed quotes\n");
 	return (j);
 }
 
@@ -56,7 +56,7 @@ int	get_quote_end_idx(char *str, int i)
 	while (str[i + j] && str[i + j] != q)
 		j++;
 	if (str[i + j] != q)
-		ft_error("unclosed quotes2\n");
+		printf("unclosed quotes\n");
 	return (i + j);
 }
 

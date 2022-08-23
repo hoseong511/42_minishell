@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ctrl_env2.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hossong <hossong@student.42seoul.kr>       +#+  +:+       +#+        */
+/*   By: namkim <namkim@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/12 15:46:57 by namkim            #+#    #+#             */
-/*   Updated: 2022/08/20 18:32:13 by hossong          ###   ########.fr       */
+/*   Updated: 2022/08/22 21:04:50 by namkim           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,36 +38,52 @@ void	replace_env(char **target, int start, int keysize, char **envp)
 		if (!keystr)
 			ft_error("Malloc error\n");
 		*target = replace_key_to_value(str, start, keystr, envp);
-		free(str);
 		free(keystr);
 	}
+	free(str);
 }
 
-int	count_env(char *str, char chr)
+static void	free_double_string(char *str1, char *str2)
 {
-	int		i;
-	int		len;
-	int		res;
-	int		slen;
+	if (str1)
+		free (str1);
+	if (str2)
+		free (str2);
+}
 
-	res = 0;
-	i = 0;
-	slen = ft_strlen(str);
-	while (i < slen && str[i])
+static char	*join_three_string(char **prev, char **var, char **next)
+{
+	char	*res;
+
+	res = ft_strjoin(*prev, *var);
+	free_double_string(*prev, *var);
+	*prev = res;
+	res = ft_strjoin(*prev, *next);
+	return (res);
+}
+
+char	*replace_key_to_value(char *str, int start, char *keystr, char **envp)
+{
+	char	*var;
+	char	*prev;
+	char	*next;
+	char	*res;
+
+	res = NULL;
+	var = ft_strnstr(str + start, keystr, ft_strlen(str));
+	if (var)
 	{
-		if (str[i] == '$')
-		{
-			i++;
-			len = get_env_len(str + i);
-			if (len != 0)
-			{
-				res++;
-				i += len - 1;
-			}
-		}
-		else if (chr != '\"' && str[i] == '\'')
-			i = get_quote_end_idx(str, i);
-		i++;
+		prev = ft_strndup(str, var - str - 1);
+		next = ft_strdup(var + ft_strlen(keystr));
+		if (*keystr == '?')
+			var = ft_itoa(g_status);
+		else
+			var = match_env(keystr, envp);
+		if (var)
+			res = join_three_string(&prev, &var, &next);
+		else
+			res = ft_strjoin(prev, next);
+		free_double_string(prev, next);
 	}
 	return (res);
 }

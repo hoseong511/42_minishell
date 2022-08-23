@@ -6,13 +6,11 @@
 /*   By: namkim <namkim@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/19 10:54:24 by namkim            #+#    #+#             */
-/*   Updated: 2022/08/22 09:59:04 by namkim           ###   ########.fr       */
+/*   Updated: 2022/08/23 13:44:15 by namkim           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/main.h"
-
-extern int	g_status;
 
 int	insert_env(char *arg, t_data *data)
 {
@@ -22,7 +20,7 @@ int	insert_env(char *arg, t_data *data)
 
 	len = get_env_len(arg);
 	if (len == 0)
-		g_status = 1;
+		ft_built_in_error("export", arg, "not a valid identifier\n");
 	if (arg[len] == '=')
 	{
 		key = ft_strndup(arg, len);
@@ -44,12 +42,10 @@ int	insert_env(char *arg, t_data *data)
 void	ft_export(char **args, t_data *data)
 {
 	int		i;
-	int		sign;
 
 	i = 1;
 	if (!args[i])
 		ft_env(args, data);
-	sign = FALSE;
 	while (args[i])
 	{
 		insert_env(args[i], data);
@@ -57,6 +53,7 @@ void	ft_export(char **args, t_data *data)
 			return ;
 		i++;
 	}
+	g_status = 0;
 }
 
 void	ft_env(char **args, t_data *data)
@@ -79,6 +76,7 @@ void	ft_env(char **args, t_data *data)
 			printf("declare -x ");
 		printf("%s\n", *envp++);
 	}
+	g_status = 0;
 }
 
 void	ft_unset(char **args, t_data *data)
@@ -101,6 +99,7 @@ void	ft_unset(char **args, t_data *data)
 		}
 		i++;
 	}
+	g_status = 0;
 }
 
 void	ft_pwd(char **args)
@@ -120,4 +119,5 @@ void	ft_pwd(char **args)
 		printf("%s\n", res);
 		free(res);
 	}
+	g_status = 0;
 }

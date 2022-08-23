@@ -3,16 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   replacement.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: namkim <namkim@student.42seoul.kr>         +#+  +:+       +#+        */
+/*   By: hossong <hossong@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/13 22:00:32 by namkim            #+#    #+#             */
-/*   Updated: 2022/08/22 11:20:51 by namkim           ###   ########.fr       */
+/*   Updated: 2022/08/22 20:11:36 by hossong          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/main.h"
-
-extern int	g_status;
 
 void	do_expansion(char **target, char **envp, char sign)
 {
@@ -67,6 +65,9 @@ void	do_replace_in_token(t_cmd *cmdnode, char **envp)
 	{
 		first = ((char *)node->content)[0];
 		do_expansion((char **)&(node->content), envp, first);
+		if (first == '\"' || first == '\'')
+			remove_quote((char **)&(node->content), 0, \
+							ft_strlen((char *)node->content) - 1);
 		node = node->next;
 	}
 	cmdnode->str = join_components(comp);

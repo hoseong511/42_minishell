@@ -3,16 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   redirections.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hossong <hossong@student.42seoul.kr>       +#+  +:+       +#+        */
+/*   By: namkim <namkim@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/18 14:04:20 by namkim            #+#    #+#             */
-/*   Updated: 2022/08/21 21:24:58 by hossong          ###   ########.fr       */
+/*   Updated: 2022/08/23 08:56:00 by namkim           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/main.h"
-
-extern int	g_status;
 
 void	redirection_in(char *filepath)
 {
@@ -22,7 +20,6 @@ void	redirection_in(char *filepath)
 
 	if (!filepath)
 		ft_error("Syntax Error\n");
-	printf("filepath : %s\n", filepath);
 	fd = open(filepath, O_RDONLY);
 	if (fd < 0)
 	{
@@ -81,14 +78,12 @@ void	redirection_append(char *filepath)
 	}
 }
 
-void	redirection_heredoc(t_data *data, char *end_of_file)
+void	redirection_heredoc(t_data *data, char *end_of_file, int idx)
 {
 	int		p_fd[2];
 	char	*str;
 	pid_t	pid;
 
-	ft_dup2(data->stdin_fd, 0);
-	ft_dup2(data->stdout_fd, 1);
 	pipe(p_fd);
 	pid = fork();
 	while (pid == 0)
@@ -105,7 +100,7 @@ void	redirection_heredoc(t_data *data, char *end_of_file)
 	if (pid > 0)
 	{
 		signal(SIGINT, signal_handler_c);
-		wait(&data->info->status);
+		waitpid(pid, &data->info->status, 0);
 		if (WEXITSTATUS(data->info->status) == 1)
 		{
 			close(p_fd[1]);
@@ -116,7 +111,7 @@ void	redirection_heredoc(t_data *data, char *end_of_file)
 		else
 		{
 			close(p_fd[1]);
-			ft_dup2(p_fd[0], 0);
+			data->heredoc[idx] = dup(p_fd[0]);
 			close(p_fd[0]);
 		}
 	}
@@ -126,6 +121,7 @@ t_list	*redirection_left(t_data *data, t_list *args)
 {
 	t_list	*node;
 	t_type	node_type;
+	int		idx;
 
 	node = args;
 	while (node)
@@ -136,9 +132,14 @@ t_list	*redirection_left(t_data *data, t_list *args)
 		else if (node_type == R_IN)
 			redirection_in(((t_cmd2 *)node->content)->str[1]);
 		else if (node_type == R_HEREDOC)
-			redirection_heredoc(data, ((t_cmd2 *)node->content)->str[1]);
-		if (g_status == 1)
-			return (NULL);
+		{
+			idx = 0;
+			while (data->heredoc[idx] == -1)
+				idx++;
+			ft_dup2(data->heredoc[idx], 0);
+			close(data->heredoc[idx]);
+			data->heredoc[idx] = -1;
+		}
 		node = node->next;
 		data->redir = 1;
 	}
