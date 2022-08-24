@@ -6,7 +6,7 @@
 /*   By: hossong <hossong@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/17 19:51:40 by namkim            #+#    #+#             */
-/*   Updated: 2022/08/24 18:39:28 by hossong          ###   ########.fr       */
+/*   Updated: 2022/08/24 21:20:08 by hossong          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,19 @@ char	*join_components(t_list *component)
 	return (res);
 }
 
+static int	split_word_quote(char *target, int *i, int *j, t_list **component)
+{
+	*j = get_quote_end_idx(target, *i);
+	if (target[*j] == '\0')
+	{
+		*i = 0;
+		return (*j);
+	}
+	else
+		make_component(component, target + *i, (*j - *i + 1));
+	return (0);
+}
+
 t_list	*split_words(char *target, int i, int j)
 {
 	t_list	*component;
@@ -75,10 +88,8 @@ t_list	*split_words(char *target, int i, int j)
 		{
 			if (j == 0)
 			{
-				j = get_quote_end_idx(target, i);
-				if (target[j] == '\0')
+				if (split_word_quote(target, &i, &j, &component) != 0)
 					break ;
-				make_component(&component, target + i, (j - i + 1));
 				i = 1;
 			}
 			else

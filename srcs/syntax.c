@@ -6,7 +6,7 @@
 /*   By: hossong <hossong@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/13 14:52:14 by hossong           #+#    #+#             */
-/*   Updated: 2022/08/24 18:02:50 by hossong          ###   ########.fr       */
+/*   Updated: 2022/08/24 20:11:30 by hossong          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ int	check_redirection_syntax(t_data *data)
 	while (tnode)
 	{
 		type = ((t_cmd *)tnode->content)->type;
-		if (type > PIPE && type < R_ARG)
+		if (type > PIPE && type < R_ARG && (sign == TRUE))
 		{
 			if (!tnode->next)
 				sign = ft_syntax_error(type, NULL);
