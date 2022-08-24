@@ -6,7 +6,7 @@
 /*   By: hossong <hossong@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/22 14:59:12 by namkim            #+#    #+#             */
-/*   Updated: 2022/08/24 11:42:43 by hossong          ###   ########.fr       */
+/*   Updated: 2022/08/24 12:23:36 by hossong          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,17 +85,17 @@ void	ft_echo(char **args)
 	int	nflag;
 
 	nflag = FALSE;
-	args++;
-	if (!*args)
-	{
-		write(1, "\n", 1);
-		g_status = 0;
-		return ;
-	}
-	if (check_n_flag(*args))
+	if (check_n_flag(*(++args)))
 	{
 		nflag = TRUE;
 		args++;
+	}
+	if (!*args)
+	{
+		if (nflag == FALSE)
+			write(1, "\n", 1);
+		g_status = 0;
+		return ;
 	}
 	while (*args && *(args + 1))
 	{
