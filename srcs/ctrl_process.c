@@ -6,7 +6,7 @@
 /*   By: hossong <hossong@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/18 12:32:30 by hossong           #+#    #+#             */
-/*   Updated: 2022/08/24 11:28:45 by hossong          ###   ########.fr       */
+/*   Updated: 2022/08/24 12:03:47 by hossong          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,6 @@ void	parent_process(t_data *data, int depth)
 {
 	int	i;
 
-	signal(SIGINT, SIG_IGN);
 	if (data->cmd_cnt == 1)
 		wait(&data->info->status);
 	else if (depth == 0)
@@ -90,6 +89,7 @@ void	exec_process(t_data *data, t_list *cmdlist)
 		if (data->cmd_cnt != 1)
 			init_pipe(data, depth, data->cmd_cnt);
 		data->info->pid[depth] = fork();
+		shlvl_signal((t_list *)cmdlist->content);
 		if (data->info->pid[depth] > 0)
 			parent_process(data, depth);
 		else if (data->info->pid[depth] == 0)

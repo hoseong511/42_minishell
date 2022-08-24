@@ -6,7 +6,7 @@
 /*   By: hossong <hossong@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/06 16:43:27 by hossong           #+#    #+#             */
-/*   Updated: 2022/08/23 15:37:36 by hossong          ###   ########.fr       */
+/*   Updated: 2022/08/24 12:02:35 by hossong          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -197,5 +197,6 @@ int		get_env_idx(char *keystr, char **envp);
 void	signal_handler(int signal);
 void	signal_handler_c(int signal);
 void	signal_handler_e(int signal);
+void	shlvl_signal(t_list *arglist);
 
 #endif

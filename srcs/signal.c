@@ -6,7 +6,7 @@
 /*   By: hossong <hossong@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/16 22:13:27 by namkim            #+#    #+#             */
-/*   Updated: 2022/08/24 11:14:08 by hossong          ###   ########.fr       */
+/*   Updated: 2022/08/24 12:02:04 by hossong          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,17 +37,17 @@ void	signal_handler_e(int signal)
 		exit(1);
 }
 
-void	shlvl_signal(t_list *cmdlist)
+void	shlvl_signal(t_list *arglist)
 {
-	t_list	*arglist;
 	t_cmd2	*arg;
 
-	arglist = (t_list *)cmdlist->content;
 	while (arglist)
 	{
 		arg = (t_cmd2 *)arglist->content;
 		if (ft_strncmp(arg->str[0], "./minishell", 12) == 0)
-			;
+			signal(SIGINT, SIG_IGN);
+		else
+			signal(SIGINT, signal_handler_c);
 		arglist = arglist->next;
 	}
 }
