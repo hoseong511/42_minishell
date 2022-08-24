@@ -6,7 +6,7 @@
 /*   By: hossong <hossong@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/06 16:42:28 by hossong           #+#    #+#             */
-/*   Updated: 2022/08/23 15:36:15 by hossong          ###   ########.fr       */
+/*   Updated: 2022/08/24 11:31:20 by hossong          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 int	g_status;
 
-static	void	def_termattr(t_data *data)
+static void	def_termattr(t_data *data)
 {
 	if (tcgetattr(STDIN_FILENO, &data->set) != 0)
 		ft_perror("tcgetattr", errno);
