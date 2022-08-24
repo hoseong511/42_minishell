@@ -6,7 +6,7 @@
 /*   By: hossong <hossong@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/12 15:46:57 by namkim            #+#    #+#             */
-/*   Updated: 2022/08/24 11:42:21 by hossong          ###   ########.fr       */
+/*   Updated: 2022/08/24 18:43:30 by hossong          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,6 +76,8 @@ void	load_data(t_data *data, char *str)
 	if (!data->tokenlist)
 		return ;
 	data->tokenlist = lexer(data);
+	if (data->tokenlist == NULL)
+		return ;
 	data->cmdlist = relocate(&data->tokenlist);
 	data->cmdlist = bind(data->cmdlist);
 }

@@ -6,7 +6,7 @@
 /*   By: hossong <hossong@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/17 19:51:40 by namkim            #+#    #+#             */
-/*   Updated: 2022/08/21 20:35:22 by hossong          ###   ########.fr       */
+/*   Updated: 2022/08/24 18:39:28 by hossong          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,6 +76,8 @@ t_list	*split_words(char *target, int i, int j)
 			if (j == 0)
 			{
 				j = get_quote_end_idx(target, i);
+				if (target[j] == '\0')
+					break ;
 				make_component(&component, target + i, (j - i + 1));
 				i = 1;
 			}

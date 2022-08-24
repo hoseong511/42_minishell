@@ -6,7 +6,7 @@
 /*   By: hossong <hossong@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/06 16:43:27 by hossong           #+#    #+#             */
-/*   Updated: 2022/08/24 12:02:35 by hossong          ###   ########.fr       */
+/*   Updated: 2022/08/24 17:46:06 by hossong          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -129,8 +129,9 @@ void	append_ab(t_list **lst, t_list *a, t_list *b);
 void	insert_src(t_list **des, t_list **src, t_list **tmp);
 
 /* syntax */
-void	check_pipe_syntax(t_data *data);
-void	check_redirection_syntax(t_data *data);
+int		check_pipe_syntax(t_data *data);
+int		check_redirection_syntax(t_data *data);
+int		ft_syntax_error(t_type ttype, char *str);
 
 /* excute */
 t_proc	*init_proc_info(t_data *data);
@@ -198,5 +199,8 @@ void	signal_handler(int signal);
 void	signal_handler_c(int signal);
 void	signal_handler_e(int signal);
 void	shlvl_signal(t_list *arglist);
+
+/* print utils */
+void	print_t_cmds(t_list *tokenlist);
 
 #endif
