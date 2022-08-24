@@ -6,7 +6,7 @@
 /*   By: hossong <hossong@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/16 20:09:37 by namkim            #+#    #+#             */
-/*   Updated: 2022/08/23 15:32:10 by hossong          ###   ########.fr       */
+/*   Updated: 2022/08/24 15:31:02 by hossong          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,8 +30,15 @@ char	*get_exe_format(char *path, char *cmd)
 	char	*res;
 
 	res = NULL;
-	if (!path && !cmd)
+	if ((!path && !cmd))
 		return (NULL);
+	if (!(*cmd))
+	{
+		res = ft_strdup(cmd);
+		if (!res)
+			ft_error("Malloc error\n");
+		return (res);
+	}
 	temp = ft_strjoin(path, "/");
 	if (!temp)
 		return (NULL);
