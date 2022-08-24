@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   built_in2.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: namkim <namkim@student.42seoul.kr>         +#+  +:+       +#+        */
+/*   By: namkim <namkim@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/20 12:57:34 by namkim            #+#    #+#             */
-/*   Updated: 2022/08/23 13:36:29 by namkim           ###   ########.fr       */
+/*   Updated: 2022/08/24 11:24:37 by namkim           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ static void	update_pwd(char *keyform, char **value, t_data *data)
 		return ;
 	env = ft_strjoin(keyform, *value);
 	if (!env)
-		ft_error2("pwd", ": Malloc error\n");
+		ft_error3("pwd", ": Malloc error\n", 1);
 	insert_env(env, data);
 	free(env);
 	free(*value);
@@ -43,9 +43,20 @@ char	*ft_getpwd(void)
 	return (pwd);
 }
 
-static void	ft_cd_error(char *arg)
+static void	ft_cd_error(char *arg, char **pwd)
 {
-	printf("cd: %s: No such file or directory\n", arg);
+	write(2, "mini: ", 6);
+	write(2, "cd: ", 4);
+	if (arg)
+		write(2, arg, ft_strlen(arg));
+	if (*pwd)
+		free (*pwd);
+	if (!arg)
+		write(2, "HOME not set\n", \
+				ft_strlen("HOME not set\n"));
+	else
+		write(2, " : No such file or directory\n", \
+				ft_strlen(" : No such file or directory\n"));
 	g_status = 1;
 }
 
@@ -72,7 +83,7 @@ void	ft_cd(char **args, t_data *data)
 		g_status = 0;
 	}
 	else
-		ft_cd_error(path);
-	if (home == TRUE)
+		ft_cd_error(path, &pwd);
+	if (home == TRUE && path)
 		free(path);
 }
