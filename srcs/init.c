@@ -6,11 +6,37 @@
 /*   By: hossong <hossong@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/12 15:46:57 by namkim            #+#    #+#             */
-/*   Updated: 2022/08/23 14:36:13 by hossong          ###   ########.fr       */
+/*   Updated: 2022/08/24 11:42:21 by hossong          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/main.h"
+
+static void	raise_shlvl(t_data *data)
+{
+	char	**envp;
+	char	*shlvl;
+	char	*temp;
+	int		level;
+
+	envp = data->envlist;
+	if (!envp || !(*envp))
+		return ;
+	shlvl = match_env("SHLVL", envp);
+	if (!shlvl)
+		insert_env("SHLVL=1", data);
+	else
+	{
+		level = ft_atoi(shlvl);
+		level++;
+		free(shlvl);
+		temp = ft_itoa(level);
+		shlvl = ft_strjoin("SHLVL=", temp);
+		insert_env(shlvl, data);
+		free(temp);
+		free(shlvl);
+	}
+}
 
 t_data	*init_data(char **envp)
 {
@@ -20,6 +46,7 @@ t_data	*init_data(char **envp)
 	if (!res)
 		ft_error("Malloc Error While Initialize\n");
 	res->envlist = get_env(envp, res);
+	raise_shlvl(res);
 	res->envlist_cnt = res->envlist_size;
 	res->tokenlist = NULL;
 	res->cmdlist = NULL;

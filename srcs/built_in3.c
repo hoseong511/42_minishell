@@ -6,7 +6,7 @@
 /*   By: hossong <hossong@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/22 14:59:12 by namkim            #+#    #+#             */
-/*   Updated: 2022/08/23 15:34:44 by hossong          ###   ########.fr       */
+/*   Updated: 2022/08/24 11:42:43 by hossong          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,21 +63,48 @@ void	ft_exit(char **args, t_data *data)
 	exit(errcode);
 }
 
-void	ft_echo(char **args)
+static int	check_n_flag(char *flag)
 {
 	int	i;
 
-	i = 1;
-	if (ft_strncmp(args[i], "-n", 3) == 0)
+	if (!flag)
+		return (FALSE);
+	i = 0;
+	if (flag[i] == '-')
 		i++;
-	while (args[i + 1])
+	while (flag[i] == 'n')
+		i++;
+	if (flag[i] == '\0')
+		return (TRUE);
+	else
+		return (FALSE);
+}
+
+void	ft_echo(char **args)
+{
+	int	nflag;
+
+	nflag = FALSE;
+	args++;
+	if (!*args)
 	{
-		write(1, args[i], ft_strlen(args[i]));
-		write(1, " ", 1);
-		i++;
+		write(1, "\n", 1);
+		g_status = 0;
+		return ;
 	}
-	write(1, args[i], ft_strlen(args[i]));
-	if (ft_strncmp(args[1], "-n", 3) != 0)
+	if (check_n_flag(*args))
+	{
+		nflag = TRUE;
+		args++;
+	}
+	while (*args && *(args + 1))
+	{
+		write(1, *args, ft_strlen(*args));
+		write(1, " ", 1);
+		args++;
+	}
+	write(1, *args, ft_strlen(*args));
+	if (nflag == FALSE)
 		write(1, "\n", 1);
 	g_status = 0;
 }
