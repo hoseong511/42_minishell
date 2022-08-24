@@ -6,7 +6,7 @@
 /*   By: hossong <hossong@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/20 12:57:34 by namkim            #+#    #+#             */
-/*   Updated: 2022/08/23 16:23:58 by hossong          ###   ########.fr       */
+/*   Updated: 2022/08/24 11:42:07 by hossong          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,10 +45,17 @@ char	*ft_getpwd(void)
 
 static void	ft_cd_error(char *arg, char **pwd)
 {
-	free(*pwd);
+	write(2, "mini: ", 6);
 	write(2, "cd: ", 4);
-	write(2, arg, ft_strlen(arg));
-	write(2, " : No such file or directory\n", \
+	if (arg)
+		write(2, arg, ft_strlen(arg));
+	if (*pwd)
+		free (*pwd);
+	if (!arg)
+		write(2, "HOME not set\n", \
+				ft_strlen("HOME not set\n"));
+	else
+		write(2, " : No such file or directory\n", \
 				ft_strlen(" : No such file or directory\n"));
 	g_status = 1;
 }
@@ -77,6 +84,6 @@ void	ft_cd(char **args, t_data *data)
 	}
 	else
 		ft_cd_error(path, &pwd);
-	if (home == TRUE)
+	if (home == TRUE && path)
 		free(path);
 }
