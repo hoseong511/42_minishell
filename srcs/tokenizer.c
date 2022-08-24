@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokenizer.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: namkim <namkim@student.42seoul.kr>         +#+  +:+       +#+        */
+/*   By: hossong <hossong@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/09 17:19:24 by hossong           #+#    #+#             */
-/*   Updated: 2022/08/22 21:19:25 by namkim           ###   ########.fr       */
+/*   Updated: 2022/08/23 14:42:52 by hossong          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ void	add_token(t_list **lst, char *str, size_t len)
 	ft_lstadd_back(lst, new);
 }
 
-int	add_quote_idx(char *str)
+static int	add_quote_idx(char *str)
 {
 	int		j;
 	char	q;
@@ -46,21 +46,7 @@ int	add_quote_idx(char *str)
 	return (j);
 }
 
-int	get_quote_end_idx(char *str, int i)
-{
-	int		j;
-	char	q;
-
-	q = str[i];
-	j = 1;
-	while (str[i + j] && str[i + j] != q)
-		j++;
-	if (str[i + j] != q)
-		printf("unclosed quotes\n");
-	return (i + j);
-}
-
-int	add_end_token(t_list **lst, char *str)
+static int	add_end_token(t_list **lst, char *str)
 {
 	int	i;
 

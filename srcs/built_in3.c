@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   built_in3.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: namkim <namkim@student.42.fr>              +#+  +:+       +#+        */
+/*   By: hossong <hossong@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/22 14:59:12 by namkim            #+#    #+#             */
-/*   Updated: 2022/08/24 11:15:38 by namkim           ###   ########.fr       */
+/*   Updated: 2022/08/24 11:42:43 by hossong          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ static int	check_exit_args(char *arg)
 		return (FALSE);
 }
 
-void	ft_exit(char **args)
+void	ft_exit(char **args, t_data *data)
 {
 	int	errcode;
 	int	i;
@@ -56,9 +56,10 @@ void	ft_exit(char **args)
 		i++;
 	}
 	if (i > 2)
-		ft_error2("exit", ": too many arguments\n");
+		ft_error3("exit", ": too many arguments\n", 1);
 	else if (i == 2)
 		errcode = ft_atoi(args[1]);
+	set_termattr(data->save);
 	exit(errcode);
 }
 

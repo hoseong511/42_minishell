@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: namkim <namkim@student.42seoul.kr>         +#+  +:+       +#+        */
+/*   By: hossong <hossong@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/13 21:35:13 by namkim            #+#    #+#             */
-/*   Updated: 2022/08/23 08:47:33 by namkim           ###   ########.fr       */
+/*   Updated: 2022/08/23 15:36:51 by hossong          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,19 +67,4 @@ void	print_t_cmds2(t_list *cmdlist)
 		printf("\n");
 		node = node->next;
 	}
-}
-
-void	print_data(t_data *data)
-{
-	printf("g_status : %d\n", g_status);
-	//termios
-	ft_env(data->envlist, data);
-	printf("envlist_size : %d\n", data->envlist_size);
-	printf("envlist_cnt : %d\n", data->envlist_cnt);
-	printf("tokenlist : %p\n", data->tokenlist);
-	printf("cmdlist : %p\n", data->cmdlist);
-	printf("status : %d\n", data->status);
-	printf("t_proc info : %p\n", data->info);
-	printf("redir : %d\n", data->redir);
-	printf("heredoc : %p\n", data->heredoc);
 }

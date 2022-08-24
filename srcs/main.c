@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: namkim <namkim@student.42seoul.kr>         +#+  +:+       +#+        */
+/*   By: hossong <hossong@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/06 16:42:28 by hossong           #+#    #+#             */
-/*   Updated: 2022/08/23 13:47:54 by namkim           ###   ########.fr       */
+/*   Updated: 2022/08/23 15:36:15 by hossong          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,11 +37,11 @@ static void	set_initial_status(t_data *data)
 	signal(SIGQUIT, SIG_IGN);
 }
 
-static void	eof(void)
+static void	eof(t_data *data)
 {
 	printf("\033[1A");
 	printf("\033[10C");
-	ft_exit(NULL);
+	ft_exit(NULL, data);
 }
 
 int	main(int argc, char **argv, char **envp)
@@ -57,9 +57,9 @@ int	main(int argc, char **argv, char **envp)
 	while (1)
 	{
 		set_initial_status(data);
-		str = readline("mini-0.8$ ");
+		str = readline("mini-1.0$ ");
 		if (!str)
-			eof();
+			eof(data);
 		if (*str)
 			add_history(str);
 		load_data(data, str);
