@@ -6,7 +6,7 @@
 /*   By: hossong <hossong@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/18 12:32:30 by hossong           #+#    #+#             */
-/*   Updated: 2022/08/23 16:27:01 by hossong          ###   ########.fr       */
+/*   Updated: 2022/08/24 11:28:45 by hossong          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ void	parent_process(t_data *data, int depth)
 {
 	int	i;
 
-	signal(SIGINT, signal_handler_c);
+	signal(SIGINT, SIG_IGN);
 	if (data->cmd_cnt == 1)
 		wait(&data->info->status);
 	else if (depth == 0)

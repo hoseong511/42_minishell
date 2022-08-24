@@ -6,7 +6,7 @@
 /*   By: hossong <hossong@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/16 22:13:27 by namkim            #+#    #+#             */
-/*   Updated: 2022/08/23 16:07:55 by hossong          ###   ########.fr       */
+/*   Updated: 2022/08/24 11:14:08 by hossong          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ void	signal_handler(int signal)
 {
 	if (signal == SIGINT)
 	{
-		printf("mini-1.0$ \n");
+		printf("mini-1.0$ \b\n");
 		g_status = 1;
 	}
 	if (rl_on_new_line() == -1)
@@ -35,4 +35,19 @@ void	signal_handler_e(int signal)
 {
 	if (signal == SIGINT)
 		exit(1);
+}
+
+void	shlvl_signal(t_list *cmdlist)
+{
+	t_list	*arglist;
+	t_cmd2	*arg;
+
+	arglist = (t_list *)cmdlist->content;
+	while (arglist)
+	{
+		arg = (t_cmd2 *)arglist->content;
+		if (ft_strncmp(arg->str[0], "./minishell", 12) == 0)
+			;
+		arglist = arglist->next;
+	}
 }
