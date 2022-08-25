@@ -6,7 +6,7 @@
 /*   By: hossong <hossong@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/22 12:45:35 by namkim            #+#    #+#             */
-/*   Updated: 2022/08/23 11:42:10 by hossong          ###   ########.fr       */
+/*   Updated: 2022/08/24 20:09:51 by hossong          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,4 +72,20 @@ void	free_process(t_data *data)
 	}
 	if (data->heredoc)
 		free(data->heredoc);
+}
+
+void	free_tokenlist(t_list *tokenlist)
+{
+	t_list	*node;
+	t_list	*temp;
+
+	node = tokenlist;
+	while (node)
+	{
+		temp = node->next;
+		free(((t_cmd *)node->content)->str);
+		free(node->content);
+		free(node);
+		node = temp;
+	}
 }

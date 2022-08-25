@@ -6,7 +6,7 @@
 /*   By: hossong <hossong@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/13 22:00:32 by namkim            #+#    #+#             */
-/*   Updated: 2022/08/23 16:09:34 by hossong          ###   ########.fr       */
+/*   Updated: 2022/08/24 18:48:22 by hossong          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,6 @@ int	get_quote_end_idx(char *str, int i)
 	j = 1;
 	while (str[i + j] && str[i + j] != q)
 		j++;
-	if (str[i + j] != q)
-		printf("unclosed quotes\n");
 	return (i + j);
 }
 
@@ -58,11 +56,18 @@ void	remove_quote(char **target, int startidx, int endidx)
 {
 	char	*str;
 	char	*dst;
+	int		lastidx;
 
 	str = *target;
 	dst = str + (startidx);
-	str = ft_memmove(dst, dst + 1, ft_strlen(dst + 1) - 1);
-	str[endidx - 1] = '\0';
+	lastidx = get_quote_end_idx(str, 0);
+	if (!str[lastidx] && str[lastidx] != *str)
+		return ;
+	else
+	{
+		str = ft_memmove(dst, dst + 1, ft_strlen(dst + 1) - 1);
+		str[endidx - 1] = '\0';
+	}
 }
 
 void	do_replace_in_token(t_cmd *cmdnode, char **envp)

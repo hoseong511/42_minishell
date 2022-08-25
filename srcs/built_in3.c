@@ -6,7 +6,7 @@
 /*   By: hossong <hossong@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/22 14:59:12 by namkim            #+#    #+#             */
-/*   Updated: 2022/08/24 12:23:36 by hossong          ###   ########.fr       */
+/*   Updated: 2022/08/24 16:59:54 by hossong          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,7 @@ void	ft_exit(char **args, t_data *data)
 		ft_error3("exit", ": too many arguments\n", 1);
 	else if (i == 2)
 		errcode = ft_atoi(args[1]);
+	ft_dup2(data->fd_stdin, 0);
 	set_termattr(data->save);
 	exit(errcode);
 }

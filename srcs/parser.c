@@ -6,7 +6,7 @@
 /*   By: hossong <hossong@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/12 15:53:51 by namkim            #+#    #+#             */
-/*   Updated: 2022/08/23 14:44:20 by hossong          ###   ########.fr       */
+/*   Updated: 2022/08/24 20:08:16 by hossong          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,8 +82,16 @@ t_list	*lexer(t_data *data)
 	if (!data || !data->tokenlist)
 		return (NULL);
 	put_type(data);
-	check_pipe_syntax(data);
-	check_redirection_syntax(data);
+	if (check_pipe_syntax(data) == FALSE)
+	{
+		free_tokenlist(data->tokenlist);
+		return (NULL);
+	}
+	if (check_redirection_syntax(data) == FALSE)
+	{
+		free_tokenlist(data->tokenlist);
+		return (NULL);
+	}
 	res = data->tokenlist;
 	while (res)
 	{

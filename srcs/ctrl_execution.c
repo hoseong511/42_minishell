@@ -6,7 +6,7 @@
 /*   By: hossong <hossong@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/14 17:27:01 by hossong           #+#    #+#             */
-/*   Updated: 2022/08/23 19:09:04 by hossong          ###   ########.fr       */
+/*   Updated: 2022/08/25 13:27:29 by hossong          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,6 +94,12 @@ void	execution(t_data *data)
 	cmdlist = data->cmdlist;
 	if (!cmdlist)
 		return ;
+	data->info = init_proc_info(data);
+	if (heredoc(data) == -1)
+	{
+		close_heredoc(data, NULL);
+		return ;
+	}
 	is_built = check_builtin((t_list *)cmdlist->content);
 	if (data->cmd_cnt == 1 && is_built)
 	{
@@ -103,7 +109,4 @@ void	execution(t_data *data)
 	}
 	else
 		exec_process(data, cmdlist);
-	data->cmd_cnt = 0;
-	ft_dup2(data->fd_stdin, 0);
-	ft_dup2(data->fd_stdout, 1);
 }
