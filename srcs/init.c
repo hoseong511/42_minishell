@@ -6,7 +6,7 @@
 /*   By: hossong <hossong@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/12 15:46:57 by namkim            #+#    #+#             */
-/*   Updated: 2022/08/24 18:43:30 by hossong          ###   ########.fr       */
+/*   Updated: 2022/08/25 13:26:48 by hossong          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,6 +68,8 @@ void	re_initialize(t_data *data)
 	data->cmd_cnt = 0;
 	data->info = NULL;
 	data->heredoc = NULL;
+	ft_dup2(data->fd_stdin, 0);
+	ft_dup2(data->fd_stdout, 1);
 }
 
 void	load_data(t_data *data, char *str)

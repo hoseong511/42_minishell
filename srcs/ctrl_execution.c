@@ -6,7 +6,7 @@
 /*   By: hossong <hossong@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/14 17:27:01 by hossong           #+#    #+#             */
-/*   Updated: 2022/08/25 13:21:58 by hossong          ###   ########.fr       */
+/*   Updated: 2022/08/25 13:27:29 by hossong          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,7 +109,4 @@ void	execution(t_data *data)
 	}
 	else
 		exec_process(data, cmdlist);
-	data->cmd_cnt = 0;
-	ft_dup2(data->fd_stdin, 0);
-	ft_dup2(data->fd_stdout, 1);
 }
