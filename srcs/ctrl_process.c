@@ -6,7 +6,7 @@
 /*   By: hossong <hossong@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/18 12:32:30 by hossong           #+#    #+#             */
-/*   Updated: 2022/08/24 16:57:55 by hossong          ###   ########.fr       */
+/*   Updated: 2022/08/25 13:21:47 by hossong          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,12 +77,6 @@ void	exec_process(t_data *data, t_list *cmdlist)
 {
 	int		depth;
 
-	data->info = init_proc_info(data);
-	if (heredoc(data) == -1)
-	{
-		close_heredoc(data, NULL);
-		return ;
-	}
 	depth = 0;
 	while (cmdlist && depth < data->cmd_cnt)
 	{
