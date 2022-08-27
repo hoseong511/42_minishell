@@ -6,7 +6,7 @@
 /*   By: hossong <hossong@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/18 13:38:07 by hossong           #+#    #+#             */
-/*   Updated: 2022/08/26 19:30:20 by hossong          ###   ########.fr       */
+/*   Updated: 2022/08/27 14:37:49 by hossong          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,19 +45,18 @@ void	pipe_in(t_data *data, int depth, int cmd_cnt)
 		return ;
 	else if (depth == 0)
 		;
-	else if (depth != cmd_cnt - 1)
+	else if (depth != 0)
 	{
 		if (depth % 2 == 0)
-			ft_dup2(data->info->pipe[1].fd[0], 0);
+		{
+			ft_dup2(data->info->pipe[1].fd[0], STDIN_FILENO);
+			close(data->info->pipe[1].fd[0]);
+		}
 		else
-			ft_dup2(data->info->pipe[0].fd[0], 0);
-	}
-	else if (depth == cmd_cnt - 1)
-	{
-		if (depth % 2 == 0)
-			ft_dup2(data->info->pipe[1].fd[0], 0);
-		else
-			ft_dup2(data->info->pipe[0].fd[0], 0);
+		{
+			ft_dup2(data->info->pipe[0].fd[0], STDIN_FILENO);
+			close(data->info->pipe[0].fd[0]);
+		}
 	}
 }
 
@@ -68,19 +67,22 @@ void	pipe_out(t_data *data, int depth, int cmd_cnt)
 	else if (depth == 0)
 	{
 		close(data->info->pipe[0].fd[0]);
-		ft_dup2(data->info->pipe[0].fd[1], 1);
+		ft_dup2(data->info->pipe[0].fd[1], STDOUT_FILENO);
+		close(data->info->pipe[0].fd[1]);
 	}
 	else if (depth != cmd_cnt - 1)
 	{
 		if (depth % 2 == 0)
 		{
 			close(data->info->pipe[0].fd[0]);
-			ft_dup2(data->info->pipe[0].fd[1], 1);
+			ft_dup2(data->info->pipe[0].fd[1], STDOUT_FILENO);
+			close(data->info->pipe[0].fd[1]);
 		}
 		else
 		{
 			close(data->info->pipe[1].fd[0]);
-			ft_dup2(data->info->pipe[1].fd[1], 1);
+			ft_dup2(data->info->pipe[1].fd[1], STDOUT_FILENO);
+			close(data->info->pipe[1].fd[1]);
 		}
 	}
 	else if (depth == cmd_cnt - 1)
